@@ -1,0 +1,88 @@
+//================================================Name======================================================
+									// Town Invasion (Official Release Name)
+//===============================================Version====================================================
+//												  1.1 
+//===============================================Author=====================================================
+//					 ____ _____  ______  __ __   __  _______    __   _____ __   __  _______
+//					|  __ \ _  \|  __  \|  |  \ |  |/  ___  \  |  | /  /  |  \ |  |/  ___  \
+//					| |__| | \  \ |__|  |  |   \|  |  |  _\_/  |  |/  /|  |   \|  |  |  _\_/
+//					|   __/   | |      /|  |       |  | |_  \  |     | |  |    |  |  | |_  \
+//					|  |\  \_/  /  |\  \|  |  |\   |   \_/  |  |  |\  \|  |  |\   |   \_/  |
+//					|__| \_____/|__| \__\__|__| \__|\______/   |__| \__\__|__| \__|\______/
+//----------------------------------------Script Last Update 2020-------------------------------------------
+//==============================================Changelog===================================================
+									// 1.0 *
+									//		- Initial Release
+									// 1.1
+									//		- Maximize script
+									//		- Add more Monster
+									//		- Balance monster on map to avoid lag
+//==========================================================================================================
+-	script	Invasion	-1,{
+OnClock2100:
+			announce "A Boss is destroying our city! Help us!",bc_all,0x00FFFF;
+				areamonster $@mapinvasion$[.town],138,324,199,304,"Treasure Box",1845,5,"Invasion::OnInvadeKill";
+				areamonster $@mapinvasion$[.town],80,326,123,270,"Valkyrie Rangris",1751,5;
+				areamonster $@mapinvasion$[.town],138,324,199,304,"Valkyrie Rangris",1751,5;
+				
+				// Random Cell Top
+				areamonster $@mapinvasion$[.town],80,258,199,315,"High Wizard Katrinn",1651,6;
+				areamonster $@mapinvasion$[.town],80,258,199,315,"Sniper Cecil",1650,6;
+				areamonster $@mapinvasion$[.town],80,258,199,315,"High Priest Margaretha",1649,6;
+				areamonster $@mapinvasion$[.town],80,258,199,315,"Mastersmith Howard",1648,6;
+				areamonster $@mapinvasion$[.town],80,258,199,315,"Assassin Cross Eremes",1647,6;
+				areamonster $@mapinvasion$[.town],80,258,199,315,"Lord Knight Seyren",1646,6;
+				
+				// Random Cell Top - 2
+				areamonster $@mapinvasion$[.town],77,326,159,304,"High Wizard Katrinn",1651,3;
+				areamonster $@mapinvasion$[.town],77,326,159,304,"Sniper Cecil",1650,3;
+				areamonster $@mapinvasion$[.town],77,326,159,304,"High Priest Margaretha",1649,3;
+				areamonster $@mapinvasion$[.town],77,326,159,304,"Mastersmith Howard",1648,3;
+				areamonster $@mapinvasion$[.town],77,326,159,304,"Assassin Cross Eremes",1647,3;
+				areamonster $@mapinvasion$[.town],77,326,159,304,"Lord Knight Seyren",1646,3;
+				
+				
+				// Bridge Mid Cell Top
+				areamonster $@mapinvasion$[.town],101,295,122,270,"High Wizard Katrinn",1651,3;
+				areamonster $@mapinvasion$[.town],101,295,122,270,"Sniper Cecil",1650,3;
+				areamonster $@mapinvasion$[.town],101,295,122,270,"High Priest Margaretha",1649,3;
+				areamonster $@mapinvasion$[.town],101,295,122,270,"Mastersmith Howard",1648,3;
+				areamonster $@mapinvasion$[.town],101,295,122,270,"Assassin Cross Eremes",1647,3;
+				areamonster $@mapinvasion$[.town],101,295,122,270,"Lord Knight Seyren",1646,3;
+				
+				areamonster $@mapinvasion$[.town],101,295,122,270,"Valkyrie Rangris",1751,2;
+				
+				// Bridge Right Cell Top
+				areamonster $@mapinvasion$[.town],105,269,109,249,"High Wizard Katrinn",1651,3;
+				areamonster $@mapinvasion$[.town],105,269,109,249,"Sniper Cecil",1650,3;
+				areamonster $@mapinvasion$[.town],105,269,109,249,"High Priest Margaretha",1649,3;
+				areamonster $@mapinvasion$[.town],105,269,109,249,"Mastersmith Howard",1648,3;
+				areamonster $@mapinvasion$[.town],105,269,109,249,"Assassin Cross Eremes",1647,3;
+				areamonster $@mapinvasion$[.town],105,269,109,249,"Lord Knight Seyren",1646,3;
+				
+				areamonster $@mapinvasion$[.town],105,269,109,249,"Valkyrie Rangris",1751,2;
+				
+				// Bridge Left Cell Top
+				areamonster $@mapinvasion$[.town],80,285,83,247,"High Wizard Katrinn",1651,3;
+				areamonster $@mapinvasion$[.town],80,285,83,247,"Sniper Cecil",1650,3;
+				areamonster $@mapinvasion$[.town],80,285,83,247,"High Priest Margaretha",1649,3;
+				areamonster $@mapinvasion$[.town],80,285,83,247,"Mastersmith Howard",1648,3;
+				areamonster $@mapinvasion$[.town],80,285,83,247,"Assassin Cross Eremes",1647,3;
+				areamonster $@mapinvasion$[.town],80,285,83,247,"Lord Knight Seyren",1646,3;
+				
+				areamonster $@mapinvasion$[.town],80,285,83,247,"Valkyrie Rangris",1751,2;
+				
+			sleep 5000;
+			announce "Hurry before it dominate the whole "+$@mapinvasion$[.town]+"!",bc_all,0x00FFFF;
+			sleep 3000;
+			announce "This monster is quite elusive! So please beat it up!",bc_all,0x00FFFF;
+			end;
+
+OnInvadeKill:
+			getitem 7227,1;
+			end;
+
+OnInit:
+setarray  $@mapinvasion$,"payon";
+killmonsterall "payon";
+}

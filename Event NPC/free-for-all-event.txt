@@ -1,0 +1,113 @@
+//================================================Name======================================================
+									// FFA Event (Official Release Name)
+//===============================================Version====================================================
+//												  1.2 
+//===============================================Author=====================================================
+//					 ____ _____  ______  __ __   __  _______    __   _____ __   __  _______
+//					|  __ \ _  \|  __  \|  |  \ |  |/  ___  \  |  | /  /  |  \ |  |/  ___  \
+//					| |__| | \  \ |__|  |  |   \|  |  |  _\_/  |  |/  /|  |   \|  |  |  _\_/
+//					|   __/   | |      /|  |       |  | |_  \  |     | |  |    |  |  | |_  \
+//					|  |\  \_/  /  |\  \|  |  |\   |   \_/  |  |  |\  \|  |  |\   |   \_/  |
+//					|__| \_____/|__| \__\__|__| \__|\______/   |__| \__\__|__| \__|\______/
+//----------------------------------------Script Last Update 2020-------------------------------------------
+//==============================================Changelog===================================================
+									// 1.0 *
+									//		- Initial Release
+									// 1.2
+									//		- Remove all error from Latest rAthena
+									//		- Maximize script
+									//		- Fix some dialog of NPC
+									//		- Added Mapflag for the Event Map 
+//==========================================================================================================
+louyang,222,128,3	script	FFA Warper	730,{
+
+	if( !.FFAEnabled ){
+
+			if(getgmlevel() >= .GMLevel) goto FFA_Host;
+			mes "[ Event Warper ]";
+			mes "There is no Event right now.";
+			end;
+	}else{
+			mes "[ Event Warper ]";
+			mes "Do you wanna join this ^FF0000FFA Event^000000 ?";
+			if( select("YES:NO") == 1 ){
+				warp "guild_vs5",0,0;
+				end;
+		}
+	}
+	
+FFA_Host:
+
+		mes "[ Event Warper ]";
+		mes "Hello " + strcharinfo(0) + ", what would you like to do?";
+			switch(select("Host Event","Close")){
+				case 1:
+						announce "FFA Event are now Open!",0;
+						set .FFAEnabled,1;
+						initnpctimer;
+						close2;
+						sleep 30000;
+						donpcevent "FFA Warper::OnEnable";
+						end;
+
+
+				case 2:
+						end;
+			}
+OnClock1000:
+OnClock2200:		
+			announce "FFA Event Warp are now open!",0;
+			set .FFAEnabled,1;
+			sleep 30000;
+			goto OnEnable;
+
+OnEnable:
+			announce "FFA Event will start automatically after 2 minutes",0;
+			end;
+OnTimer120000:
+			announce "FFA Event will start automatically after 1 minute",0;
+			end;
+
+OnTimer180000:
+			announce "FFA Event is starting in 30s",0;
+			end;
+
+OnTimer210000:
+			announce "FFA Event is starting in 5",0;
+			end;
+
+OnTimer211000:
+			announce "FFA Event is starting in 4",0;
+			end;
+
+OnTimer212000:
+			announce "FFA Event is starting in 3",0;
+			end;
+
+OnTimer213000:
+			announce "FFA Event is starting in 2",0;
+			end;
+
+OnTimer214000:
+			announce "FFA Event is starting in 1",0;
+			end;
+OnTimer215000:			
+			announce "The FFA event has started",0;
+			set .FFAEnabled,0;
+			end;
+
+
+OnInit:
+// Minimum GM Level Required to Active the Warp
+	set .GMLevel,30;
+	set .FFAEnabled,0;
+}
+
+guild_vs5	mapflag	nosave	SavePoint
+guild_vs5	mapflag	noteleport
+guild_vs5	mapflag	nomemo
+guild_vs5	mapflag	notrade
+guild_vs5	mapflag	noreturn
+guild_vs5	mapflag	nobranch
+guild_vs5	mapflag	nowarp
+guild_vs5	mapflag	nowarpto

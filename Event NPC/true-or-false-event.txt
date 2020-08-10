@@ -1,0 +1,244 @@
+//================================================Name======================================================
+									// True or False (Official Release Name)
+//===============================================Version====================================================
+//												  1.1 
+//===============================================Author=====================================================
+//					 ____ _____  ______  __ __   __  _______    __   _____ __   __  _______
+//					|  __ \ _  \|  __  \|  |  \ |  |/  ___  \  |  | /  /  |  \ |  |/  ___  \
+//					| |__| | \  \ |__|  |  |   \|  |  |  _\_/  |  |/  /|  |   \|  |  |  _\_/
+//					|   __/   | |      /|  |       |  | |_  \  |     | |  |    |  |  | |_  \
+//					|  |\  \_/  /  |\  \|  |  |\   |   \_/  |  |  |\  \|  |  |\   |   \_/  |
+//					|__| \_____/|__| \__\__|__| \__|\______/   |__| \__\__|__| \__|\______/
+//----------------------------------------Script Last Update 2020-------------------------------------------
+//==============================================Changelog===================================================
+									// 1.0 *
+									//		- Initial Release
+									// 1.1
+									//		- Maximize script
+									//		- Fix some dialog of NPC
+									//		- Added Mapflag for the Event Map
+									//		- Remove all error from Latest rAthena
+									
+//==========================================================================================================
+prontera,156,149,3	script	True or False	811,{
+
+
+
+	if( !.TOFEnabled ){
+
+			if(getgmlevel() >= .GMLevel) goto TOF_Host;
+			mes "[ Event Warper ]";
+			mes "There is no Event right now.";
+			end;
+	}else{
+			mes "[ Event Warper ]";
+			mes "Do you wanna join this ^FF0000True or False Event^000000 ?";
+			if( select("YES:NO") == 1 ){
+				warp "quiz_01",138,369;
+				end;
+		}
+	}
+	
+TOF_Host:
+
+		mes "[ Event Warper ]";
+		mes "Hello " + strcharinfo(0) + ", what would you like to do?";
+			switch(select("Host Event","Close")){
+				case 1:
+						announce "True or False Event Warper are now open!",0;
+						set .TOFEnabled,1;
+						initnpctimer;
+						close2;
+						sleep 30000;
+						donpcevent "True or False::OnEnable";
+						end;
+
+
+				case 2:
+						end;
+			}
+OnClock0700:
+OnClock1400:
+OnClock2100:	
+				announce "True or False Event Warper are now open!",0;
+				set .TOFEnabled,1;
+				sleep 30000;
+				goto OnEnable;
+
+OnEnable:
+			announce "True or False Event will start automatically after 2 minutes",0;
+			end;
+OnTimer120000:
+				announce "True or False Event will start automatically after 1 minute",0;
+				end;
+
+OnTimer180000:
+				announce "True or False Event is starting in 30s",0;
+				end;
+OnTimer215000:			
+				announce "The True or False event has started",0;
+				set .TOFEnabled,0;
+				end;
+
+
+OnInit:
+// Minimum GM Level Required to Active the Warp
+	set .GMLevel,30;
+	set .TOFEnabled,0;
+}
+//----------------------------------------True or False Event----------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------
+
+
+quiz_01,138,377,4	script	Novah	521,{
+
+
+	if (getgmlevel()<1) goto OUT;
+		set .GMName$,strcharinfo(0);
+		set .@npc$, "[ ^0000FFKaye^000000 ]";
+		mes .@npc$;
+		mes "Hello "+strcharinfo(0)+", what would you like to do?";
+			switch(select("Let players choose the answer","Select answer","Exit")){
+					case 1:
+							mes " ";
+							mes "true and false npc's are now enabled.";
+							close2;
+							set $@tof,0;
+							deletearray $@clickalready$[0],getarraysize($@clickalready$);
+							enablenpc "True";
+							enablenpc "False";
+							npctalk "You can now choose your answer by clicking True or False npc. You have 20 seconds to choose your answer.";
+							sleep2 10000;
+							mapannounce "quiz_01",""+.GMName$+": Last 10 seconds!",0;
+							sleep2 5000;
+							mapannounce "quiz_01",""+.GMName$+": ~5~",0;
+							sleep2 1000;
+							mapannounce "quiz_01",""+.GMName$+": ~4~",0;
+							sleep2 1000;
+							mapannounce "quiz_01",""+.GMName$+": ~3~",0;
+							sleep2 1000;
+							mapannounce "quiz_01",""+.GMName$+": ~2~",0;
+							sleep2 1000;
+							mapannounce "quiz_01",""+.GMName$+": ~1~",0;
+							sleep2 1000;
+							mapannounce "quiz_01",""+.GMName$+": Time's Up !",0;
+							areawarp "quiz_01",136,371,140,367,"prontera",116,73;
+							disablenpc "False";
+							disablenpc "True";
+							end;
+
+					case 2:
+							mes " ";
+							mes "Select the correct answer.";
+							switch(select("True","False")){
+								case 1:
+										next;
+										mes .@npc$;
+										mes "Are you sure the answer is True?";
+										switch(select("Yes","No")){
+												case 1:
+														close2;
+														set $@tof,0;
+														deletearray $@clickalready$[0],getarraysize($@clickalready$);
+														mapannounce "quiz_01",""+.GMName$+": The correct answer is \"True\".",0;
+														sleep2 4000;
+														areawarp "quiz_01",123,375,135,363,"quiz_01",138,369;
+														areawarp "quiz_01",141,375,153,163,"prontera",116,73;
+														close;
+												case 2:
+														mes .@npc$;
+														mes "Ok Take your time :)";
+														close;
+										}
+								case 2:
+										next;
+										mes .@npc$;
+										mes "Are you sure the answer is False?";
+										switch(select("Yes","No")){
+												case 1:
+														close2;
+														set $@tof,0;
+														deletearray $@clickalready$[0],getarraysize($@clickalready$);
+														mapannounce "quiz_01",""+.GMName$+": The correct answer is \"False\".",0;
+														sleep2 4000;
+														areawarp "quiz_01",123,375,135,363,"prontera",116,73;
+														areawarp "quiz_01",141,375,153,163,"quiz_01",138,369;
+														close;
+												case 2:
+														mes .@npc$;
+														mes "Ok Take your time :)";
+														close;
+										}
+							}
+					case 3:
+							close;
+					}
+OUT:
+		end;
+OnInit:
+		set $@tof,0;
+		disablenpc "False";
+		disablenpc "True";
+		setwall "quiz_01",135,371,5,4,0,"tofwall";
+		setwall "quiz_01",141,371,5,4,0,"tofwall2";
+		end;
+}
+quiz_01,141,377,5	script	False	443,{
+
+
+		set @npc$, "[ False ]";
+		set .@size,getarraysize($@clickalready$);
+		for (set .@i,0;.@i<.@size;set .@i,.@i+1) {
+			if ($@clickalready$[.@i] == strcharinfo(0)) {
+				mes @npc$;
+				mes "Sorry, You already chose your answer.";
+				close;
+				}
+			}
+			mes "Hello "+strcharinfo(0)+"";
+			mes "Are you sure your answer is False?";
+			switch(select("Yes","No")){
+					case 1:
+							set $@clickalready$[$@tof],strcharinfo(0);
+							set $@tof,$@tof+1;
+							warp "quiz_01",145,369;
+							end;
+					case 2:
+							mes "[ False ]";
+							mes "Ok, Take your time.";
+							close;	
+			}
+}
+
+quiz_01,134,377,3	script	True	443,{
+	set .@size,getarraysize($@clickalready$);
+	for (set .@i,0;.@i<.@size;set .@i,.@i+1) {
+		if ($@clickalready$[.@i] == strcharinfo(0)) {
+			mes @npc$;
+			mes "Sorry, You already chose your answer.";
+			close;
+			}
+		}
+		mes "Hello "+strcharinfo(0)+"";
+		mes "Are you sure your answer is True?";
+		switch(select("Yes","No")){
+				case 1:
+						set $@clickalready$[$@tof],strcharinfo(0);
+						set $@tof,$@tof+1;
+						warp "quiz_01",130,369;
+						end;
+				case 2:
+						mes "[ True ]";
+						mes "Ok, Take your time.";
+						close;
+						end;
+		}
+}
+	
+// == Mapflags
+quiz_02	mapflag	noskill
+quiz_02	mapflag	nosave	SavePoint
+quiz_02	mapflag	noteleport
+quiz_02	mapflag	nomemo
+quiz_02	mapflag	notrade
+quiz_02	mapflag	noreturn

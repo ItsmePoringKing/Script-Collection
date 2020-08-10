@@ -1,0 +1,246 @@
+//================================================Name=====================================================
+									// Bombring Event Tagalog (Official Release Name)
+//===============================================Version===================================================
+//												  1.4 
+//===============================================Author====================================================
+//					 ____ _____  ______  __ __   __  _______    __   _____ __   __  _______
+//					|  __ \ _  \|  __  \|  |  \ |  |/  ___  \  |  | /  /  |  \ |  |/  ___  \
+//					| |__| | \  \ |__|  |  |   \|  |  |  _\_/  |  |/  /|  |   \|  |  |  _\_/
+//					|   __/   | |      /|  |       |  | |_  \  |     | |  |    |  |  | |_  \
+//					|  |\  \_/  /  |\  \|  |  |\   |   \_/  |  |  |\  \|  |  |\   |   \_/  |
+//					|__| \_____/|__| \__\__|__| \__|\______/   |__| \__\__|__| \__|\______/
+//----------------------------------------Script Last Update 2020-------------------------------------------
+//==============================================Changelog===================================================
+									// 1.0 *
+									//		- Initial Release
+									// 1.1
+									//		- Added Host Event by GMAccess
+									//		- Fix bug during onclocktime initiation
+									//		- Added Bindatcmd
+									// 1.2
+									//		- Maximize script
+									//		- Fix some dialog of NPC
+									//		- Added Mapflag for the Event Map 
+									// 1.3
+									//		- Fix script behavior
+									// 1.4
+									//		- Remove all error from Latest rAthena
+//==========================================================================================================
+
+
+-	script	Bombring	-1,{
+
+OnInit:
+				set .eventstarted, 0;
+				set $bombring_reward,12256;
+				bindatcmd "enablebombring","Bombring::OnGMStart";
+				bindatcmd "disablebombring","Bombring::OnGMStop";
+				hideonnpc "The Baaam#qz";
+				hideonnpc "The Baaam#prt";
+				end;
+	
+OnGMStart:
+				if (getgroupid() < 99){
+					dispbottom "You are not eligible for this command.", RED;
+					end;
+				}
+				set .eventstarted, 0;
+	
+OnMinute00:
+OnEventStart:
+				initnpctimer;
+				hideoffnpc "The Baaam#prt";
+				set .x, 5;
+OnTimer0000:
+				if (.eventstarted == 1) 
+					end;
+				announce "The Baaam: The bombring event has started!",bc_all;
+				announce "The Baaam: Come to prontera and talk to me to join!",bc_all;
+				announce "The Baaam: "+.x+" minutes remaining before it starts!",bc_all;
+				set .x, .x - 1;
+				end;
+OnTimer60000:
+OnTimer120000:
+OnTimer180000:
+OnTimer240000:
+				if (.eventstarted == 1) 
+					end;
+				announce "The Baaam: "+.x+" minutes remaining before the bombring event starts!",bc_all;
+				set .x, .x - 1;
+				end;
+OnTimer290000:
+				if (.eventstarted == 1) 
+					end;
+				announce "The Baaam: 10 seconds before the bombring event starts!",bc_all;
+				end;
+OnTimer300000:
+				if (.eventstarted == 1) 
+					end;
+				set .totalplayers, getmapusers ("quiz_02");
+				if (.totalplayers == 0) goto NoOne;
+				announce "The Baaam: The bombring event has started!",bc_all;
+				hideonnpc "The Baaam#prt";
+				stopnpctimer;
+				callsub OnEventStart1;
+				end;
+NoOne:
+					announce "No one join to bombring event!. It will automatically cancel the event!",bc_all;
+					stopnpctimer;
+					set .eventstarted, 0;
+					set .round, 6;
+					killmonsterall "quiz_02";
+					cleanmap "quiz_02";
+					hideoffnpc "The Baaam#qz";	
+					end;
+					
+	
+OnEventStart1:
+			set .totalplayers, getmapusers ("quiz_02");
+			mapannounce "quiz_02","The Baaam: Okay listen up, this is how it works.",bc_all;
+			sleep 2000;
+			mapannounce "quiz_02","The Baaam: Bombrings will run rampant in this area.",bc_all;
+			sleep 2000;
+			mapannounce "quiz_02","The Baaam: and all of them will go booooooom!",bc_all;
+			sleep 2000;
+			mapannounce "quiz_02","The Baaam: all you have to do is avoid them and stay alive :P",bc_all;
+			sleep 2000;
+			mapannounce "quiz_02","The Baaam: This will run for 30 seconds for 5 total rounds.",bc_all;
+			sleep 2000;
+			mapannounce "quiz_02","The Baaam: Sooooooooooo, ready or not here they come!!!", bc_all;
+			
+			for (set .round,1;.round <= 5;set .round, .round + 1) {
+				set .totalplayers, getmapusers ("quiz_02");
+				callsub OnBombringSummon;
+				sleep 10000;
+			}
+
+			if (.round > 5 && getmapusers("quiz_02") > 0){
+				hideoffnpc "The Baaam#qz";
+				mapannounce "quiz_02","The Baaam: Wooooow! That's rare! People won! :D",bc_all;
+			}
+			end;
+		
+OnBombringSummon:
+				mapannounce "quiz_02","The Baaam: Round "+.round+"!!",bc_all;
+				set .eventstarted, 1;
+				initnpctimer;
+				while (.eventstarted == 1) {
+					if ( (3 * .totalplayers) <= 60)
+						areamonster "quiz_02",48,334,71,357,"Run for you life!",1904,20 * .totalplayers;
+					else
+						areamonster "quiz_02",48,334,71,357,"Run for you life!",1904,60;
+					
+					if(.round == 1) {
+						sleep 4000;
+					} else if (.round == 2) {
+						sleep 3000;
+					} else if (.round == 3) {
+						sleep 2000;
+					} else if (.round == 4) {
+						sleep 1500;
+					} else if (.round == 5) {
+						sleep 1000;
+					}
+				}
+				if (.eventstarted == 1)
+					mapannounce "quiz_02","The Baaam: Round "+.round+" has finished!!",bc_all;
+				if (.round < 5)
+					mapannounce "quiz_02","The Baaam: Next round in 10 seconds.",bc_all;
+				return;
+	
+OnTimer31000:
+				if (.eventstarted == 0)
+					end;
+				else
+					set .eventstarted, 0;
+					killmonsterall "quiz_02";
+					cleanmap "quiz_02";
+				stopnpctimer;
+				end;
+	
+OnPCDieEvent:
+			if (strcharinfo(3) == "quiz_02") {
+				mapannounce "quiz_02","The Baaam: "+strcharinfo(0)+" has been blown up!!",bc_all;
+				dispbottom "You have received 100 CASHPOINTS for participating in this event.";
+				//set #CASHPOINTS, #CASHPOINTS + 100;
+				warp "SavePoint",0,0;
+				if (getmapusers("quiz_02") <= 1) {
+					stopnpctimer;
+					set .eventstarted, 0;
+					set .round, 6;
+					killmonsterall "quiz_02";
+					cleanmap "quiz_02";
+					hideoffnpc "The Baaam#qz";
+					mapannounce "quiz_02","The Baaam: Alright! We have a winner!!",bc_all;
+				} 	
+			}
+			end;
+	
+OnGMStop:
+		set .eventstarted, 0;
+		set .round, 6;
+		killmonsterall "quiz_02";
+		cleanmap "quiz_02";
+		hideoffnpc "The Baaam#qz";	
+		end;
+}
+
+quiz_02,59,345,5	script	The Baaam#qz	856,{
+		mes "[The Baaam]";
+		mes "Ha! You were really good back there!";
+		mes "Here's a token for entertaining me.";
+		next;
+		mes "^00FF00You received 250 CASHPOINTS!";
+		mes "You have received ^00FF00"+getitemname($bombring_reward)+"^000000!";
+		//set #CASHPOINTS, #CASHPOINTS + 250;
+		getitem $bombring_reward,1;
+		next;
+		mes "[The Baaam]";
+		mes "Now get out of here before I make you explode!";
+		next;
+		atcommand "@go 0";
+		end;
+}
+
+prontera,153,182,5	script	The Baaam#prt	879,{
+		mes "[The Baaam]";
+		mes "Hi! Wanna join the Bombring event?";
+		Switch(Select("Yes!:What is it about?:Nah, not interested.")) {
+				case 1:
+					mes "[The Baaam]";
+					mes "Alright! Get ready!";
+					next;
+					warp "quiz_02",59,345;	
+					break;
+				case 2:
+					mes "[The Baaam]";
+					mes "Well all you have to do is stay alive.";
+					mes "That is by dodging exploding ^00FF00Bombrings^000000!";
+					next;
+					mes "[The Baaam]";
+					mes "If you win, you will get:";
+					mes "1x ^00FF00250 CASHPOINTS^000000!";
+					mes "1x ^00FF00"+getitemname($bombring_reward)+"^000000!";
+					close;
+					break;
+				case 3:
+					mes "[The Baaam]";
+					mes "Alright, see you around!";
+					close;
+					break;
+			}
+		end;
+
+OnInit:
+	hideonnpc "The Baaam#prt";
+}
+
+
+
+quiz_02	mapflag	pvp	off
+quiz_02	mapflag	nopenalty
+quiz_02	mapflag	nowarpto
+quiz_02	mapflag	nodrop
+quiz_02	mapflag	nomobloot
+quiz_02	mapflag	noskill
+quiz_02	mapflag	nosave	
