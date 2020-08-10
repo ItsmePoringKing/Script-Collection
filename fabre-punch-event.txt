@@ -1,0 +1,450 @@
+//================================================Name======================================================
+									// Fabre Punch (Official Release Name)
+//===============================================Version====================================================
+//												  1.2 
+//===============================================Author=====================================================
+//					 ____ _____  ______  __ __   __  _______    __   _____ __   __  _______
+//					|  __ \ _  \|  __  \|  |  \ |  |/  ___  \  |  | /  /  |  \ |  |/  ___  \
+//					| |__| | \  \ |__|  |  |   \|  |  |  _\_/  |  |/  /|  |   \|  |  |  _\_/
+//					|   __/   | |      /|  |       |  | |_  \  |     | |  |    |  |  | |_  \
+//					|  |\  \_/  /  |\  \|  |  |\   |   \_/  |  |  |\  \|  |  |\   |   \_/  |
+//					|__| \_____/|__| \__\__|__| \__|\______/   |__| \__\__|__| \__|\______/
+//----------------------------------------Script Last Update 2020-------------------------------------------
+//==============================================Changelog===================================================
+									// 1.0 *
+									//		- Initial Release
+									//		- Added Host Event by GMAccess
+									// 1.2
+									//		- Remove all error from Latest rAthena
+									//		- Maximize script
+									//		- Fix some dialog of NPC
+									//		- Added Mapflag for the Event Map 
+//==========================================================================================================
+
+quiz_00,11,109,5	script	Fabre Punch Event	952,{
+
+	set @npc$, "[ ^FF7700Fabre Punch Event^000000 ]";
+	if (getgmlevel() >= 40) goto ppe_Admin;
+	mes @npc$;
+	mes "Hello "+strcharinfo(0)+", this NPC is for Event GM's use only.";
+	close;
+	
+ppe_Admin:
+	mes @npc$;
+	mes "Hello "+strcharinfo(0)+", what would you like to do?";
+	menu "Start Fabre Punch Event",ppe_start,"Nothing",endppe;
+	ppe_start:
+		if ($@FabreEventChecker == 1) goto ppe_started;
+		mes " ";
+		mes "Ok, starting Fabre Punch Event.";
+		close2;
+		donpcevent "Fabre Puncher Event::OnStartPPE";
+		end;
+
+	endppe:
+		next;
+		mes @npc$;
+		mes "Ok, nice seeing you.";
+		close;
+
+ppe_started:
+	mes @npc$;
+	mes "The event is still running";
+	close;
+
+
+
+}
+
+
+
+-	script	PPE_inital	-1,{
+	OnInit:
+	set $@FabreEventChecker, 0;
+	end;
+}
+
+prontera,134,200,4	script	Fabre Puncher Event	952,{
+
+	mes "[ ^FF7700Fabre Punch Event^000000 ]";
+	mes "Hello, I'm the Fabre Punch Event Manager. What do you want to do?";
+	mes " ";
+	menu "Join Event Now",FPE_Join,"Host this Event",PPE_Host,"How does this work?",PPE_HowTo,"Nevermind",PPE_nvm;
+
+	PPE_HowTo:
+		next;
+		mes "[ ^FF7700Fabre Punch Event^000000 ]";
+		mes "This is an event where everyone can join in. All you have to do is to punch the right Fabre and to avoid the wrong ones. Each Fabre has its corresponding points. You only have 5 minutes to earn points as much as you can. The Highest Scorer at the end of this event shall win.";
+		mes " ";
+		mes "Reminder: No weapons, cart,homuns and pets is allowed in this event.";
+		next;
+		mes "[ ^FF7700Fabre Punch Event^000000 ]";
+		mes "Fabre values:";
+		mes "Right Fabres:  ^FF0000+1^000000 to ^FF0000+3^000000  points.";
+		mes "Wrong Fabres: ^FF0000-3^000000 to ^FF0000-5^000000 points.";
+		mes "Pupa: ^FF0000+20^000000";
+		close;
+
+	PPE_Host:
+		next;
+		if ( $@FabreEventChecker != 0 ){
+			mes "[ ^FF7700Fabre Punch Event^000000 ]";
+			mes "Fabre Punch Event is still on-going.";
+			mes " ";
+			close;
+		}else{
+			mes "[ ^FF7700Fabre Punch Event^000000 ]";
+			mes "You need to pay ^FF0000800,000,000z^000000 to host this event. Would you like to pay to host this event?";
+			next;
+			menu "Yes",FPE_HostYes,"No",-;
+			mes "[ ^FF7700Fabre Punch Event^000000 ]";
+			mes "Okay. Maybe next time.";
+			mes " ";
+			close;
+				FPE_HostYes:
+					if ( Zeny >= 800000000 ){
+						mes "[ ^FF7700Fabre Punch Event^000000 ]";
+						mes "Thanks "+strcharinfo(0)+", for hosting this event. It will start shortly.";
+						mes " ";
+						set Zeny, Zeny-800000000;
+						close2;
+						announce ""+strcharinfo(0)+" paid to host Fabre Punch Event!",0;
+						killmonsterall "pvp_n_1-2";
+						sleep 10000;
+						donpcevent "Fabre Puncher Event::OnStartPPE";
+						end;
+					}else{
+						mes "[ ^FF7700Fabre Punch Event^000000 ]";
+						mes "Sorry "+strcharinfo(0)+", you dont have enough zenies to host this event.";
+						mes " ";
+						close;
+					}end;
+		}end;
+
+	FPE_Join:
+		if (getgmlevel() > 0) {
+		next;
+			mes "[ ^FF7700Fabre Punch Event^000000 ]";
+		mes "Sorry, but GM's can't join this event.";
+		close;
+		}
+		if ( $@FabreEventChecker != 0 ){
+			if (gethominfo(2) != "null")	{
+				mes "[ ^FF7700Fabre Punch Event^000000 ]";
+				mes "No homunculus is allowed in this event! Sorry "+strcharinfo(0)+" but you can't join this event!";
+				close;
+			}
+			if (getpetinfo(2) != "null")	{
+				mes "[ ^FF7700Fabre Punch Event^000000 ]";
+				mes "No pet is allowed in this event! Sorry "+strcharinfo(0)+" but you can't join this event!";
+				close;
+			}
+			if (checkcart())	{
+				mes "[ ^FF7700Fabre Punch Event^000000 ]";
+				mes "No cart is allowed! Sorry "+strcharinfo(0)+" but you can't join this event!";
+				close;
+			}
+			if (checkfalcon())	{
+				mes "[ ^FF7700Fabre Punch Event^000000 ]";
+				mes "No falcon is allowed! Sorry "+strcharinfo(0)+" but you can't join this event!";
+				close;
+			}
+			if (checkriding())	{
+				mes "[ ^FF7700Fabre Punch Event^000000 ]";
+				mes "No riding is allowed! Sorry "+strcharinfo(0)+" but you can't join this event!";
+				close;
+			}
+			mes "Good luck "+strcharinfo(0)+".";
+			mes " ";
+			close2;
+			set @FabrePoints,0;
+			warp "pvp_n_1-2",0,0;
+			end;
+		}else{
+			mes "Sorry. No Fabre Punch Event is held at the moment.";
+			mes " ";
+			close;
+		}end;
+
+	PPE_nvm:
+		mes "Okay. Maybe next time.";
+		close;
+
+OnFabreKill:
+	set $@mobppe,-1;
+		if (getequipweaponlv(EQI_HAND_R)) {
+			dispbottom "You have to punch the monster without any weapon.";
+			warp "prontera",162,173;
+			end;
+		}
+		set @FabrePoints,@FabrePoints+1;
+			if (@FabrePoints == $@HighestFabrePoints) {
+				set .@size,getarraysize($@HighestFabrePointsName$);
+				for (set .@i,0;.@i<.@size;set .@i,.@i+1) {
+					if ($@HighestFabrePointsName$[.@i] == strcharinfo(0)) {
+						end;
+					}
+				}
+				set $@ppewinners,$@ppewinners+1;
+				set $@HighestFabrePointsName$[$@ppewinners],strcharinfo(0);
+				end;
+			}
+			if (@FabrePoints > $@HighestFabrePoints) {
+				deletearray $@HighestFabrePointsName$[0],getarraysize($@HighestFabrePointsName$);
+				set $@ppewinners,0;
+				set $@HighestFabrePointsName$[$@ppewinners],strcharinfo(0);
+				set $@HighestFabrePoints,@FabrePoints;
+			}	
+			dispbottom "You have "+@FabrePoints+" "+(@FabrePoints > 1 ? "points":"point")+"";
+			end;
+
+OnFabreKill2:
+	set $@mobppe,-1;
+		if (getequipweaponlv(EQI_HAND_R)) {
+			dispbottom "You have to punch the monster without any weapon.";
+			warp "prontera",162,173;
+			end;
+		}
+		set @FabrePoints,@FabrePoints+3;
+			if (@FabrePoints == $@HighestFabrePoints) {
+				set .@size,getarraysize($@HighestFabrePointsName$);
+				for (set .@i,0;.@i<.@size;set .@i,.@i+1) {
+					if ($@HighestFabrePointsName$[.@i] == strcharinfo(0)) {
+						end;
+					}
+				}
+				set $@ppewinners,$@ppewinners+1;
+				set $@HighestFabrePointsName$[$@ppewinners],strcharinfo(0);
+				dispbottom "You have "+@FabrePoints+" "+(@FabrePoints > 1 ? "points":"point")+"";
+				end;
+			}
+			if (@FabrePoints > $@HighestFabrePoints) {
+				deletearray $@HighestFabrePointsName$[0],getarraysize($@HighestFabrePointsName$);
+				set $@HighestFabrePointsName$[0],strcharinfo(0);
+				set $@HighestFabrePoints,@FabrePoints;
+			}
+			dispbottom "You have "+@FabrePoints+" "+(@FabrePoints > 1 ? "points":"point")+"";
+			end;
+
+OnPoFabreKill:
+		set $@mobppe,-1;
+		if (getequipweaponlv(EQI_HAND_R)) {
+			dispbottom "You have to punch the monster without any weapon.";
+			warp "prontera",162,173;
+			end;
+		}
+				set @FabrePoints,@FabrePoints-2;
+				if (@FabrePoints < 0 ) { set @FabrePoints,0;}
+				dispbottom "You have "+@FabrePoints+" "+(@FabrePoints > 1 ? "points":"point")+"";
+				end;
+
+OnPoFabre2Kill:
+		set $@mobppe,-1;
+		if (getequipweaponlv(EQI_HAND_R)) {
+			dispbottom "You have to punch the monster without any weapon.";
+			warp "prontera",162,173;
+			end;
+		}
+				set @FabrePoints,@FabrePoints-5;
+				if (@FabrePoints < 0 ) { set @FabrePoints,0;}
+				dispbottom "You have "+@FabrePoints+" "+(@FabrePoints > 1 ? "points":"point")+"";
+				end;
+OnBonus:
+		set $@mobppe,-1;
+		if (getequipweaponlv(EQI_HAND_R)) {
+			dispbottom "You have to punch the monster without any weapon.";
+			warp "prontera",162,173;
+			end;
+		}
+				set @FabrePoints,@FabrePoints+20;
+				if (@FabrePoints < 0 ) { set @FabrePoints,0;}
+				dispbottom "You have "+@FabrePoints+" "+(@FabrePoints > 1 ? "points":"point")+"";
+				end;
+
+
+OnClock0230:
+OnClock0530:
+OnClock0830:
+OnClock1130:
+OnClock1430:
+OnClock1735:
+OnClock2030:
+OnClock2330:
+	if ($@woe_ongoing == 1) {
+		end;
+		}
+    	if ( $@FabreEventChecker == 0 ) {
+        	set $@FabreEventChecker, 1;
+        	donpcevent "Fabre Puncher Event::OnStartPPE";
+        	end;
+    		}
+	end;
+
+OnStartPPE:
+        set $@FabreEventChecker, 1;
+        initnpctimer;
+	waitingroom "Event: On",0;
+	announce "Fabre Punch Event: Starting in 1 minute.",0;
+	deletearray $@HighestFabrePointsName$[0],getarraysize($@HighestFabrePointsName$);
+	set $@ppewinners,0;
+	set $@HighestFabrePointsName$," ";
+	set $@HighestFabrePoints,0;
+	end;
+
+OnTimer30000:
+	mapannounce "pvp_n_1-2","Note: If you go out of this map your points will reset to 0.",0;
+	end;
+
+OnTimer55000:
+	mapannounce "pvp_n_1-2","Fabre Punch Event is starting in 5.",0;
+	end;
+
+OnTimer56000:
+	mapannounce "pvp_n_1-2","Fabre Punch Event is starting in 4.",0;
+	end;
+
+OnTimer57000:
+	mapannounce "pvp_n_1-2","Fabre Punch Event is starting in 3.",0;
+	end;
+
+OnTimer58000:
+	mapannounce "pvp_n_1-2","Fabre Punch Event is starting in 2.",0;
+	end;
+
+OnTimer59000:
+	mapannounce "pvp_n_1-2","Fabre Punch Event is starting in 1.",0;
+	end;
+
+OnTimer60000:
+	set $@mobppe,315;
+	announce "The Fabre Punch Event has started.",0;
+	monster "pvp_n_1-2",0,0,"Fabre",1007,60,"Fabre Puncher Event::OnFabreKill";
+	monster "pvp_n_1-2",0,0,"Fabre",1007,30,"Fabre Puncher Event::OnFabreKill2";
+	monster "pvp_n_1-2",0,0,"Fabric",1007,5,"Fabre Puncher Event::OnPoFabreKill";
+	monster "pvp_n_1-2",0,0,"FabrE",1007,5,"Fabre Puncher Event::OnPoFabreKill";
+	monster "pvp_n_1-2",0,0,"Fabs",1007,5,"Fabre Puncher Event::OnPoFabreKill";
+	monster "pvp_n_1-2",0,0,"I am not Fabre",1007,20,"Fabre Puncher Event::OnPoFabre2Kill";
+	monster "pvp_n_1-2",0,0,"F@bre",1007,5,"Fabre Puncher Event::OnPoFabreKill";
+	monster "pvp_n_1-2",0,0,"Creamy",1018,10,"Fabre Puncher Event::OnPoFabreKill";
+	monster "pvp_n_1-2",0,0,"Poring",1031,10,"Fabre Puncher Event::OnPoFabreKill";
+	monster "pvp_n_1-2",0,0,"Pupa",1008,5,"Fabre Puncher Event::OnBonus";
+	end;
+
+OnTimer160000:
+	mapannounce "pvp_n_1-2","Fabre Punch Event: 2 minutes left.",0;
+	monster "pvp_n_1-2",0,0,"Fabre",1007,60,"Fabre Puncher Event::OnFabreKill";
+	monster "pvp_n_1-2",0,0,"Fabre",1007,30,"Fabre Puncher Event::OnFabreKill2";
+	monster "pvp_n_1-2",0,0,"Fabric",1007,5,"Fabre Puncher Event::OnPoFabreKill";
+	monster "pvp_n_1-2",0,0,"FabrE",1007,5,"Fabre Puncher Event::OnPoFabreKill";
+	monster "pvp_n_1-2",0,0,"Fabs",1007,5,"Fabre Puncher Event::OnPoFabreKill";
+	monster "pvp_n_1-2",0,0,"I am not Fabre",1007,20,"Fabre Puncher Event::OnPoFabre2Kill";
+	monster "pvp_n_1-2",0,0,"F@bre",1007,5,"Fabre Puncher Event::OnPoFabreKill";
+	monster "pvp_n_1-2",0,0,"Creamy",1018,10,"Fabre Puncher Event::OnPoFabreKill";
+	monster "pvp_n_1-2",0,0,"Poring",1031,10,"Fabre Puncher Event::OnPoFabreKill";
+	monster "pvp_n_1-2",0,0,"Pupa",1008,5,"Fabre Puncher Event::OnBonus";
+	end;
+
+OnTimer260000:
+	mapannounce "pvp_n_1-2","Fabre Punch Event: 1 minute left.",0;
+	monster "pvp_n_1-2",0,0,"Fabre",1007,60,"Fabre Puncher Event::OnFabreKill";
+	monster "pvp_n_1-2",0,0,"Fabre",1007,30,"Fabre Puncher Event::OnFabreKill2";
+	monster "pvp_n_1-2",0,0,"Fabric",1007,5,"Fabre Puncher Event::OnPoFabreKill";
+	monster "pvp_n_1-2",0,0,"FabrE",1007,5,"Fabre Puncher Event::OnPoFabreKill";
+	monster "pvp_n_1-2",0,0,"Fabs",1007,5,"Fabre Puncher Event::OnPoFabreKill";
+	monster "pvp_n_1-2",0,0,"I am not Fabre",1007,20,"Fabre Puncher Event::OnPoFabre2Kill";
+	monster "pvp_n_1-2",0,0,"F@bre",1007,5,"Fabre Puncher Event::OnPoFabreKill";
+	monster "pvp_n_1-2",0,0,"Creamy",1018,10,"Fabre Puncher Event::OnPoFabreKill";
+	monster "pvp_n_1-2",0,0,"Poring",1031,10,"Fabre Puncher Event::OnPoFabreKill";
+	monster "pvp_n_1-2",0,0,"Pupa",1008,5,"Fabre Puncher Event::OnBonus";
+	end;
+
+OnTimer361000:
+	delwaitingroom "Fabre Puncher Event";
+	stopnpctimer;
+	killmonsterall "pvp_n_1-2";
+	if ( getmapusers("pvp_n_1-2") < 1 )	{
+	announce "There are no players inside the event map...so it will auto terminate.",0;
+	mapwarp "pvp_n_1-2","prontera",162,173;
+	set $@FabreEventChecker, 0;
+	end;
+	}
+	if ($@mobppe == 315) {
+	mapannounce "pvp_n_1-2","No one wins! You have to punch and kill at least one Fabre to win this event.",0;
+	killmonsterall "pvp_n_1-2";
+	sleep 3000;
+	mapannounce "pvp_n_1-2","You will be warp at prontera in a short while.",16;
+	sleep 5000;
+	mapwarp "pvp_n_1-2","prontera",162,173;
+	set $@FabreEventChecker, 0;
+	end;
+	}
+	if ($@HighestFabrePointsName$ == " ") || ($@HighestFabrePoints == 0) {
+	mapannounce "pvp_n_1-2","No one wins! You have to punch and kill at least one Fabre to win this event.",0;
+	killmonsterall "pvp_n_1-2";
+	sleep 3000;
+	mapannounce "pvp_n_1-2","You will be warp at prontera in a short while.",16;
+	sleep 5000;
+	mapwarp "pvp_n_1-2","prontera",162,173;
+	set $@FabreEventChecker, 0;
+	end;
+	}
+	if ($@ppewinners > 1) {
+	set .@size,getarraysize($@HighestFabrePointsName$);
+	for (set .@i,0;.@i < .@size;set .@i,.@i+1) {
+        announce "Fabre Punch Event has ended and the event winner is \""+$@HighestFabrePointsName$[.@i]+"\" with "+$@HighestFabrePoints+" "+($@HighestFabrePoints > 1 ? "points":"point")+"",0;
+        getitem 673,1,getcharid(3,$@HighestFabrePointsName$[.@i]);
+	sleep 1;
+	}
+		sleep 5000;
+		mapannounce "pvp_n_1-2","You will be warp at prontera in a short while.",16;
+		sleep 5000;
+		mapwarp "pvp_n_1-2","prontera",116,73;
+		set $@FabreEventChecker,0;
+		end;
+	}
+	if ($@ppewinners == 1) {
+	set .@size,getarraysize($@HighestFabrePointsName$);
+	for (set .@i,0;.@i < .@size;set .@i,.@i+1) {
+        getitem 675,1,getcharid(3,$@HighestFabrePointsName$[.@i]);
+        announce "Fabre Punch Event has ended and the event winner is \""+$@HighestFabrePointsName$[.@i]+"\" with "+$@HighestFabrePoints+" "+($@HighestFabrePoints > 1 ? "points":"point")+"",0;
+	sleep 1;
+	}
+	sleep 5000;
+	mapannounce "pvp_n_1-2","You will be warp at prontera in a short while.",16;
+	sleep 5000;
+	mapwarp "pvp_n_1-2","prontera",116,73;
+	set $@FabreEventChecker,0;
+	end;
+	}
+	set .@size,getarraysize($@HighestFabrePointsName$);
+	for (set .@i,0;.@i < .@size;set .@i,.@i+1) {
+        announce "Fabre Punch Event has ended and the event winner is \""+$@HighestFabrePointsName$[.@i]+"\" with "+$@HighestFabrePoints+" Fabre "+($@HighestFabrePoints > 1 ? "points":"point")+"",0;
+        getitem 7227,1,getcharid(3,$@HighestFabrePointsName$[.@i]);
+	sleep 1;
+	}		
+		sleep 5000;
+		mapannounce "pvp_n_1-2","You will be warp at prontera in a short while.",16;
+		sleep 5000;
+		mapwarp "pvp_n_1-2","prontera",116,73;
+		set $@FabreEventChecker,0;
+		end;
+
+}
+
+
+
+// MAPFLAGS
+pvp_n_1-2	mapflag	nobranch
+pvp_n_1-2	mapflag	noexp
+pvp_n_1-2	mapflag	noskill
+pvp_n_1-2	mapflag	nomemo
+pvp_n_1-2	mapflag	nopenalty
+pvp_n_1-2	mapflag	pvp	off
+pvp_n_1-2	mapflag	nosave	SavePoint
+pvp_n_1-2	mapflag	noskill
+pvp_n_1-2	mapflag	noteleport
+pvp_n_1-2	mapflag	nowarp
+pvp_n_1-2	mapflag	nowarpto
+pvp_n_1-2	mapflag	notrade
+pvp_n_1-2	mapflag	noloot
+pvp_n_1-2	mapflag	nodrop

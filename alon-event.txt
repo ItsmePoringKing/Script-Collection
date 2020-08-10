@@ -1,0 +1,381 @@
+//================================================Name=====================================================
+									// Alon Event Tagalog (Official Release Name)
+									// Wave Event English
+//===============================================Version===================================================
+//												  1.4 
+//===============================================Author====================================================
+//					 ____ _____  ______  __ __   __  _______    __   _____ __   __  _______
+//					|  __ \ _  \|  __  \|  |  \ |  |/  ___  \  |  | /  /  |  \ |  |/  ___  \
+//					| |__| | \  \ |__|  |  |   \|  |  |  _\_/  |  |/  /|  |   \|  |  |  _\_/
+//					|   __/   | |      /|  |       |  | |_  \  |     | |  |    |  |  | |_  \
+//					|  |\  \_/  /  |\  \|  |  |\   |   \_/  |  |  |\  \|  |  |\   |   \_/  |
+//					|__| \_____/|__| \__\__|__| \__|\______/   |__| \__\__|__| \__|\______/
+//----------------------------------------Script Last Update 2020-------------------------------------------
+//==============================================Changelog===================================================
+									// 1.0 *
+									//		- Initial Release
+									// 1.1
+									//		- Added Host Event by GMAccess
+									//		- Fix bug during onclocktime initiation
+									// 1.2
+									//		- Maximize script
+									//		- Fix some dialog of NPC
+									//		- Added Mapflag for the Event Map 
+									// 1.3
+									//		- Fix script behavior
+									// 1.4
+									//		- Remove all error from Latest rAthena
+//==========================================================================================================
+
+prontera,132,190,6	script	Alon Event Warper	421,{
+
+set .@GMAccess,90; // required GM Level to access
+
+	if( .AEventOpen == 0) goto EventClose;
+	mes "[ Alon ]";
+	mes "Alon Event is now open. You need to be in a party with "+.PartyMember+" members to enter. Good luck!";
+		next;
+			switch(select("Register","Exit")){
+				case 1:
+						if( .ARegister == 1) goto AlreadyStarted;
+						if ( getcharid(1) == 0 ) { goto DeniedToTalkIfNoParty; }
+						if ( getpartyleader( getcharid(1), 2 ) != getcharid(0) ) { goto DeniedMemberToRegister; }
+							getpartymember getcharid(1), 1;
+						if ( $@partymembercount < .PartyMember ) { goto CheckMemberSize; }
+						
+						
+						getpartymember getcharid(1), 2;
+
+						set @Count,0;
+						for ( set .@i, 0; .@i < $@partymembercount; set .@i, .@i +1 ){
+							if ( isloggedin($@partymemberaid[.@i]) ){
+								set @Count,@Count+1;
+							}
+						}
+						if( @Count < .PartyMember	) goto CheckIfAllMemberOnline;
+						announce ""+getpartyname( getcharid(1) )+" party has started Alon Event",bc_all;
+							warpparty .Map$,0,0,getcharid(1);	set .ARegister,1;	sleep 10000;
+						
+						
+						mapannounce "pvp_n_1-5","Alon Event Employee: Welcome to Alon Event.",bc_map;
+							sleep 7500;
+						mapannounce "pvp_n_1-5","Alon Event Employee: Every time the round increase and you manage to reach, the monster could be stronger than before.",bc_map;
+							sleep 7500;
+						mapannounce "pvp_n_1-5","Alon Event Employee: You could win up some Unique prize upon you finished the whole event.",bc_map;
+							sleep 7500;
+						mapannounce "pvp_n_1-5","Alon Event Employee: So what are we waiting for?",bc_map;
+						sleep 7500;
+						mapannounce "pvp_n_1-5","Wave 1!",bc_map;
+						sleep 7500;
+						goto Wave1;
+				case 2:
+					close;
+			}
+Wave1:
+		monster "pvp_n_1-5",0,0,"--ja--",1200,1,"Alon Event Warper::OnWave1";
+		monster "pvp_n_1-5",0,0,"--ja--",1618,1,"Alon Event Warper::OnWave1";
+		monster "pvp_n_1-5",0,0,"--ja--",1262,1,"Alon Event Warper::OnWave1";
+		monster "pvp_n_1-5",0,0,"--ja--",1205,1,"Alon Event Warper::OnWave1";
+		monster "pvp_n_1-5",0,0,"--ja--",1203,1,"Alon Event Warper::OnWave1";
+		monster "pvp_n_1-5",0,0,"--ja--",1204,1,"Alon Event Warper::OnWave1";
+		
+		monster "pvp_n_1-5",0,0,"--ja--",1076,10,"Alon Event Warper::OnWave1"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1053,10,"Alon Event Warper::OnWave1"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1249,10,"Alon Event Warper::OnWave1"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1247,10,"Alon Event Warper::OnWave1"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1161,10,"Alon Event Warper::OnWave1"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1951,10,"Alon Event Warper::OnWave1"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1010,10,"Alon Event Warper::OnWave1"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1083,10,"Alon Event Warper::OnWave1"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1240,10,"Alon Event Warper::OnWave1"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1089,10,"Alon Event Warper::OnWave1"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1090,1,"Alon Event Warper::OnWave1";
+		set .wave1,107;
+		end;
+Wave2:
+
+
+
+		monster "pvp_n_1-5",0,0,"--ja--",1039,1,"Alon Event Warper::OnWave2";
+		monster "pvp_n_1-5",0,0,"--ja--",1096,1,"Alon Event Warper::OnWave2";
+		monster "pvp_n_1-5",0,0,"--ja--",1059,1,"Alon Event Warper::OnWave2";
+		monster "pvp_n_1-5",0,0,"--ja--",1582,1,"Alon Event Warper::OnWave2";
+		monster "pvp_n_1-5",0,0,"--ja--",1785,1,"Alon Event Warper::OnWave2";
+
+		monster "pvp_n_1-5",0,0,"--ja--",1073,10,"Alon Event Warper::OnWave2";
+		monster "pvp_n_1-5",0,0,"--ja--",1033,10,"Alon Event Warper::OnWave2";
+		monster "pvp_n_1-5",0,0,"--ja--",1176,10,"Alon Event Warper::OnWave2";
+		monster "pvp_n_1-5",0,0,"--ja--",1120,10,"Alon Event Warper::OnWave2"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1870,10,"Alon Event Warper::OnWave2";
+		monster "pvp_n_1-5",0,0,"--ja--",1974,10,"Alon Event Warper::OnWave2";
+		monster "pvp_n_1-5",0,0,"--ja--",1975,10,"Alon Event Warper::OnWave2";
+		monster "pvp_n_1-5",0,0,"--ja--",1706,10,"Alon Event Warper::OnWave2";
+		monster "pvp_n_1-5",0,0,"--ja--",1379,10,"Alon Event Warper::OnWave2";
+		monster "pvp_n_1-5",0,0,"--ja--",1096,1,"Alon Event Warper::OnWave2";
+		set .wave1,96;
+		end;
+Wave3:
+
+		monster "pvp_n_1-5",0,0,"--ja--",1252,1,"Alon Event Warper::OnWave3";
+		monster "pvp_n_1-5",0,0,"--ja--",1389,1,"Alon Event Warper::OnWave3";
+		monster "pvp_n_1-5",0,0,"--ja--",1046,1,"Alon Event Warper::OnWave3";
+		monster "pvp_n_1-5",0,0,"--ja--",1120,1,"Alon Event Warper::OnWave3";
+		
+		monster "pvp_n_1-5",0,0,"--ja--",1866,10,"Alon Event Warper::OnWave3"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1867,10,"Alon Event Warper::OnWave3"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1868,10,"Alon Event Warper::OnWave3"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1869,10,"Alon Event Warper::OnWave3"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1870,10,"Alon Event Warper::OnWave3"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1974,10,"Alon Event Warper::OnWave3"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1036,10,"Alon Event Warper::OnWave3"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1153,10,"Alon Event Warper::OnWave3"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1865,10,"Alon Event Warper::OnWave3"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1015,10,"Alon Event Warper::OnWave3"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1871,1,"Alon Event Warper::OnWave3"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1647,1,"Alon Event Warper::OnWave3"; 	
+		set .wave1,106;
+		end;
+Wave4:
+
+		monster "pvp_n_1-5",0,0,"--ja--",1115,1,"Alon Event Warper::OnWave4";
+		monster "pvp_n_1-5",0,0,"--ja--",1038,1,"Alon Event Warper::OnWave4";
+		monster "pvp_n_1-5",0,0,"--ja--",1150,1,"Alon Event Warper::OnWave4";
+		monster "pvp_n_1-5",0,0,"--ja--",1157,1,"Alon Event Warper::OnWave4";
+	
+		monster "pvp_n_1-5",0,0,"--ja--",1657,10,"Alon Event Warper::OnWave4"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1656,10,"Alon Event Warper::OnWave4"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1655,10,"Alon Event Warper::OnWave4"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1654,10,"Alon Event Warper::OnWave4"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1653,10,"Alon Event Warper::OnWave4"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1682,10,"Alon Event Warper::OnWave4"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1681,10,"Alon Event Warper::OnWave4"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1613,10,"Alon Event Warper::OnWave4"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1613,10,"Alon Event Warper::OnWave4"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1261,10,"Alon Event Warper::OnWave4"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1658,1,"Alon Event Warper::OnWave4"; 
+		monster "pvp_n_1-5",0,0,"--ja--",1646,1,"Alon Event Warper::OnWave4"; 		
+		set .wave1,106;
+		end;
+		
+Wave5:
+
+
+		monster "pvp_n_1-5",0,0,"--ja--",1648,1,"Alon Event Warper::OnWave5";
+		monster "pvp_n_1-5",0,0,"--ja--",1112,1,"Alon Event Warper::OnWave5";
+		monster "pvp_n_1-5",0,0,"--ja--",1518,1,"Alon Event Warper::OnWave5";
+		monster "pvp_n_1-5",0,0,"--ja--",1388,1,"Alon Event Warper::OnWave5";
+		monster "pvp_n_1-5",0,0,"--ja--",1251,1,"Alon Event Warper::OnWave5";
+		monster "pvp_n_1-5",0,0,"--ja--",1955,10,"Alon Event Warper::OnWave5"; 
+		set .wave1,15;
+		end;
+Wave6:
+	monster "pvp_n_1-5",0,0,"--ja--",1649,1,"Alon Event Warper::OnWave6";
+	monster "pvp_n_1-5",0,0,"--ja--",1087,1,"Alon Event Warper::OnWave6";
+	monster "pvp_n_1-5",0,0,"--ja--",1373,1,"Alon Event Warper::OnWave6";
+	monster "pvp_n_1-5",0,0,"--ja--",1492,1,"Alon Event Warper::OnWave6";
+	monster "pvp_n_1-5",0,0,"--ja--",1688,1,"Alon Event Warper::OnWave6";
+	
+
+		set .wave1,5;
+		end;
+Wave7:
+	monster "pvp_n_1-5",0,0,"--ja--",1650,1,"Alon Event Warper::OnWave7";
+	monster "pvp_n_1-5",0,0,"--ja--",1719,1,"Alon Event Warper::OnWave7";
+	monster "pvp_n_1-5",0,0,"--ja--",1685,1,"Alon Event Warper::OnWave7";
+	monster "pvp_n_1-5",0,0,"--ja--",1190,1,"Alon Event Warper::OnWave7";
+	monster "pvp_n_1-5",0,0,"--ja--",1272,1,"Alon Event Warper::OnWave7";
+	
+
+		set .wave1,5;
+		end;
+Wave8:
+	monster "pvp_n_1-5",0,0,"--ja--",1651,1,"Alon Event Warper::OnWave8";
+	monster "pvp_n_1-5",0,0,"--ja--",1623,1,"Alon Event Warper::OnWave8";
+	monster "pvp_n_1-5",0,0,"--ja--",1086,1,"Alon Event Warper::OnWave8";
+	monster "pvp_n_1-5",0,0,"--ja--",1159,1,"Alon Event Warper::OnWave8";
+	monster "pvp_n_1-5",0,0,"--ja--",1289,1,"Alon Event Warper::OnWave8";
+	
+  
+		set .wave1,5;
+		end;
+Wave9:
+
+	monster "pvp_n_1-5",0,0,"--ja--",1646,1,"Alon Event Warper::OnWave9";
+	monster "pvp_n_1-5",0,0,"--ja--",1647,1,"Alon Event Warper::OnWave9";
+	monster "pvp_n_1-5",0,0,"--ja--",1648,1,"Alon Event Warper::OnWave9";
+	monster "pvp_n_1-5",0,0,"--ja--",1649,1,"Alon Event Warper::OnWave9";
+	monster "pvp_n_1-5",0,0,"--ja--",1650,1,"Alon Event Warper::OnWave9";
+	monster "pvp_n_1-5",0,0,"--ja--",1651,1,"Alon Event Warper::OnWave9";
+
+	monster "pvp_n_1-5",0,0,"--ja--",1147,1,"Alon Event Warper::OnWave9";
+	monster "pvp_n_1-5",0,0,"--ja--",1312,1,"Alon Event Warper::OnWave9";
+	monster "pvp_n_1-5",0,0,"--ja--",1418,1,"Alon Event Warper::OnWave9";
+	monster "pvp_n_1-5",0,0,"--ja--",1511,1,"Alon Event Warper::OnWave9";
+	monster "pvp_n_1-5",0,0,"--ja--",1583,1,"Alon Event Warper::OnWave9";
+	monster "pvp_n_1-5",0,0,"--ja--",1751,1,"Alon Event Warper::OnWave9";
+	monster "pvp_n_1-5",0,0,"--ja--",1832,1,"Alon Event Warper::OnWave9";
+	monster "pvp_n_1-5",0,0,"--ja--",1873,1,"Alon Event Warper::OnWave9";
+	monster "pvp_n_1-5",0,0,"--ja--",1779,1,"Alon Event Warper::OnWave9";
+		set .wave1,4;
+		end;
+Wave10:
+
+		monster "pvp_n_1-5",0,0,"--ja--",1955,10,"Alon Event Warper::OnWave10";
+		set .wave1,10;
+		end;
+
+
+OnWave1:
+		set .wave1, .wave1 -1;
+		if (.wave1 == 0) {
+			announce "Alon Event Employee: Well done. All the monster are dead!",bc_map;
+			sleep 2500;
+			mapannounce "pvp_n_1-5","Wave 2!",bc_map;
+			sleep 2500;
+			goto Wave2;
+		}
+		end;
+OnWave2:
+		set .wave1, .wave1 -1;
+		if (.wave1 == 0) {
+			announce "Alon Event Employee: Well done. All the monster are dead!",bc_map;
+			sleep 2500;
+			mapannounce "pvp_n_1-5","Wave 3!",bc_map;
+			sleep 2500;
+			goto Wave3;
+		}
+		end;
+OnWave3:
+		set .wave1, .wave1 -1;
+		if (.wave1 == 0) {
+			announce "Alon Event Employee: Well done. All the monster are dead!",bc_map;
+			sleep 2500;
+			mapannounce "pvp_n_1-5","Wave 4!",bc_map;
+			sleep 2500;
+			goto Wave4;
+		}
+		end;
+OnWave4:
+		set .wave1, .wave1 -1;
+		if (.wave1 == 0) {
+			announce "Alon Event Employee: Well done. All the monster are dead!",bc_map;
+			sleep 2500;
+			mapannounce "pvp_n_1-5","Wave 5!",bc_map;
+			sleep 2500;
+			goto Wave5;
+		}
+		end;
+OnWave5:
+		set .wave1, .wave1 -1;
+		if (.wave1 == 0) {
+			announce "Alon Event Employee: Well done. All the monster are dead!",bc_map;
+			sleep 2500;
+			mapannounce "pvp_n_1-5","Wave 6!",bc_map;
+			sleep 2500;
+			goto Wave6;
+		}
+		end;
+OnWave6:
+		set .wave1, .wave1 -1;
+		if (.wave1 == 0) {
+			announce "Alon Event Employee: Well done. All the monster are dead!",bc_map;
+			sleep 2500;
+			mapannounce "pvp_n_1-5","Wave 7!",bc_map;
+			sleep 2500;
+			goto Wave7;
+		}
+		end;
+OnWave7:
+		set .wave1, .wave1 -1;
+		if (.wave1 == 0) {
+			announce "Alon Event Employee: Well done. All the monster are dead!",bc_map;
+			sleep 2500;
+			mapannounce "pvp_n_1-5","Wave 8!",bc_map;
+			sleep 2500;
+			goto Wave8;
+		}
+		end;
+OnWave8:
+		set .wave1, .wave1 -1;
+		if (.wave1 == 0) {
+			announce "Alon Event Employee: Well done. All the monster are dead!",bc_map;
+			sleep 2500;
+			mapannounce "pvp_n_1-5","Wave 9!",bc_map;
+			sleep 2500;
+			goto Wave9;
+		}
+		end;
+OnWave9:
+		set .wave1, .wave1 -1;
+		if (.wave1 == 0) {
+			announce "Alon Event Employee: Well done. All the monster are dead!",bc_map;
+			sleep 2500;
+			mapannounce "pvp_n_1-5","Wave 10!",bc_map;
+			sleep 2500;
+			goto Wave10;
+		}
+		end;
+OnWave10:
+		set .wave1, .wave1 -1;
+		if (.wave1 == 0) {
+			announce "Yeehaaa !! We Beat ALL the Monster!!!",bc_map;
+			sleep 5000;
+			announce "Congratulation to Team [ "+getpartyname( getcharid(1) )+" ] who had just finished the Alon Event. ",0;
+			for ( .@i = 0; .@i < $@partymembercount; .@i++ )
+			getitem 7227, 1, $@partymemberaid[.@i];
+			warpparty prontera,156,191,getcharid(1);
+			set .AEventOpen,0;
+			set .ARegister,0;
+		}
+		end;		
+//---------------------------------------------------------NPC Check Message Here------------------------------------------------------------
+EventOpen:
+			mes "[ Alon ]";
+			mes "Alon event are still open.";
+			close;
+EventClose:
+			mes "[ Alon ]";
+			mes "Alon Event are currently close please try again later.";
+			close;
+AlreadyStarted:
+			mes "[ Alon ]";
+			mes ""+getpartyname( getcharid(1) )+" already inside the event.";
+			close;
+DeniedToTalkIfNoParty:
+			mes "[ Alon ]";
+			mes "You must be in a party to be able to register.";
+			close;
+DeniedMemberToRegister:	
+			mes "[ Alon ]";
+			mes "Sorry you are not eligible to register your party.";
+			close;
+CheckMemberSize:
+			mes "[ Alon ]";
+			mes "Please check your party again. You must have party of "+ .PartyMember +" to be able to register.";
+			close;
+CheckIfAllMemberOnline:
+			mes "[ Alon ]";
+			mes "You must have "+ .PartyMember +" party members online to be able to complete the registration.";
+			close;
+//-----------------------------------------------------------End of NPC Message------------------------------------------------------------
+OnClock0800:
+OnClock2000:
+		announce "Alon Event are now Open for Registration!.",bc_all;
+		set .AEventOpen,1;
+		set .ARegister,0;
+		end;
+OnInit:
+	set .PartyMember,2;
+	set .Map$,"pvp_n_1-5";
+	
+	// Dont try to edit this if you dont know what are you doing by Poring King
+	set .AEventOpen,0;
+	set .ARegister,0;
+}
+pvp_n_1-5	mapflag	noloot
+pvp_n_1-5	mapflag	nomobloot
+pvp_n_1-5	mapflag	nomvploot
+pvp_n_1-5	mapflag	pvp	off
+pvp_n_1-5	mapflag	noexp
+pvp_n_1-5	mapflag	nobaseexp
+pvp_n_1-5	mapflag	nojobexp

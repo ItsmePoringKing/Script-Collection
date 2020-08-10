@@ -1,0 +1,61 @@
+//================================================Name======================================================
+									// Treasure Box (Official Release Name)
+//===============================================Version====================================================
+//												  1.1 
+//===============================================Author=====================================================
+//					 ____ _____  ______  __ __   __  _______    __   _____ __   __  _______
+//					|  __ \ _  \|  __  \|  |  \ |  |/  ___  \  |  | /  /  |  \ |  |/  ___  \
+//					| |__| | \  \ |__|  |  |   \|  |  |  _\_/  |  |/  /|  |   \|  |  |  _\_/
+//					|   __/   | |      /|  |       |  | |_  \  |     | |  |    |  |  | |_  \
+//					|  |\  \_/  /  |\  \|  |  |\   |   \_/  |  |  |\  \|  |  |\   |   \_/  |
+//					|__| \_____/|__| \__\__|__| \__|\______/   |__| \__\__|__| \__|\______/
+//----------------------------------------Script Last Update 2020-------------------------------------------
+//==============================================Changelog===================================================
+									// 1.0 *
+									//		- Initial Release
+									// 1.1
+									//		- Maximize script
+									//		- Fix some dialog of NPC
+									//		- Fix some error from (strcharinfo) 
+//==========================================================================================================
+sec_in01,168,180,3	script	Treasure Box Summoner	10005,{
+	mes "[ Treasure Box Summoner ]";
+	if (!.Status)
+   	mes "Hello, I'm a new mage here in Midgard. Every hour, I will summon a Treasure Box that will give you items once you destroy it. I only cast my spell on main city and I immediately announce it to everyone once I perfectly cast my spells.";
+	else {
+		mes "There are "+.Spawn+" Treasure Box left in "+.Map$+"!";
+		mes "Find and kill the Treasure Box to gain "+getitemname(.Prize)+"!";
+	}
+	if (.Status || getgmlevel() < .GM) close;
+	mes "Start the event?";
+	next;
+	if(select("- No:- Yes") == 1) close;
+	donpcevent strnpcinfo(0)+"::OnMinute00";
+	mes "[ Treasure Box Summoner ]";
+	mes "Event started!";
+	close;
+
+OnInit:
+	set .Prize,7227;	// Reward item ID
+	set .Amount,1;	// Reward item amount
+	set .GM,99;	// GM level required to access NPC
+	setarray .Maps$[0],"prontera"; // Possible maps
+	end;
+
+OnMinute00:
+	if (.Status) end;
+	set .Status,1;
+	set .Spawn,1;	// How many Treasure Box should spawn?
+	set .Map$,.Maps$[rand(getarraysize(.Maps$))];
+	killmonster .Map$,"All";
+	monster .Map$,0,0,"Treasure Box",1845,.Spawn,strnpcinfo(0)+"::OnMobKilled";
+	announce "A rare Treasure Box has been spawned somewhere in Prontera.",0;
+	end;
+
+OnMobKilled:
+	set .Spawn, .Spawn - 1;
+	getitem .Prize, .Amount;
+	announce "The rare Treasure Box has been destroyed by "+strcharinfo(0)+"!",bc_all;
+	set .Status,0;
+	end;
+}

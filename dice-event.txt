@@ -1,0 +1,247 @@
+//================================================Name======================================================
+									// Dice Event (Official Release Name)
+//===============================================Version====================================================
+//												  1.2 
+//===============================================Author=====================================================
+//					 ____ _____  ______  __ __   __  _______    __   _____ __   __  _______
+//					|  __ \ _  \|  __  \|  |  \ |  |/  ___  \  |  | /  /  |  \ |  |/  ___  \
+//					| |__| | \  \ |__|  |  |   \|  |  |  _\_/  |  |/  /|  |   \|  |  |  _\_/
+//					|   __/   | |      /|  |       |  | |_  \  |     | |  |    |  |  | |_  \
+//					|  |\  \_/  /  |\  \|  |  |\   |   \_/  |  |  |\  \|  |  |\   |   \_/  |
+//					|__| \_____/|__| \__\__|__| \__|\______/   |__| \__\__|__| \__|\______/
+//----------------------------------------Script Last Update 2020-------------------------------------------
+//==============================================Changelog===================================================
+									// 1.0 *
+									//		- Initial Release
+
+									// 1.2
+									//		- Remove all error from Latest rAthena
+									//		- Maximize script
+									//		- Fix some dialog of NPC
+									//		- Added Mapflag for the Event Map 
+//==========================================================================================================
+-	script	Dice#disable	-1,{
+end;
+
+OnInit:
+		disablenpc "DiceEventNPC";
+		hideonnpc "Dice#evnt1";
+		end;
+OnMinute30:
+				announce "Mr. Dice: The Dice event will be starting shortly.",0;
+				sleep 10000;
+				announce "Mr. Dice: Those who want to play, please proceed to the center of Prontera 156 159.",0;
+				sleep 10000;
+				announce "Mr. Dice: After 1 Minute the Portal will close.",0;
+				sleep 10000;
+				announce "Mr. Dice: Please go to the middle of Prontera 156 159 and enter the Warp Portal now if you want to join.",0;
+				enablenpc "DiceEventNPC";
+				initnpctimer;
+				end;
+
+OnTimer60000:
+				announce "Mr. Dice: Last 30 seconds.",0;
+				sleep 5000;
+				announce "Mr. Dice: If you want to join please enter the Warp Portal in Prontera 156 159.",0;
+				end;
+	
+OnTimer90000:
+				announce "Mr. Dice: Last 10 seconds.",0;
+				end;
+	
+OnTimer100000:
+				announce "Mr. Dice: Time's up.",0;
+				end;
+
+OnTimer110000:
+				announce "Mr. Dice: The next Dice event will start after 30 minutes.",0;
+				end;
+	
+OnTimer115000:
+				disablenpc "DiceEventNPC";
+				donpcevent "Dice#evnt1::OnEnable";
+				stopnpctimer;
+				end;
+}
+
+
+//-----------------------------------------------------------------------------------------------------------------
+
+sec_in01,172,180,4	script	Mrs. Dice	959,{
+	
+	if (getgmlevel() == 99) goto Dice_Admin;
+		mes "[Mrs. Dice]";
+		mes "Hello " + strcharinfo(0) + ", my husband Mr. Dice is currently out gambling.";
+		mes "That buffoon is always losing our money... *sigh*";
+	close;
+	
+Dice_Admin:
+		mes "[Mrs. Dice]";
+		mes "Hello GM " + strcharinfo(0) + ", what do you want to do?";
+		switch(select("Set Prize","Check Prize","Exit")){
+			next;
+				case 1:
+							
+							mes "[Mrs. Dice]";
+							mes "What should the prize for winning be? Please input the ID";
+							input $get_item_id;
+							next;
+							mes "[Mrs. Dice]";
+							mes "How many if this item should we give away?";
+							input $get_item_amount;
+							next;
+							mes "[Mrs. Dice]";
+							mes "So, the prize is ^008000"+ $get_item_amount +" "+ getitemname($get_item_id) +"^000000? Wonderful dear.";
+							next;
+							goto Dice_Admin;
+				case 2:
+							
+							mes "[Mrs. Dice]";
+							mes "The current prize is ^008000"+ $get_item_amount +" "+ getitemname($get_item_id) +"^000000";
+							next;
+							goto Dice_Admin;
+							
+				case 3:
+						
+							mes "[Mrs. Dice]";
+							mes "Ok darling, nice seeing you.";
+							close;
+		}
+}
+		
+//--------------------------------------------------
+	
+prontera,156,175,0	warp	DiceEventNPC	2,2,quiz_01,204,90	
+	
+//--------------------------------------------------
+
+quiz_01,204,93,6	script	Dice#evnt1	715,{
+
+//--------------------------------------------------
+
+	mes "[Mr. Dice]";
+	mes "Please tell me your name.";
+	next;
+	input .@name$;
+	if(.@name$ != strcharinfo(0)) {
+		mes "[Mr. Dice]";
+		mes "Are you sure thats your character name?";
+		close;
+	}
+	mes "[Mr. Dice]";
+	mes "Congrats. You've won.";
+	close2;
+	announce "Mr. Dice: We have a winner! well done "+.@name$+".",0;
+	getitem $get_item_id,$get_item_amount;
+	warp "prontera",155,182;
+	hideonnpc "Dice#evnt1";
+	end;
+	
+OnEnable:
+			mapannounce "quiz_01","Mr. Dice: We are about to start the Dice event.",0;
+			sleep 5000;
+			mapannounce "quiz_01","Mr. Dice: But before we start the event here's how to play the game...",0;
+			sleep 5000;
+			mapannounce "quiz_01","Mr. Dice: I'm only gonna say this once so read carefully.",0;
+			sleep 5000;
+			mapannounce "quiz_01","Mr. Dice: I'm going to roll a number, 1 to 4. Then I'll do a count down from 5 to 0.",0;
+			sleep 5000;
+			mapannounce "quiz_01","Mr. Dice: All you have to do is go stand on the box of the number you want.",0;
+			sleep 5000;
+			mapannounce "quiz_01","Mr. Dice: For example, If I roll a number 4, All the players standing on numbers 1 to 3 will be warped back to town.",0;
+			sleep 5000;
+			mapannounce "quiz_01","Mr. Dice: We will do it until we only have 1 player left on the map.",0;
+			sleep 5000;
+			mapannounce "quiz_01","Mr. Dice: Oh yeah! Before I forget you MUST GO INSIDE THE BOX, because if you're caught standing on the stairs you'll be automatically disqualified.",0;
+			sleep 5000;
+			mapannounce "quiz_01","Mr. Dice: Simple huh?.. Let's play...",0;
+			sleep 5000;
+			goto L_Start;
+			end;
+	
+L_Start:
+		if(getmapusers("quiz_01") == 1) goto L_Champ;
+		if(getmapusers("quiz_01") == 0) goto L_None;
+		if(getmapusers("quiz_01") > 1) {
+			mapannounce "quiz_01","Mr. Dice: . . . . .",0;
+			set $@number, rand(1,4);
+			sleep 10000;
+			mapannounce "quiz_01","Mr. Dice: I have rolled. Please pick a number and go stand there.... GO!",0;
+			sleep 10000;
+			mapannounce "quiz_01","Mr. Dice: 5",0;
+			sleep 5000;
+			mapannounce "quiz_01","Mr. Dice: 4",0;
+			sleep 4000;
+			mapannounce "quiz_01","Mr. Dice: 3",0;
+			sleep 3000;
+			mapannounce "quiz_01","Mr. Dice: 2",0;
+			sleep 2000;
+			mapannounce "quiz_01","Mr. Dice: 1",0;
+			sleep 1000;
+			mapannounce "quiz_01","Mr. Dice: Time's up.",0;
+			donpcevent "evnt#1::OnEnable";
+			mapannounce "quiz_01","Mr. Dice: The winning number is "+$@number+".",0;
+			if(($@number != 1) && ($@number != 2) && ($@number != 3)) goto L_Lose1;
+			if(($@number != 1) && ($@number != 2) && ($@number != 4)) goto L_Lose2;
+			if(($@number != 1) && ($@number != 3) && ($@number != 4)) goto L_Lose3;
+			if(($@number != 2) && ($@number != 3) && ($@number != 4)) goto L_Lose4;
+			end;
+		}
+	
+L_Lose1:
+		areawarp "quiz_01",183,81,191,59,"prontera",155,182;
+		areawarp "quiz_01",195,81,203,59,"prontera",155,182;
+		areawarp "quiz_01",207,81,215,59,"prontera",155,182;
+		goto L_Start;
+		end;
+
+L_Lose2:
+		areawarp "quiz_01",183,81,191,59,"prontera",155,182;
+		areawarp "quiz_01",195,81,203,59,"prontera",155,182;
+		areawarp "quiz_01",219,81,227,59,"prontera",155,182;;
+		goto L_Start;
+		end;
+	
+L_Lose3:
+		areawarp "quiz_01",183,81,191,59,"prontera",155,182;
+		areawarp "quiz_01",207,81,215,59,"prontera",155,182;
+		areawarp "quiz_01",219,81,227,59,"prontera",155,182;
+		goto L_Start;
+		end;
+	
+L_Lose4:
+		areawarp "quiz_01",195,81,203,59,"prontera",155,182;
+		areawarp "quiz_01",207,81,215,59,"prontera",155,182;
+		areawarp "quiz_01",219,81,227,59,"prontera",155,182;
+		goto L_Start;
+		end;
+	
+L_Champ:
+		mapannounce "quiz_01","Mr. Dice: Come to me and tell me your name.",0;
+		hideoffnpc "Dice#evnt1";
+		end;
+	
+L_None:
+		//disablenpc "Dice#evnt1";
+		hideonnpc "Dice#evnt1";
+		end;
+}
+	
+-	script	evnt#1	-1,{
+
+OnEnable:
+			areawarp "quiz_01",182,94,228,88,"prontera",155,182;
+			areawarp "quiz_01",185,87,188,82,"prontera",155,182;
+			areawarp "quiz_01",197,87,200,82,"prontera",155,182;
+			areawarp "quiz_01",209,87,212,82,"prontera",155,182;
+			areawarp "quiz_01",221,87,224,82,"prontera",155,182;
+			end;
+			}
+
+// -- Mapflags
+quiz_01	mapflag	nowarp
+quiz_01	mapflag	nowarpto
+quiz_01	mapflag	noteleport
+quiz_01	mapflag	nosave
+quiz_01	mapflag	nomemo
+quiz_01	mapflag	nobranch

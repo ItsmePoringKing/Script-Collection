@@ -1,0 +1,326 @@
+//================================================Name======================================================
+									// MVP Event (Official Release Name)
+//===============================================Version====================================================
+//												  1.2 
+//===============================================Author=====================================================
+//					 ____ _____  ______  __ __   __  _______    __   _____ __   __  _______
+//					|  __ \ _  \|  __  \|  |  \ |  |/  ___  \  |  | /  /  |  \ |  |/  ___  \
+//					| |__| | \  \ |__|  |  |   \|  |  |  _\_/  |  |/  /|  |   \|  |  |  _\_/
+//					|   __/   | |      /|  |       |  | |_  \  |     | |  |    |  |  | |_  \
+//					|  |\  \_/  /  |\  \|  |  |\   |   \_/  |  |  |\  \|  |  |\   |   \_/  |
+//					|__| \_____/|__| \__\__|__| \__|\______/   |__| \__\__|__| \__|\______/
+//----------------------------------------Script Last Update 2020-------------------------------------------
+//==============================================Changelog===================================================
+									// 1.0 *
+									//		- Initial Release
+									// 1.2
+									//		- Remove all error from Latest rAthena
+									//		- Maximize script
+									//		- Fix some dialog of NPC
+									//		- Added Mapflag for the Event Map  
+//==========================================================================================================
+quiz_00,11,111,5	script	MVP Event Manager	403,{
+
+	set @npc$, "[ MVP Event ]";
+	if (getgmlevel() < 80) {
+		mes @npc$;
+		mes "Hello "+strcharinfo(0)+", this NPC is for Admin's use only.";
+		close;
+	}
+	if (getgmlevel() >= 40) goto mvp_Admin;
+	mes @npc$;
+	mes "Hello "+strcharinfo(0)+", this NPC is for Event GM's use only.";
+	close;
+	
+mvp_Admin:
+	mes @npc$;
+	mes "Hello "+strcharinfo(0)+", what would you like to do?";
+	menu "Start MVP Event",mvp_start,"Nothing",endmvp;
+	mvp_start:
+		if ($@mvp_event == 1) goto mvp_started;
+		mes " ";
+		mes "Ok, starting MVP event.";
+		set $@mvp_event,1;
+		close2;
+		donpcevent "MVP Event::OnStartMVP";
+		end;
+
+	endmvp:
+		next;
+		mes @npc$;
+		mes "Ok, nice seeing you.";
+		close;
+mvp_started:
+	mes @npc$;
+	mes "The event is still running";
+	close;
+
+
+
+}
+
+guild_vs1,0,0,0	script	mvppvpoff	-1,{
+
+OnMVPpvpoff:
+	pvpoff "guild_vs1";
+	end;
+
+}
+
+
+-	script	MVP Event Warper#disable	-1,{
+OnInit:
+disablenpc "MVP Event Warper";
+end;
+}
+
+
+-	script	MVP Event Announcer	-1,{
+OnClock0030:
+OnClock0330:
+OnClock0630:
+OnClock0930:
+OnClock1230:
+OnClock1530:
+OnClock1830:
+OnClock2130:
+	if ($@woe_ongoing == 1) {
+		end;
+	}
+	donpcevent "MVP Event::OnStartMVP";
+	end;
+}
+//------------------------------------------------------------------------------------------------------------------
+prontera,156,155,3	script	MVP Event Warper	403,{
+	mes "[ MVP Event Warper ]";
+	mes "Do you want to join the MVP event?";
+	menu "Yes",pront_mvp,"No",pront_mvp_end;
+
+pront_mvp:
+	mes "[ MVP Event Warper ]";
+	mes "I will now warp you to the MVP Event map.";
+	warp "guild_vs1",50,49;
+	end;
+
+pront_mvp_end:
+	mes "[ MVP Event Warper ]";
+	mes "Ok, Bye.";
+	close;
+}
+
+guild_vs1,0,0,0	script	MVP Event	-1,{
+OnStartMVP:
+	donpcevent "mvppvpoff::OnMVPpvpoff";
+	set $@mvp_event,1;
+	announce "MVP Event is now open",0;
+	enablenpc "MVP Event Warper";
+	killmonsterall "guild_vs1";
+	initnpctimer;
+	sleep 60000;
+	announce "MVP Event will start automatically after 2 minutes",0;
+	sleep 60000;
+	announce "MVP Event will start automatically after 1 minute",0;
+	sleep 30000;
+	announce "MVP Event is starting in 30s",0;
+	sleep 30000;
+	announce "MVP Event is starting in 5",0;
+	sleep 1000;
+	announce "MVP Event is starting in 4",0;
+	sleep 1000;
+	announce "MVP Event is starting in 3",0;
+	sleep 1000;
+	announce "MVP Event is starting in 2",0;
+	sleep 1000;
+	announce "MVP Event is starting in 1",0;
+	sleep 1000;
+	announce "MVP Event warper are now closed",0;
+	sleep 10000;
+	mapannounce "guild_vs1","MVP Event: Round 1 will begin shortly.",0;
+	sleep 5000;
+	set $@mvp_event,0;
+	goto Onmvp_round1;
+
+
+
+Onmvp_round1:
+	set $@mobmvp,5;
+	monster "guild_vs1",0,0,"Baphomet",1039,1,"MVP Event::Onmvpdead";
+	monster "guild_vs1",0,0,"Angeling",1096,1,"MVP Event::Onmvpdead";
+	monster "guild_vs1",0,0,"Mistress",1059,1,"MVP Event::Onmvpdead";
+	monster "guild_vs1",0,0,"Deviling",1582,1,"MVP Event::Onmvpdead";
+	monster "guild_vs1",0,0,"Atroce",1785,1,"MVP Event::Onmvpdead";
+	end;
+
+
+
+Onmvpdead:
+	set $@mobmvp,$@mobmvp - 1;
+	if($@mobmvp <= 0) {
+		mapannounce "guild_vs1","MVP Event: Round 2 will begin shortly.",0;
+		sleep 5000;
+		goto Onmvp_round2;
+	}
+	end;
+
+Onmvp_round2:
+	set $@mobmvp,4;
+	monster "guild_vs1",0,0,"Garm",1252,1,"MVP Event::Onmvpdead2";
+	monster "guild_vs1",0,0,"Dracula",1389,1,"MVP Event::Onmvpdead2";
+	monster "guild_vs1",0,0,"Doppelganger",1046,1,"MVP Event::Onmvpdead2";
+	monster "guild_vs1",0,0,"Ghostring",1120,1,"MVP Event::Onmvpdead2";
+	end;
+
+Onmvpdead2:
+	set $@mobmvp,$@mobmvp - 1;
+	if($@mobmvp <= 0) {
+		mapannounce "guild_vs1","MVP Event: Round 3 will begin shortly.",0;
+		sleep 5000;
+		goto Onmvp_round3;
+	}
+	end;
+
+Onmvp_round3:
+	set $@mobmvp,4;
+	monster "guild_vs1",49,33,"Edgga",1115,1,"MVP Event::Onmvpdead3";
+	monster "guild_vs1",67,49,"Osiris",1038,1,"MVP Event::Onmvpdead3";
+	monster "guild_vs1",65,34,"Moonlight Flower",1150,1,"MVP Event::Onmvpdead3";
+	monster "guild_vs1",65,65,"Pharaoh",1157,1,"MVP Event::Onmvpdead3";
+	end;
+
+Onmvpdead3:
+	set $@mobmvp,$@mobmvp - 1;
+	if($@mobmvp <= 0) {
+		mapannounce "guild_vs1","MVP Event: Round 4 will begin shortly.",0;
+		sleep 5000;
+		goto Onmvp_round4;
+	}
+	end;
+
+Onmvp_round4:
+	set $@mobmvp,4;
+	monster "guild_vs1",49,67,"Drake",1112,1,"MVP Event::Onmvpdead4";
+	monster "guild_vs1",32,49,"Bacsojin",1518,1,"MVP Event::Onmvpdead4";
+	monster "guild_vs1",34,65,"Arc Angeling",1388,1,"MVP Event::Onmvpdead4";
+	monster "guild_vs1",34,34,"Stormy Knight",1251,1,"MVP Event::Onmvpdead4";
+	end;
+
+Onmvpdead4:
+	set $@mobmvp,$@mobmvp - 1;
+	if($@mobmvp <= 0) {
+		mapannounce "guild_vs1","MVP Event: Round 5 will begin shortly.",0;
+		sleep 5000;
+		goto Onmvp_round5;
+	}
+	end;
+
+
+Onmvp_round5:
+	set $@mobmvp,4;
+	monster "guild_vs1",0,0,"Orc Hero",1087,1,"MVP Event::Onmvpdead5";
+	monster "guild_vs1",0,0,"Lord of Death",1373,1,"MVP Event::Onmvpdead5";
+	monster "guild_vs1",0,0,"Incantation Samurai",1492,1,"MVP Event::Onmvpdead5";
+	monster "guild_vs1",0,0,"Lady Tanee",1688,1,"MVP Event::Onmvpdead5";
+	end;
+
+
+Onmvpdead5:
+	set $@mobmvp,$@mobmvp - 1;
+	if($@mobmvp <= 0) {
+		mapannounce "guild_vs1","MVP Event: Round 6 will begin shortly.",0;
+		sleep 5000;
+		goto Onmvp_round6;
+	}
+	end;
+
+Onmvp_round6:
+	set $@mobmvp,4;
+	monster "guild_vs1",0,0,"Detale",1719,1,"MVP Event::Onmvpdead6";
+	monster "guild_vs1",0,0,"Vesper",1685,1,"MVP Event::Onmvpdead6";
+	monster "guild_vs1",0,0,"Orc Lord",1190,1,"MVP Event::Onmvpdead6";
+	monster "guild_vs1",0,0,"Dark Lord",1272,1,"MVP Event::Onmvpdead6";
+	end;
+
+
+Onmvpdead6:
+	set $@mobmvp,$@mobmvp - 1;
+	if($@mobmvp <= 0) {
+		mapannounce "guild_vs1","MVP Event: Round 7 will begin shortly.",0;
+		sleep 5000;
+		goto Onmvp_round7;
+	}
+	end;
+
+Onmvp_round7:
+	set $@mobmvp,4;
+	monster "guild_vs1",0,0,"RSX-0806",1623,1,"MVP Event::Onmvpdead7";
+	monster "guild_vs1",0,0,"Golden Thief Bug",1086,1,"MVP Event::Onmvpdead7";
+	monster "guild_vs1",0,0,"Phreeoni",1159,1,"MVP Event::Onmvpdead7";
+	monster "guild_vs1",0,0,"Maya Purple",1289,1,"MVP Event::Onmvpdead7";
+	end;
+
+Onmvpdead7:
+	set $@mobmvp,$@mobmvp - 1;
+	if($@mobmvp <= 0) {
+		mapannounce "guild_vs1","MVP Event: Round 8 will begin shortly.",0;
+		sleep 5000;
+		goto Onmvp_round8;
+	}
+	end;
+
+Onmvp_round8:
+	set $@mobmvp,4;
+	monster "guild_vs1",0,0,"Maya",1147,1,"MVP Event::Onmvpdead8";
+	monster "guild_vs1",0,0,"Turtle General",1312,1,"MVP Event::Onmvpdead8";
+	monster "guild_vs1",0,0,"Evil Snake Lord",1418,1,"MVP Event::Onmvpdead8";
+	monster "guild_vs1",0,0,"Amon Ra",1511,1,"MVP Event::Onmvpdead8";
+	end;
+
+Onmvpdead8:
+	set $@mobmvp,$@mobmvp - 1;
+	if($@mobmvp <= 0) {
+		mapannounce "guild_vs1","MVP Event: Final Round will begin shortly.",0;
+		sleep 5000;
+		goto Onmvp_round9;
+	}
+	end;
+
+Onmvp_round9:
+	set $@mobmvp,5;
+	monster "guild_vs1",0,0,"Tao Gunka",1583,1,"MVP Event::Onmvpdead9";
+	monster "guild_vs1",0,0,"Valkyrie Randgris",1751,1,"MVP Event::Onmvpdead9";
+	monster "guild_vs1",0,0,"Ifrit",1832,1,"MVP Event::Onmvpdead9";
+	monster "guild_vs1",0,0,"Beelzebub",1873,1,"MVP Event::Onmvpdead9";
+	monster "guild_vs1",0,0,"Ktullanux",1779,1,"MVP Event::Onmvpdead9";
+	end;
+
+Onmvpdead9:
+	set $@mobmvp,$@mobmvp - 1;
+	if($@mobmvp <= 0) {
+		stopnpctimer;
+		disablenpc "MVP Event Warper";
+		mapannounce "guild_vs1","MVP Event: That was the Last Round!.",0;
+		sleep 5000;
+		mapwarp "guild_vs1","prontera",156,191;
+		set $@mvp_event,0;
+	}
+	end;
+
+OnTimer1200000:
+	stopnpctimer;
+	killmonsterall "guild_vs1";
+	mapannounce "guild_vs1","MVP Event: Time's Up!",0;
+	sleep 5000;
+	mapwarp "guild_vs1","prontera",116,73;
+	disablenpc "MVP Event Warper";
+	set $@mvp_event,0;
+	end;		
+}
+
+// -- Mapflags
+guild_vs1	mapflag	nowarp
+guild_vs1	mapflag	nowarpto
+guild_vs1	mapflag	noteleport
+guild_vs1	mapflag	nosave	SavePoint
+guild_vs1	mapflag	nomemo
+guild_vs1	mapflag	nobranch
+guild_vs1	mapflag	nopenalty

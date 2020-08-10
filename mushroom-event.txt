@@ -1,0 +1,78 @@
+//================================================Name======================================================
+									// Mushroom Event (Official Release Name)
+//===============================================Version====================================================
+//												  1.2 
+//===============================================Author=====================================================
+//					 ____ _____  ______  __ __   __  _______    __   _____ __   __  _______
+//					|  __ \ _  \|  __  \|  |  \ |  |/  ___  \  |  | /  /  |  \ |  |/  ___  \
+//					| |__| | \  \ |__|  |  |   \|  |  |  _\_/  |  |/  /|  |   \|  |  |  _\_/
+//					|   __/   | |      /|  |       |  | |_  \  |     | |  |    |  |  | |_  \
+//					|  |\  \_/  /  |\  \|  |  |\   |   \_/  |  |  |\  \|  |  |\   |   \_/  |
+//					|__| \_____/|__| \__\__|__| \__|\______/   |__| \__\__|__| \__|\______/
+//----------------------------------------Script Last Update 2020-------------------------------------------
+//==============================================Changelog===================================================
+									// 1.0 *
+									//		- Initial Release
+									// 1.1
+									//		- Added Host Event by GMAccess
+									// 1.2
+									//		- Remove all error from Latest rAthena
+									//		- Maximize script
+									//		- Fix some dialog of NPC
+									//		- Added Mapflag for the Event Map 
+
+//==========================================================================================================
+
+sec_in01,166,180,3	script	Find the Mushroom	1084,{
+	mes "[ Find The Mushroom ]";
+	if (!.Status)
+		mes "There is no event at the moment!";
+	else {
+		mes "There are "+.Spawn+" Mushrooms left in "+.Map$+"!";
+		mes "Find and kill the mushrooms to gain "+getitemname(.Prize)+"!";
+	}
+	if (.Status || getgmlevel() < .GM) close;
+	mes "Start the event?";
+	next;
+	if(select("- No:- Yes") == 1) close;
+	donpcevent strnpcinfo(0)+"::OnClock0100";
+	mes "[ Find The Mushroom ]";
+	mes "Event started!";
+	close;
+
+OnInit:
+	set .Prize,7608;	// Reward item ID
+	set .Amount,5;	// Reward item amount
+	set .GM,99;	// GM level required to access NPC
+	setarray .Maps$[0],"alberta","geffen","morocc","prontera"; // Possible maps
+	end;
+
+OnClock0100:
+OnClock0500:
+OnClock0900:
+OnClock1300:
+OnClock1700:
+OnClock2100:
+	if (.Status) end;
+	set .Status,1;
+	set .Spawn,rand(1,15);	// How many Mushrooms should spawn?
+	set .Map$,.Maps$[rand(getarraysize(.Maps$))];
+	killmonster .Map$,"All";
+	monster .Map$,0,0,"Please don't kill me!",1084,.Spawn,strnpcinfo(0)+"::OnMobKilled";
+	announce "Find the mushroom event will begin shortly!",0,0x00CCFF;
+	sleep 6000;
+	announce "Total of "+.Spawn+" Mushrooms have been spawned in "+.Map$+"!",0,0x00CCFF;
+	sleep 6000;
+	announce "Every Mushroom you kill will give you "+getitemname(.Prize)+"!",0,0x00CCFF;
+	end;
+
+OnMobKilled:
+	set .Spawn, .Spawn - 1;
+	getitem .Prize, .Amount;
+	if (.Spawn) announce "[ "+strcharinfo(0)+" ] has killed a Mushroom. There are now "+.Spawn+" Mushroom(s) left.",bc_map;
+	else {
+		announce "The Find the Mushroom Event has ended. All the Mushrooms have been killed.",0,0x00CCFF;
+		set .Status,0;
+	}
+	end;
+}
