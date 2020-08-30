@@ -1,0 +1,18 @@
+-	script	Sample	-1,{
+OnPCLoginEvent:
+if( !getgmlevel() || getgmlevel() >= 90 ) end;
+if( agitcheck() || agitcheck2() ) goto OnAgitStart;
+set .GMList$[ getarraysize( .GMList$ ) ],strcharinfo(0);
+end;
+
+OnPCLogoutEvent:
+for( set .@i,0; .@i < getarraysize( .GMList$ ); set .@i,.@i + 1 )
+	if( strcharinfo(0) == .GMList$[.@i] )
+		deletearray .GMList$[.@i],1;
+end;
+
+OnAgitStart:
+for( set .@i,0; .@i < getarraysize( .GMList$ ); set .@i,.@i + 1 )
+	atcommand "@kick "+.GMList$[.@i];
+	end;
+}

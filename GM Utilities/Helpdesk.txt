@@ -1,0 +1,194 @@
+// Load the following SQL Table in your Server before use the NPC 
+	
+/*
+	
+CREATE TABLE IF NOT EXISTS `E-Inquiry` (
+	`ID` bigint(20) unsigned NOT NULL auto_increment,
+	`Sender_ID` int(11) unsigned NOT NULL default '0',
+	`Sender_Name` varchar(30) NOT NULL default '',
+	`Title` text,
+	`Message` text,
+	`Status` tinyint(2) NOT NULL default '0',
+	`Inquiry_Time` datetime NOT NULL default '0000-00-00 00:00:00',
+	`Reply` text,
+	`Reply_Time` datetime NOT NULL default '0000-00-00 00:00:00',
+	`Reply_Name` varchar(30) NOT NULL default '',
+	PRIMARY KEY  (`ID`)
+) ENGINE=MyISAM;
+
+*/
+
+-	script	E-Inquiry	-1,{
+
+OnStartMenu:
+mes "Do you having problems and wish to inform GM Staffs about this ?";
+next;
+switch( select( "View Messages",
+				"Write Messages",
+				( getgmlevel() < .GMLevel )?"":"^FF0000[ GM ]^000000 Manage Messages" )){
+
+Case 1:
+	do{
+		mes "What types of Messages you would like to View ?";
+		for( set .@i,0; .@i < 3; set .@i,.@i + 1 )
+			set .@Found[.@i],query_sql("SELECT `ID` FROM `E-Inquiry` WHERE `Status` = "+.@i+" AND `Sender_ID`='"+getcharid(3)+"'",.@ID );
+
+		set .@Msg,select("^FF0000Un-Replied Messanges [ ^FF0000"+.@Found[0]+"^000000 ]",
+						"^0000FFReplied Messages^000000 [ ^FF0000"+.@Found[1]+"^000000 ]",
+						"Archieved Messages [ ^FF0000"+.@Found[2]+"^000000 ]" ) - 1;
+		set .@Replied,query_sql(" SELECT `ID`,`Title`,`Message`,`Inquiry_Time`,`Reply`,`Reply_Time`,`Reply_Name` FROM `E-Inquiry` WHERE `Status`= "+.@Msg+" AND `Sender_ID`='"+getcharid(3)+"' ",.@ID, .@Title$,.@Message$,.@Time$,.@Reply$,.@ReplyTime$,.@ReplyName$ );
+		if( !.@Replied ){
+			mes "You didnt have Messages to read.";
+			next;
+		}else{
+			set .@Menu$,"";
+			for( set .@i,0; .@i < .@Replied; set .@i,.@i + 1 )
+				set .@Menu$,.@Menu$ + "^FF0000[ "+( .@i+1 )+". ]^0000FF "+.@Title$[.@i]+":";
+			next;
+			set .@Select,select( .@Menu$ ) - 1;
+			mes "^FF0000Date :^000000 : "+.@Time$[.@Select];
+			mes "^FF0000Title^000000 : "+.@Title$[.@Select];
+			mes "^FF0000Messages^000000 : "+.@Message$[.@Select];
+			if( .@Msg > 0 ){
+				mes "^0000FFReply from ^FF0000"+.@ReplyName$[.@Select]+" ^000000 : "+.@Reply$[.@Select];
+				mes "^0000FFTime ^000000 : "+.@ReplyTime$[.@Select];
+			}
+			next;
+			set .@MsgOpt1,select("View Other Messages",( .@Msg == 1 )?"Move to Archieve":"","Delete Message" );
+			switch( .@MsgOpt1 ){
+				Case 2:
+					query_sql("UPDATE `E-Inquiry` SET `Status` = 2 WHERE `ID` = "+.@ID[.@Select]+" ");
+					mes "Message has been moved to Archieve.";
+					break;
+				Case 3:
+					query_sql("DELETE FROM `E-Inquiry` WHERE `ID` = "+.@ID[.@Select]+" ");
+					mes "Message has been DELETED.";
+					break;
+				default:
+					break;
+			}
+		}
+	}while( .@MsgOpt1 < 3 );
+	break;
+
+Case 2:
+	mes "^FF0000NOTES :^000000 All the Messages will be recorded for future references, so please do not abuse this. Otherwise action will be taken on you";
+	do{
+		next;
+		mes "^FF0000Title^000000 : "+.@Title$;
+		mes "^FF0000Messages^000000 : "+.@Message$;
+	
+		next;
+		set .@Select,select(( .@Title$ == "" )?"[ ^FF0000Incomplete^000000 ] Title":"[ ^0000FFCompleted^000000 ] Title",
+							( .@Message$ == "" )?"[ ^FF0000Incomplete^000000 ] Message":"[^0000FFCompleted^000000 ] Title",
+							( .@Title$ == "" || .@Message$ == "" )?"":"^FF0000SEND MESSAGE^000000" );
+	
+		switch( .@Select ){
+			Case 1:
+				mes "Enter a Title for your Problems";
+				input .@Title$;
+				break;
+			Case 2:
+				mes "Briefly explain what's your Problem";
+				set .@i,0;
+				do{
+					input getd(".@Message"+.@i+"$");
+					set .@Message$,.@Message$ + getd(".@Message"+.@i+"$")+" ";
+					set .@Continue,select("Complete:Continue Messages");
+				}while( .@Continue == 2 );
+				break;
+			default: 
+				mes "Your message has been sent.";
+				query_sql( "INSERT INTO `E-Inquiry` ( `Sender_ID`,`Sender_Name`,`Title`,`Message`,`Status`,`Inquiry_Time` ) VALUES ( "+getcharid(3)+",'"+escape_sql(strcharinfo(0))+"','"+escape_sql(.@Title$)+"','"+escape_sql(.@Message$)+"',0,'"+gettimestr("%Y-%m-%d %H:%M:%S",21)+"' ) ");
+				break;
+		}
+	}while( .@Select != 3 );
+	break;
+	
+Case 3:
+	do{
+	mes "Alright, what next ?";
+	next;
+	for( set .@i,0; .@i < 3; set .@i,.@i + 1 )
+		set .@Found[.@i],query_sql("SELECT `ID` FROM `E-Inquiry` WHERE `Status` = "+.@i+"",.@ID );
+
+	set .@Types,select("^FF0000View All Unread Messanges [ ^FF0000"+.@Found[0]+"^000000 ]",
+						"View All Replied Messages^000000 [ ^FF0000"+.@Found[1]+"^000000 ]",
+						"View All Archieved Messages [ ^FF0000"+.@Found[2]+"^000000 ]" ) - 1;
+
+	set .@ManageMSG,query_sql(" SELECT `ID`,`Sender_Name`,`Title`,`Message`,`Inquiry_Time`,`Reply`,`Reply_Time`,`Reply_Name` FROM `E-Inquiry` WHERE `Status`= "+.@Types+" LIMIT 127",.@ID,.@Sender$, .@Title$,.@Message$,.@Time$,.@Reply$,.@ReplyTime$,.@ReplyName$ );
+		if( !.@ManageMSG ){
+			mes "You didnt have Messages to read.";
+			next;
+		}else{
+			set .@Menu$,"";
+				for( set .@i,0; .@i < .@ManageMSG; set .@i,.@i + 1 )
+				set .@Menu$,.@Menu$ +"^FF0000[ "+( .@i+1 )+". ]^0000FF "+.@Title$[.@i]+":";
+			next;
+			set .@Select,select( .@Menu$ ) - 1;
+			mes "^FF0000Date :^000000 : "+.@Time$[.@Select];
+			mes "^FF0000Aurthor :^000000 : "+.@Sender$[.@Select];
+			mes "^FF0000Title^000000 : "+.@Title$[.@Select];
+			mes "^FF0000Messages^000000 : "+.@Message$[.@Select];
+			if( .@Types > 0 ){
+				mes "^0000FFReply from ^FF0000"+.@ReplyName$[.@Select]+" ^000000 : "+.@Reply$[.@Select];
+				mes "^0000FFTIme ^000000 : "+.@ReplyTime$[.@Select];
+			}
+			next;
+			set .@MsgOpt1,select( ( .@Types == 2 )?"":"Reply Message","View Other Messages","Delete Message" );
+			switch( .@MsgOpt1 ){
+				Case 1:
+					set .@i,0;
+					do{
+						input getd(".@Reply"+.@i+"$");
+						set .@Reply$,.@Reply$ + getd(".@Reply"+.@i+"$")+" ";
+						set .@Continue,select("Complete:Continue Messages");
+					}while( .@Continue == 2 );
+					
+					query_sql("UPDATE `E-Inquiry` SET `Status` = 1,`Reply`='"+escape_sql(.@Reply$)+"',`Reply_Name`='"+escape_sql(strcharinfo(0))+"',`Reply_Time`='"+gettimestr("%Y-%m-%d %H:%M:%S",21)+"' WHERE `ID` = "+.@ID[.@Select]+" ");	
+					message strcharinfo(0),"Reply has been sent.";
+					break;
+				Case 3:
+					query_sql("DELETE FROM `E-Inquiry` WHERE `ID` = "+.@ID[.@Select]+" ");
+					mes "Message has been Deleted.";
+				default:
+					break;
+			}
+		}
+	}while( .@MsgOpt1 != 1 ); 
+	break;
+}
+close;
+
+OnInit:
+// Min. GM Level to Read / Manage Messages.
+set .GMLevel,80;
+end;
+
+OnPCLoginEvent:
+if( getgmlevel() < .GMLevel ){
+	set .@Replied,query_sql("SELECT `ID` FROM `E-Inquiry` WHERE `Status` = 1 AND `Sender_ID`='"+getcharid(3)+"'",.@ID );
+	if( .@Replied )
+		message strcharinfo(0),"You have "+.@Replied+" Replied Messages from GM Team.";
+}else{
+	set .@Unread,query_sql("SELECT `ID` FROM `E-Inquiry` WHERE `Status` = 0 ",.@ID );
+	if( .@Unread ) 
+		message strcharinfo(0),"GM Team received "+.@Unread+" New Message from Players.";
+}
+if( .@Replied || .@Unread ){
+	if( select("Read the Messages:Cancel") == 2 ) close;
+		goto OnStartMenu;
+}
+end;
+
+}
+
+// Main NPC
+prontera,136,171,5	script	Help Desk#Main	804,{
+	doevent "E-Inquiry::OnStartMenu";
+}
+	
+// Duplicates NPC
+// prontera,155,181,5	duplicate(E-Inquiry#Main)	E-Inquiry#1	757
+// prontera,155,182,5	duplicate(E-Inquiry#Main)	E-Inquiry#2	757
+// prontera,155,183,5	duplicate(E-Inquiry#Main)	E-Inquiry#3	757

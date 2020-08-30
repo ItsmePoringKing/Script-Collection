@@ -1,0 +1,54 @@
+//================================================Name======================================================
+									// GM_LogIN (Official Release Name)
+//===============================================Version====================================================
+//												  1.0 
+//===============================================Author=====================================================
+//					 ____ _____  ______  __ __   __  _______    __   _____ __   __  _______
+//					|  __ \ _  \|  __  \|  |  \ |  |/  ___  \  |  | /  /  |  \ |  |/  ___  \
+//					| |__| | \  \ |__|  |  |   \|  |  |  _\_/  |  |/  /|  |   \|  |  |  _\_/
+//					|   __/   | |      /|  |       |  | |_  \  |     | |  |    |  |  | |_  \
+//					|  |\  \_/  /  |\  \|  |  |\   |   \_/  |  |  |\  \|  |  |\   |   \_/  |
+//					|__| \_____/|__| \__\__|__| \__|\______/   |__| \__\__|__| \__|\______/
+//----------------------------------------Script Last Update 2020-------------------------------------------
+//==============================================Changelog===================================================
+									// 1.0 *
+									//		- Initial Release
+//==========================================================================================================
+-	script	gmsys	-1,{
+    
+	
+OnPCLoginEvent:
+    if(getgmlevel() > 50 ) {
+	//warp "sec_in01",174,32;
+        atcommand "@speed 1";
+        atcommand "@monsterignore";
+        atcommand "@uptime";
+		atcommand "@hide";
+        dispbottom "Welcome GM! Please make sure to check players!";
+	dispbottom "Please use @GM command to facilitate events and rewards";
+        dispbottom "Current Server Time : " + gettimestr("%A %B %d %Y - %I:%M %p",40);
+        end;
+    }
+    end;
+}
+
+sec_in01,179,35,0	script	GM Bulletin	837,{
+	
+	mes "Good day Guild Masters!";
+	mes "Please make sure to check";
+	mes "players upon your log in";
+	next;
+	mes "Please use @GM command to";
+	mes "facilitate events and give rewards";
+	mes " ";
+	mes "Strictly";
+	mes "No BIAS....";
+	mes "No Power Abuses....";
+	mes "and NO Spoon Feeding";
+	mes "Enjoy lang guys!!!";
+	close;
+OnInit:
+		delwaitingroom;
+		waitingroom "Please Read",0;
+		sleep 998;
+	}
