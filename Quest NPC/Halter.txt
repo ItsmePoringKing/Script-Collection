@@ -1,0 +1,56 @@
+//================================================Name======================================================
+									// Halter (Official Release Name)
+//===============================================Version====================================================
+//												  1.0 
+//===============================================Author=====================================================
+//					 ____ _____  ______  __ __   __  _______    __   _____ __   __  _______
+//					|  __ \ _  \|  __  \|  |  \ |  |/  ___  \  |  | /  /  |  \ |  |/  ___  \
+//					| |__| | \  \ |__|  |  |   \|  |  |  _\_/  |  |/  /|  |   \|  |  |  _\_/
+//					|   __/   | |      /|  |       |  | |_  \  |     | |  |    |  |  | |_  \
+//					|  |\  \_/  /  |\  \|  |  |\   |   \_/  |  |  |\  \|  |  |\   |   \_/  |
+//					|__| \_____/|__| \__\__|__| \__|\______/   |__| \__\__|__| \__|\______/
+//----------------------------------------Script Last Update 2020-------------------------------------------
+//==============================================Changelog===================================================
+									// 1.0 *
+									//		- Initial Release
+//==========================================================================================================
+spl_in01,116,59,3	script	Halter	440,{
+
+	mes "[Halter]";
+	mes "Take quest Young Man ?";
+	next;
+	switch(select("Yeah","Im just Passby")){
+		case 1:
+			mes "[Halter]";
+			mes "What item would you like to take quest?";
+			next;
+			switch(select("Halter","Exit")){
+				case 1:
+					mes "[Halter]";
+					mes "I need this following item to create Halter";
+					mes "1800 Elastic Band";
+					mes "2000 Brown Root";
+					next;
+					if(countitem(7200) < 1800 || countitem(7188) < 2000 ) goto L_NOTENOUGH;
+
+					delitem 7200,1800;
+					delitem 7188,2000;
+
+					getitem 12622,1;
+					if(##RARE == 1) goto L_NOTE;
+					mes "[Halter]";
+					mes "Here is your ^FFCC00Halter^000000, may it serve you well.";
+					close;
+			}
+		case 2:
+			close;
+L_NOTENOUGH:
+		mes "[Halter]";
+		mes "Please check your inventory";
+		close;
+L_NOTE:
+	mes "[Halter]";
+	mes "You already take my quest!";
+	close;
+	}
+}

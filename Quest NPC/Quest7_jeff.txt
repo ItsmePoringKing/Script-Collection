@@ -1,0 +1,71 @@
+malaya,118,221,5	script	Jojo	52,{
+
+	mes "[ Orlie ]";
+	mes "What would you like to take quest for today ?";
+	next;
+	switch(select("Captain Hat","Summer Hat","Alice Doll")){
+		case 1:
+			mes "[ Jojo ]";
+			mes "^00B200I need the following item:^000000";
+			mes "1 Boy's Cap";
+			mes "1000 Holy Water";
+			mes "500 Cursed Water";
+			mes "200,000,000 Zeny";
+			next;
+			if(countitem(5016) < 1 || countitem(523) < 1000 || countitem(12020) < 500 || Zeny < 200000000  ) goto L_NOTENOUGH;
+
+			delitem 5016,1;
+			delitem 523,1000;
+			delitem 12020,500;
+			set Zeny,Zeny -200000000;
+			mes "[ Orlie]";
+			mes "Take this item for your hardworking for my quest";
+			getitem 5184,1;
+			next;
+			mes "[ Jojo ]";
+			mes "Come back Again !";
+			close;
+		case 2:
+			mes "[ Jojo ]";
+			mes "^00B200I need the following item:^000000";
+			mes "1 X Hairpin";
+			mes "2000 Cacao";
+			mes "50,000,000 Zeny";
+			next;
+			if(countitem(5079) < 1 || countitem(7182) < 2000 || Zeny < 50000000  ) goto L_NOTENOUGH;
+
+			delitem 5079,1;
+			delitem 7182,2000;
+			set Zeny,Zeny -50000000;
+			mes "[ Jojo ]";
+			mes "Take this item for your hardworking for my quest";
+			getitem 5456,1;
+			next;
+			mes "[ Jojo ]";
+			mes "Come back Again !";
+			close;
+		case 3:
+			mes "[ Jojo ]";
+			mes "^00B200I need the following item:^000000";
+			mes "1 Marionette Doll [1]";
+			mes "2000 Alice's Apron";
+			mes "1 TCG";
+			next;
+			if(countitem(5141) < 1 || countitem(7047) < 2000 || countitem(7227) < 1  ) goto L_NOTENOUGH;
+
+			delitem 5141,1;
+			delitem 7047,2000;
+			delitem 7227,1;
+			mes "[ Jojo ]";
+			mes "Take this item for your hardworking for my quest";
+			getitem 5137,1;
+			next;
+			mes "[ Jojo ]";
+			mes "Come back Again !";
+			close;
+}
+L_NOTENOUGH:
+	mes "[ Jojo ]";
+	mes "Please Check your inventory";
+	close;
+}

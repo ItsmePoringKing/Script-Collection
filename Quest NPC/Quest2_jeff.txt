@@ -1,0 +1,99 @@
+jawaii,187,167,5	script	Kim	967,{
+
+	mes "[Kim]";
+	mes "Who are you?";
+	next;
+	mes "[Kim]";
+	mes "Please dont steal my item this is gifted by my father a long time ago. My Father pass by 10years from now. Before my Father Die he give me Rare item.";
+	next;
+	menu "I want to know that item",-,"Exit",L_OUT;
+
+	mes "[Kim]";
+	mes "Before i go tell you my father item i will give you a quest item to have it.";
+	next;
+	menu "Ok",-,"Nevermaind",L_OUT;
+
+	mes "[Kim]";
+	mes "What item would you like to take Quest?";
+	next;
+	menu "Blush of Groom",-,"Coppola",L_COP,"Kettle Hat",L_KET,"^FF0000Exit^000000",L_OUT;
+
+	mes "[Kim]";
+	mes "^00B200I need the following item:^000000";
+	mes "2 Blush";
+	mes "3 TCG's";
+	next;
+	mes "[Kim]";
+	mes "Do you desire ^FFCC00Blush of Groom^000000?";
+	next;
+	menu "Yes",-,"No",L_OUT;
+	if(countitem(5040) < 2 || countitem(7227) < 3 ) goto L_NOTENOUGH;
+
+	delitem 5040,2;
+	delitem 7227,3;
+
+	getitem 5800,1;
+
+	mes "[Kim]";
+	mes "Here is your ^FFCC00Blush of Groom^000000, may it serve you well.";
+	close;
+L_COP:
+	mes "[Kim]";
+	mes "^00B200I need the following item:^000000";
+	mes "3000 Yarn";
+	mes "10 Scarlet Dyestuffs";
+	mes "300 Maneater Blossom";
+	mes "5 Agate";
+	next;
+	mes "[Kim]";
+	mes "Do you desire ^FFCC00Coppola^000000?";
+	next;
+	menu "Yes",-,"No",L_OUT;
+
+	if(countitem(7038) < 3000 || countitem(975) < 10 || countitem(1032) < 300 || countitem(7291) < 5 )  goto L_NOTENOUGH;
+
+	delitem 7038,3000;
+	delitem 975,10;
+	delitem 1032,300;
+	delitem 7291,5;
+
+	getitem 5200,1;
+
+	mes "[Kim]";
+	mes "Here is your ^FFCC00Coppola^000000, may it serve you well.";
+	close;
+L_KET:
+	mes "[Kim]";
+	mes "^00B200I need the following item:^000000";
+	mes "2500 Battered Kettle";
+	mes "300 Holy Water";
+	mes "100 Gold";
+	mes "100 Used Iron Plate";
+	mes "1 TCG";
+	next;
+	mes "[Kim]";
+	mes "Do you desire ^FFCC00Kettle Hat^000000?";
+	next;
+	menu "Yes",-,"No",L_OUT;
+
+	if(countitem(7323) < 2500 || countitem(523) < 300 || countitem(969) < 100 || countitem(7319) < 100 || countitem(7227) < 1 )  goto L_NOTENOUGH;
+
+	delitem 7323,1500;
+	delitem 523,300;
+	delitem 969,100;
+	delitem 7319,100;
+	delitem 7227,1;
+
+	getitem 5291,1;
+
+	mes "[Kim]";
+	mes "Here is your ^FFCC00Kettle Hat^000000, may it serve you well.";
+	close;
+L_NOTENOUGH:
+	mes "[Kim]";
+	mes "^FF0000Please Check your item!!^000000";
+	close;
+L_OUT:
+	close;
+
+}

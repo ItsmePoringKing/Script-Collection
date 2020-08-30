@@ -1,0 +1,66 @@
+xmas,260,114,2	script	Mogan	968,{
+
+	mes "[Mogan]";
+	mes "What would you like to do?";
+	next;
+	menu "Quest ?",-,"^FF0000Nevermind^000000",L_OUT;
+	next;
+	menu "Gangster Scarf",-,"Gentleman's Pipe",L_GPIPE,"^FF0000Exit^000000",L_OUT;
+
+	mes "[Mogan]";
+	mes "^00B200I need the following item:^000000";
+	mes "3000 Red Muffler";
+	mes "5 Red Scarf";
+	next;
+	mes "[Mogan]";
+	mes "Do you desire ^FFCC00Gangster Scarf^000000?";
+	next;
+	menu "Yes",-,"No",L_OUT;
+
+	if(countitem(7216) < 3000 || countitem(10019) < 5 ) goto L_NOTENOUGH;
+
+	delitem 7216,3000;
+	delitem 10019,5;
+
+	getitem 5361,1;
+
+	mes "[Mogan]";
+	mes "Here is your ^FFCC00Gangster Scarf^000000, may it serve you well.";
+	close;
+L_GPIPE:
+	mes "[Mogan]";
+	mes "^00B200I need the following item:^000000";
+	mes "1500 Piece of Bamboo";
+	mes "300 Sharp Leaf";
+	mes "1000 Thin Trunk";
+	mes "50 Matchstick";
+	mes "5 TCG";
+	next;
+	mes "[Mogan]";
+	mes "Do you desire ^FFCC00Gentleman's Pipe^000000?";
+	next;
+	menu "Yes",-,"No",L_OUT;
+
+	if(countitem(7150) < 1500 || countitem(7100) < 300 || countitem(7186) < 1000 || countitem(7035) < 50 || countitem(7227) < 5 )  goto L_NOTENOUGH;
+
+	delitem 7150,1500;
+	delitem 7100,300;
+	delitem 7186,1000;
+	delitem 7035,50;
+	delitem 7227,5;
+
+	getitem 5377,1;
+
+	mes "[Mogan]";
+	mes "Here is your ^FFCC00Gentleman's Pipe^000000, may it serve you well.";
+	close;
+L_NOTENOUGH:
+	mes "[Mogan]";
+	mes "^FF0000Please Check your item!!^000000";
+	close;
+L_OUT:
+	mes "[Mogan]";
+	mes "Dont go back again here !!";
+	close;
+
+}

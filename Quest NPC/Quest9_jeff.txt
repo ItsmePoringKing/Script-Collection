@@ -1,0 +1,244 @@
+payon,138,237,3	script	Cerulean	90,{
+
+	mes "[ Cerulen ]";
+	mes "What would you like to take quest for today ?";
+	next;
+	switch(select("Telling Doll Hat","Sorin Doll Hat","W Doll Hat","Defolty Doll Hat","Little Angel Doll","Lif Doll Hat","Zaha Doll Hat","Lady Tanee Doll Hat","Bennit Doll Hat","Glaris Doll Hat")){
+		case 1:
+			mes "[ Cerulen ]";
+			mes "^00B200I need the following item:^000000";
+			mes "25 Scarlet Dyestuffs";
+			mes "5 Marionette Doll [1]";
+			mes "1 Free Ticket for Kafra Storage";
+			mes "2000 Alice's Apron";
+			mes "200 Hung Doll";
+			next;
+			if(countitem(975) < 25 || countitem(5141) < 5 || countitem(7059) < 1 || countitem(7047) < 2000 || countitem(7212) < 200  ) goto L_NOTENOUGH;
+
+			delitem 975,25;
+			delitem 5141,5;
+			delitem 7059,1;
+			delitem 7047,2000;
+			delitem 7212,200;
+			mes "[ Cerulen ]";
+			mes "Take this item for your hardworking for my quest";
+			getitem 5343,1;
+			next;
+			mes "[ Cerulen ]";
+			mes "Come back Again !";
+			close;
+		case 2:
+			mes "[ Cerulen ]";
+			mes "^00B200I need the following item:^000000";
+			mes "25 Black Dyestuffs";
+			mes "5 Marionette Doll [1]";
+			mes "1 Free Ticket for Kafra Storage";
+			mes "2000 Alice's Apron";
+			mes "200 Hung Doll";
+			next;
+			if(countitem(983) < 25 || countitem(5141) < 5 || countitem(7059) < 1 || countitem(7047) < 2000 || countitem(7212) < 200  ) goto L_NOTENOUGH;
+
+			delitem 983,25;
+			delitem 5141,5;
+			delitem 7059,1;
+			delitem 7047,2000;
+			delitem 7212,200;
+			mes "[ Cerulen ]";
+			mes "Take this item for your hardworking for my quest";
+			getitem 5342,1;
+			next;
+			mes "[ Cerulen ]";
+			mes "Come back Again !";
+			close;
+		case 3:
+			mes "[ Cerulen ]";
+			mes "^00B200I need the following item:^000000";
+			mes "25 Lemon Dyestuffs";
+			mes "5 Marionette Doll [1]";
+			mes "1 Free Ticket for Kafra Storage";
+			mes "2000 Alice's Apron";
+			mes "200 Hung Doll";
+			next;
+			if(countitem(976) < 25 || countitem(5141) < 5 || countitem(7059) < 1 || countitem(7047) < 2000 || countitem(7212) < 200  ) goto L_NOTENOUGH;
+
+			delitem 976,25;
+			delitem 5141,5;
+			delitem 7059,1;
+			delitem 7047,2000;
+			delitem 7212,200;
+			mes "[ Cerulen ]";
+			mes "Take this item for your hardworking for my quest";
+			getitem 5345,1;
+			next;
+			mes "[ Cerulen ]";
+			mes "Come back Again !";
+			close;
+		case 4:
+			mes "[ Cerulen ]";
+			mes "^00B200I need the following item:^000000";
+			mes "25 Cobalt Dyestuffs";
+			mes "5 Marionette Doll [1]";
+			mes "1 Free Ticket for Kafra Storage";
+			mes "2000 Alice's Apron";
+			mes "200 Hung Doll";
+			next;
+			if(countitem(978) < 25 || countitem(5141) < 5 || countitem(7059) < 1 || countitem(7047) < 2000 || countitem(7212) < 200  ) goto L_NOTENOUGH;
+
+			delitem 978,25;
+			delitem 5141,5;
+			delitem 7059,1;
+			delitem 7047,2000;
+			delitem 7212,200;
+			mes "[ Cerulen ]";
+			mes "Take this item for your hardworking for my quest";
+			getitem 5340,1;
+			next;
+			mes "[ Cerulen ]";
+			mes "Come back Again !";
+			close;
+		case 5:
+			mes "[ Cerulen ]";
+			mes "^00B200I need the following item:^000000";
+			mes "1 Marionette Doll [1]";
+			mes "1000 Feather";
+			mes "1500 Feather of Birds";
+			mes "500 Soft Feather";
+			next;
+			if(countitem(5141) < 1 || countitem(949) < 1000 || countitem(916) < 1500 || countitem(7063) < 500 ) goto L_NOTENOUGH;
+
+			delitem 5141,1;
+			delitem 949,1000;
+			delitem 916,1500;
+			delitem 7063,500;
+			mes "[ Cerulen ]";
+			mes "Take this item for your hardworking for my quest";
+			getitem 5324,1;
+			next;
+			mes "[ Cerulen ]";
+			mes "Come back Again !";
+			close;
+		case 6:
+			mes "[ Cerulen ]";
+			mes "^00B200I need the following item:^000000";
+			mes "25 Darkgreen Dyestuffs";
+			mes "5 Marionette Doll [1]";
+			mes "900 Aloe Leaflet";
+			mes "2000 Fig Leaf";
+			mes "500 Sharp Leaf";
+			mes "1 TCG";
+			next;
+			if(countitem(979) < 25 || countitem(5141) < 5 || countitem(521) < 900 || countitem(7298) < 2000 || countitem(7100) < 500 || countitem(7227) < 1 ) goto L_NOTENOUGH;
+
+			delitem 979,25;
+			delitem 5141,5;
+			delitem 521,900;
+			delitem 7298,2000;
+			delitem 7100,500;
+			delitem 7227,1;
+			mes "[ Cerulen ]";
+			mes "Take this item for your hardworking for my quest";
+			getitem 5253,1;
+			next;
+			mes "[ Cerulen ]";
+			mes "Come back Again !";
+			close;
+		case 7:
+			mes "[ Cerulen ]";
+			mes "^00B200I need the following item:^000000";
+			mes "1 Marionette Doll [1]";
+			mes "2000 Transparent Celestial Robe";
+			mes "1000 Black Hair";
+			mes "500 Soft Silk";
+			mes "1 TCG";
+			next;
+			if(countitem(5141) < 1 || countitem(7165) < 2000 || countitem(1020) < 1000 || countitem(7166) < 500 || countitem(7227) < 1 ) goto L_NOTENOUGH;
+
+			delitem 5141,1;
+			delitem 7165,2000;
+			delitem 1020,1000;
+			delitem 7166,500;
+			delitem 7227,1;
+			mes "[ Cerulen ]";
+			mes "Take this item for your hardworking for my quest";
+			getitem 5464,1;
+			next;
+			mes "[ Cerulen ]";
+			mes "Come back Again !";
+			close;
+		case 8:
+			mes "[ Cerulen ]";
+			mes "^00B200I need the following item:^000000";
+			mes "25 Darkgreen Dyestuffs";
+			mes "1 Marionette Doll [1]";
+			mes "1000 Tropical Banana";
+			mes "500 Black Hair";
+			mes "500 Soft Silk";
+			mes "1 TCG";
+			next;
+			if(countitem(979) < 2000 || countitem(5141) < 1 || countitem(634) < 1000 || countitem(1020) < 500 || countitem(7166) < 500 || countitem(7227) < 1  ) goto L_NOTENOUGH;
+
+			delitem 979,25;
+			delitem 5141,1;
+			delitem 634,1000;
+			delitem 1020,500;
+			delitem 7166,500;
+			delitem 7227,1;
+			mes "[ Cerulen ]";
+			mes "Take this item for your hardworking for my quest";
+			getitem 5526,1;
+			next;
+			mes "[ Cerulen ]";
+			mes "Come back Again !";
+			close;
+		case 9:
+			mes "[ Cerulen ]";
+			mes "^00B200I need the following item:^000000";
+			mes "25 Scarlet Dyestuffs";
+			mes "5 Marionette Doll [1]";
+			mes "1 Free Ticket for Kafra Storage";
+			mes "2000 Alice's Apron";
+			mes "200 Hung Doll";
+			next;
+			if(countitem(975) < 25 || countitem(5141) < 5 || countitem(7059) < 1 || countitem(7047) < 2000 || countitem(7212) < 200  ) goto L_NOTENOUGH;
+
+			delitem 975,25;
+			delitem 5141,5;
+			delitem 7059,1;
+			delitem 7047,2000;
+			delitem 7212,200;
+			mes "[ Cerulen ]";
+			mes "Take this item for your hardworking for my quest";
+			getitem 5344,1;
+			next;
+			mes "[ Cerulen ]";
+			mes "Come back Again !";
+			close;
+		case 10:
+			mes "[ Cerulen ]";
+			mes "^00B200I need the following item:^000000";
+			mes "25 Scarlet Dyestuffs";
+			mes "5 Marionette Doll [1]";
+			mes "1 Free Ticket for Kafra Storage";
+			mes "2000 Alice's Apron";
+			mes "200 Hung Doll";
+			next;
+			if(countitem(975) < 25 || countitem(5141) < 5 || countitem(7059) < 1 || countitem(7047) < 2000 || countitem(7212) < 200  ) goto L_NOTENOUGH;
+
+			delitem 975,25;
+			delitem 5141,5;
+			delitem 7059,1;
+			delitem 7047,2000;
+			delitem 7212,200;
+			mes "[ Cerulen ]";
+			mes "Take this item for your hardworking for my quest";
+			getitem 5341,1;
+			next;
+			mes "[ Cerulen ]";
+			mes "Come back Again !";
+			close;
+}
+L_NOTENOUGH:
+	mes "[ Cerulen ]";
+	mes "Please Check your inventory";
+	close;
+}

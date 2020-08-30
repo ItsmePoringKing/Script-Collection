@@ -1,0 +1,77 @@
+lighthalzen,252,124,3	script	Glen	878,{
+
+	mes "[ Glen ]";
+	mes "What would you like to take quest for today ?";
+	next;
+	switch(select("AFK Hat","Dark Randgris Helm","Fisherman's Hat")){
+		case 1:
+			mes "[ Glen ]";
+			mes "^00B200I need the following item:^000000";
+			mes "5000 Cloud Crumb";
+			mes "500 Green Herb";
+			mes "250 Orange";
+			mes "50 Condensed Red Potion";
+			mes "1 TCG Card";
+			next;
+			if(countitem(7162) < 5000 || countitem(511) < 500 || countitem(582) < 250 || countitem(545) < 50 || countitem(7227) < 1  ) goto L_NOTENOUGH;
+
+			delitem 7162,5000;
+			delitem 511,500;
+			delitem 582,250;
+			delitem 545,50;
+			delitem 7227,1;
+			mes "[ Glen ]";
+			mes "Take this item for your hardworking for my quest";
+			getitem 5474,1;
+			next;
+			mes "[ Glen ]";
+			mes "Come back Again !";
+			close;
+		case 2:
+			mes "[ Glen ]";
+			mes "^00B200I need the following item:^000000";
+			mes "50 Blade Lost in Darkness";
+			mes "3000 Fragment of Darkness";
+			mes "1000 Rune of Darkness";
+			mes "1 TCG Card";
+			next;
+			if(countitem(7023) < 50 || countitem(7798) < 3000 || countitem(7511) < 1000 || countitem(7227) < 1  ) goto L_NOTENOUGH;
+
+			delitem 7023,50;
+			delitem 7798,3000;
+			delitem 7511,1000;
+			delitem 7227,1;
+			mes "[ Glen ]";
+			mes "Take this item for your hardworking for my quest";
+			getitem 5373,1;
+			next;
+			mes "[ Glen ]";
+			mes "Come back Again !";
+			close;
+		case 3:
+			mes "[ Glen ]";
+			mes "^00B200I need the following item:^000000";
+			mes "2000 Sharp Scale";
+			mes "250 Lemon";
+			mes "10 Condensed Yellow Potion";
+			mes "50 Lemon Dyestuffs";
+			next;
+			if(countitem(963) < 2000 || countitem(568) < 250 || countitem(546) < 10 || countitem(976) < 50  ) goto L_NOTENOUGH;
+
+			delitem 963,2000;
+			delitem 568,250;
+			delitem 546,10;
+			delitem 976,50;
+			mes "[ Glen ]";
+			mes "Take this item for your hardworking for my quest";
+			getitem 5317,1;
+			next;
+			mes "[ Glen ]";
+			mes "Come back Again !";
+			close;
+}
+L_NOTENOUGH:
+	mes "[ Glen ]";
+	mes "Please Check your inventory";
+	close;
+}

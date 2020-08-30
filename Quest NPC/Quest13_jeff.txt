@@ -1,0 +1,94 @@
+rachel,181,139,3	script	Nikki Colleen	877,{
+
+	mes "[ Nikki Colleen ]";
+	mes "What would you like to take quest for today ?";
+	next;
+	switch(select("Blue Beanie","Brown Beanie","Pink Beanie","Love Dad")){
+		case 1:
+			mes "[ Nikki Colleen ]";
+			mes "^00B200I need the following item:^000000";
+			mes "25 Cobaltblue Dyestuffs";
+			mes "1 Beanie";
+			mes "1500 Yarn";
+			mes "1 TCG Card";
+			next;
+			if(countitem(7162) < 25 || countitem(5076) < 1 || countitem(7038) < 1500 || countitem(7227) < 1  ) goto L_NOTENOUGH;
+
+			delitem 7162,25;
+			delitem 5076,1;
+			delitem 7038,1500;
+			delitem 7227,1;
+			mes "[ Nikki Colleen ]";
+			mes "Take this item for your hardworking for my quest";
+			getitem 5236,1;
+			next;
+			mes "[ Nikki Colleen ]";
+			mes "Come back Again !";
+			close;
+		case 2:
+			mes "[ Nikki Colleen ]";
+			mes "^00B200I need the following item:^000000";
+			mes "25 Cobaltblue Dyestuffs";
+			mes "1 Beanie";
+			mes "1500 Yarn";
+			next;
+			if(countitem(7162) < 25 || countitem(5076) < 1 || countitem(7038) < 1500 ) goto L_NOTENOUGH;
+
+			delitem 7162,25;
+			delitem 5076,1;
+			delitem 7038,1500;
+			mes "[ Nikki Colleen ]";
+			mes "Take this item for your hardworking for my quest";
+			getitem 5235,1;
+			next;
+			mes "[ Nikki Colleen ]";
+			mes "Come back Again !";
+			close;
+		case 3:
+			mes "[ Nikki Colleen ]";
+			mes "^00B200I need the following item:^000000";
+			mes "25 Violet Dyestuffs";
+			mes "1 Beanie";
+			mes "1500 Yarn";
+			mes "1 TCG Card";
+			next;
+			if(countitem(981) < 25 || countitem(5076) < 1 || countitem(7038) < 1500 || countitem(7227) < 1  ) goto L_NOTENOUGH;
+
+			delitem 981,25;
+			delitem 5076,1;
+			delitem 7038,1500;
+			delitem 7227,1;
+			mes "[ Nikki Colleen ]";
+			mes "Take this item for your hardworking for my quest";
+			getitem 5237,1;
+			next;
+			mes "[ Nikki Colleen ]";
+			mes "Come back Again !";
+			close;
+		case 4:
+			mes "[ Nikki Colleen ]";
+			mes "^00B200I need the following item:^000000";
+			mes "25 Lemon Dyestuffs";
+			mes "1500 Oil Paper";
+			mes "500 Sharp Paper";
+			mes "500 Slick Paper";
+			next;
+			if(countitem(976) < 25 || countitem(7151) < 1500 || countitem(7112) < 500 || countitem(7111) < 500  ) goto L_NOTENOUGH;
+
+			delitem 976,25;
+			delitem 7151,1500;
+			delitem 7112,1500;
+			delitem 7111,500;
+			mes "[ Nikki Colleen ]";
+			mes "Take this item for your hardworking for my quest";
+			getitem 5688,1;
+			next;
+			mes "[ Nikki Colleen ]";
+			mes "Come back Again !";
+			close;
+}
+L_NOTENOUGH:
+	mes "[ Nikki Colleen ]";
+	mes "Please Check your inventory";
+	close;
+}

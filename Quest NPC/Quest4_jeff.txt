@@ -1,0 +1,98 @@
+aldebaran,92,216,5	script	Tasho	735,{
+
+	mes "[Tasho]";
+	mes " Young Child ?";
+	next;
+	mes "[Tasho]";
+	mes "What item would you like to take Quest?";
+	next;
+	menu "Tam",-,"Magic Eye",L_MGE,"Scuba Mask",L_SCUBA,"^FF0000Exit^000000",L_OUT;
+
+	mes "[Tasho]";
+	mes "^00B200I need the following item:^000000";
+	mes "20 Cobaltblue Dyestuffs";
+	mes "1 Flower Band";
+	mes "20 Valhalla's Flower";
+	mes "500 Illusion Flower";
+	mes "1 TCG's";
+	next;
+	mes "[Tasho]";
+	mes "Do you desire ^FFCC00TAM^000000?";
+	next;
+	menu "Yes",-,"No",L_OUT;
+	if(countitem( 978) < 20 || countitem(2215) < 1 || countitem(7510) < 20 || countitem(710) < 500 || countitem(7227) < 1 ) goto L_NOTENOUGH;
+
+	delitem  978,20;
+	delitem 2215,1;
+	delitem 7510,20;
+	delitem 710,500;
+	delitem 7227,1;
+
+	getitem 5565,1;
+
+	mes "[Tasho]";
+	mes "Here is your ^FFCC00TAM^000000, may it serve you well.";
+	close;
+L_MGE:
+	mes "[Tasho]";
+	mes "^00B200I need the following item:^000000";
+	mes "800 Old Magicbook";
+	mes "500 Torn Scroll ";
+	mes "1000 Worn-out Magic Scroll";
+	mes "1 Dark Illusion Card";
+	mes "1 Mage Hat";
+	mes "1 TCG";
+	next;
+	mes "[Tasho]";
+	mes "Do you desire ^FFCC00Magic Eye^000000?";
+	next;
+	menu "Yes",-,"No",L_OUT;
+
+	if(countitem(1006) < 800 || countitem(7118) < 500 || countitem(7099) < 1000 || countitem(4169) < 1 || countitem(5027) < 1 || countitem(7227) < 1 ) goto L_NOTENOUGH;
+
+
+	delitem 1006,800;
+	delitem 7118,500;
+	delitem 7099,1000;
+	delitem 4169,1;
+	delitem 5027,1;
+	delitem 7227,1;
+
+	getitem 5138,1;
+
+	mes "[Tasho]";
+	mes "Here is your ^FFCC00Magic Eye^000000, may it serve you well.";
+	close;
+L_SCUBA:
+	mes "[Tasho]";
+	mes "^00B200I need the following item:^000000";
+	mes "900 Aquamarine ";
+	mes "200 Tendon";
+	mes "10 Merman Card";
+	mes "350 Holy Water ";
+	next;
+	mes "[Tasho]";
+	mes "Do you desire ^FFCC00Scuba Mask^000000?";
+	next;
+	menu "Yes",-,"No",L_OUT;
+
+	if(countitem(720) < 900 || countitem(1050) < 200 || countitem(4199) < 10 || countitem(523) < 350 )  goto L_NOTENOUGH;
+
+	delitem 720,900;
+	delitem 1050,200;
+	delitem 4199,10;
+	delitem 523,350;
+
+	getitem 5397,1;
+
+	mes "[Tasho]";
+	mes "Here is your ^FFCC00Scuba Mask^000000, may it serve you well.";
+	close;
+L_NOTENOUGH:
+	mes "[Tasho]";
+	mes "^FF0000Check your inventory!!^000000";
+	close;
+L_OUT:
+	close;
+
+}

@@ -1,0 +1,515 @@
+//================================================Name======================================================
+									// Bubble Gum (Official Release Name)
+//===============================================Version====================================================
+//												  1.0 
+//===============================================Author=====================================================
+//					 ____ _____  ______  __ __   __  _______    __   _____ __   __  _______
+//					|  __ \ _  \|  __  \|  |  \ |  |/  ___  \  |  | /  /  |  \ |  |/  ___  \
+//					| |__| | \  \ |__|  |  |   \|  |  |  _\_/  |  |/  /|  |   \|  |  |  _\_/
+//					|   __/   | |      /|  |       |  | |_  \  |     | |  |    |  |  | |_  \
+//					|  |\  \_/  /  |\  \|  |  |\   |   \_/  |  |  |\  \|  |  |\   |   \_/  |
+//					|__| \_____/|__| \__\__|__| \__|\______/   |__| \__\__|__| \__|\______/
+//----------------------------------------Script Last Update 2020-------------------------------------------
+//==============================================Changelog===================================================
+									// 1.0 *
+									//		- Initial Release
+									//		- Maximize Script
+									//		- Fix NPC Dialog
+									//		- Fix NPC Dialog behavior
+//==========================================================================================================
+lighthalzen,158,94,3	script	Claude#01	62,{
+	set @npc$,"[ ^0000FFClaude^000000 ]";
+if ($@bbgum_found >= 5) {
+	mes @npc$;
+	mes "nice one!.";
+	mes "Since you found us all, here's your reward.";
+	getitem 12902,1;
+	set $@bbgum_ongoing,0;
+	set $@bbgum_found,0;
+	disablenpc "Claude#02";
+	disablenpc "Claude#03";
+	disablenpc "Claude#04";
+	disablenpc "Claude#05";
+	disablenpc "Claude#06";
+	disablenpc "Francois#02";
+	disablenpc "Francois#03";
+	disablenpc "Francois#04";
+	disablenpc "Francois#05";
+	disablenpc "Francois#06";
+	disablenpc "Annie#02";
+	disablenpc "Annie#03";
+	disablenpc "Annie#04";
+	disablenpc "Annie#05";
+	disablenpc "Annie#06";
+	disablenpc "Dagobert#02";
+	disablenpc "Dagobert#03";
+	disablenpc "Dagobert#04";
+	disablenpc "Dagobert#05";
+	disablenpc "Dagobert#06";
+	disablenpc "Mick#02";
+	disablenpc "Mick#03";
+	disablenpc "Mick#04";
+	disablenpc "Mick#05";
+	disablenpc "Mick#06";
+	close;
+	}
+if ($@bbgum_ongoing == 1) {
+	mes @npc$;
+	mes "^FF0000"+(5-$@bbgum_found)+"^000000 of my friends "+($@bbgum_found < 4 ? "are":"is")+" still hiding.";
+	mes "Keep searching.";
+	close;
+	}	
+	mes @npc$;
+	mes "Hello "+strcharinfo(0)+".";
+	mes "We want to play Hide and Seek.";
+	mes "I'll give you reward if you find us all.";
+	menu "Let's play Hide and seek",bbgum_yes,"Maybe next time...",bbgum_no;
+
+bbgum_no:
+	next;
+	mes @npc$;
+	mes "Ok nice seeing you.";
+	close;
+
+bbgum_yes:
+	next;
+	mes @npc$;
+	mes "We'll be hiding somewhere in Lighthalzen.";
+	mes "Ready?";
+	close2;
+	set $@bbgum_ongoing,1;
+	mapannounce "lighthalzen","[Club of 5]: 1",0;
+	sleep2 1000;
+	mapannounce "lighthalzen","[Club of 5]: 2",0;
+	sleep2 1000;
+	mapannounce "lighthalzen","[Club of 5]: 3",0;
+	sleep2 1000;
+	mapannounce "lighthalzen","[Club of 5]: 4",0;
+	sleep2 1000;
+	mapannounce "lighthalzen","[Club of 5]: 5 !! Hide and Seek started",0;
+	disablenpc "Claude#01";
+	disablenpc "Annie#01";
+	disablenpc "Dagobert#01";
+	disablenpc "Francois#01";
+	disablenpc "Mick#01";
+	set .a,rand(5);
+	if (.@a == 0) enablenpc "Claude#02";
+	if (.@a == 1) enablenpc "Claude#03";
+	if (.@a == 2) enablenpc "Claude#04";
+	if (.@a == 3) enablenpc "Claude#05";
+	if (.@a == 4) enablenpc "Claude#06";
+	set .@b,rand(5);
+	if (.@b == 0) enablenpc "Francois#02";
+	if (.@b == 1) enablenpc "Francois#03";
+	if (.@b == 2) enablenpc "Francois#04";
+	if (.@b == 3) enablenpc "Francois#05";
+	if (.@b == 4) enablenpc "Francois#06";
+	set .@c,rand(5);
+	if (.@c == 0) enablenpc "Annie#02";
+	if (.@c == 1) enablenpc "Annie#03";
+	if (.@c == 2) enablenpc "Annie#04";
+	if (.@c == 3) enablenpc "Annie#05";
+	if (.@c == 4) enablenpc "Annie#06";
+	set .@d,rand(5);
+	if (.@d == 0) enablenpc "Dagobert#02";
+	if (.@d == 1) enablenpc "Dagobert#03";
+	if (.@d == 2) enablenpc "Dagobert#04";
+	if (.@d == 3) enablenpc "Dagobert#05";
+	if (.@d == 4) enablenpc "Dagobert#06";
+	set .e,rand(5);
+	if (.@e == 0) enablenpc "Mick#02";
+	if (.@e == 1) enablenpc "Mick#03";
+	if (.@e == 2) enablenpc "Mick#04";
+	if (.@e == 3) enablenpc "Mick#05";
+	if (.@e == 4) enablenpc "Mick#06";
+	end;
+
+
+//-----------------Disable on Init-----------------------
+OnInit:
+	set $@bbgum_ongoing,0;
+	set $@bbgum_found,0;
+	disablenpc "Claude#02";
+	disablenpc "Claude#03";
+	disablenpc "Claude#04";
+	disablenpc "Claude#05";
+	disablenpc "Claude#06";
+	disablenpc "Francois#02";
+	disablenpc "Francois#03";
+	disablenpc "Francois#04";
+	disablenpc "Francois#05";
+	disablenpc "Francois#06";
+	disablenpc "Annie#02";
+	disablenpc "Annie#03";
+	disablenpc "Annie#04";
+	disablenpc "Annie#05";
+	disablenpc "Annie#06";
+	disablenpc "Dagobert#02";
+	disablenpc "Dagobert#03";
+	disablenpc "Dagobert#04";
+	disablenpc "Dagobert#05";
+	disablenpc "Dagobert#06";
+	disablenpc "Mick#02";
+	disablenpc "Mick#03";
+	disablenpc "Mick#04";
+	disablenpc "Mick#05";
+	disablenpc "Mick#06";
+	end;
+
+}
+
+
+lighthalzen,158,96,3	script	Annie#01	96,{
+if ($@bbgum_ongoing == 1) {
+	mes "[ ^0000FFAnnie^000000 ]";
+	mes "^FF0000"+(5-$@bbgum_found)+"^000000 of my friends "+($@bbgum_found < 4 ? "are":"is")+" still hiding.";
+	mes "Keep searching.";
+	close;
+	}
+	end;
+
+
+}
+
+lighthalzen,160,96,3	script	Dagobert#01	81,{
+	mes "[ ^0000FFDagobert^000000 ]";
+	mes "arf arf!.";
+	close;
+
+
+}
+
+lighthalzen,156,96,3	script	Francois#01	46,{
+if ($@bbgum_ongoing == 1) {
+	mes "[ ^0000FFFrancois^000000 ]";
+	mes "^FF0000"+(5-$@bbgum_found)+"^000000 of my friends "+($@bbgum_found < 4 ? "are":"is")+" still hiding.";
+	mes "Keep searching.";
+	close;
+	}
+	end;
+
+
+}
+
+lighthalzen,154,96,3	script	Mick#01	962,{
+if ($@bbgum_ongoing == 1) {
+	mes "[ ^0000FFMick^000000 ]";
+	mes "^FF0000"+(5-$@bbgum_found)+"^000000 of my friends "+($@bbgum_found < 4 ? "are":"is")+" still hiding.";
+	mes "Keep searching.";
+	close;
+	}
+	end;
+
+
+}
+
+//-----------------Hidden NPC's--------------------------
+
+
+//------------------------------Claude------------------------------
+
+lighthalzen,147,119,3	script	Claude#02	62,{
+	mes "[ ^0000FFClaude^000000 ]";
+	mes "OMG! you found me";
+	close2;
+	set $@bbgum_found,$@bbgum_found+1;
+	disablenpc "Claude#02";
+	enablenpc "Claude#01";
+	end;
+
+
+}
+
+lighthalzen,173,144,3	script	Claude#03	62,{
+	mes "[ ^0000FFClaude^000000 ]";
+	mes "OMG! you found me";
+	close2;
+	set $@bbgum_found,$@bbgum_found+1;
+	disablenpc "Claude#03";
+	enablenpc "Claude#01";
+	end;
+
+
+}
+
+lighthalzen,243,89,3	script	Claude#04	62,{
+	mes "[ ^0000FFClaude^000000 ]";
+	mes "OMG! you found me";
+	close2;
+	set $@bbgum_found,$@bbgum_found+1;
+	disablenpc "Claude#04";
+	enablenpc "Claude#01";
+	end;
+
+
+}
+
+lighthalzen,207,52,3	script	Claude#05	62,{
+	mes "[ ^0000FFClaude^000000 ]";
+	mes "OMG! you found me";
+	close2;
+	set $@bbgum_found,$@bbgum_found+1;
+	disablenpc "Claude#05";
+	enablenpc "Claude#01";
+	end;
+
+
+}
+
+lighthalzen,87,298,3	script	Claude#06	62,{
+	mes "[ ^0000FFClaude^000000 ]";
+	mes "OMG! you found me";
+	close2;
+	set $@bbgum_found,$@bbgum_found+1;
+	disablenpc "Claude#06";
+	enablenpc "Claude#01";
+	end;
+
+
+}
+
+//-------------------------------Francois------------------------------
+
+lighthalzen,170,131,3	script	Francois#02	46,{
+	mes "[ ^0000FFFrancois^000000 ]";
+	mes "Nice job.";
+	close2;
+	set $@bbgum_found,$@bbgum_found+1;
+	disablenpc "Francois#02";
+	enablenpc "Francois#01";
+	end;
+
+}
+
+lighthalzen,263,325,3	script	Francois#03	46,{
+	mes "[ ^0000FFFrancois^000000 ]";
+	mes "Nice job.";
+	close2;
+	set $@bbgum_found,$@bbgum_found+1;
+	disablenpc "Francois#03";
+	enablenpc "Francois#01";
+	end;
+
+
+}
+
+lighthalzen,249,280,3	script	Francois#04	46,{
+	mes "[ ^0000FFFrancois^000000 ]";
+	mes "Nice job.";
+	close2;
+	set $@bbgum_found,$@bbgum_found+1;
+	disablenpc "Francois#04";
+	enablenpc "Francois#01";
+	end;
+
+
+}
+
+lighthalzen,251,103,3	script	Francois#05	46,{
+	mes "[ ^0000FFFrancois^000000 ]";
+	mes "Nice job.";
+	close2;
+	set $@bbgum_found,$@bbgum_found+1;
+	disablenpc "Francois#05";
+	enablenpc "Francois#01";
+	end;
+
+
+}
+
+lighthalzen,171,258,3	script	Francois#06	46,{
+	mes "[ ^0000FFFrancois^000000 ]";
+	mes "Nice job.";
+	close2;
+	set $@bbgum_found,$@bbgum_found+1;
+	disablenpc "Francois#06";
+	enablenpc "Francois#01";
+	end;
+
+
+}
+
+
+
+//-------------------------------Annie--------------------------------
+
+lighthalzen,194,182,3	script	Annie#02	96,{
+	mes "[ ^0000FFAnnie^000000 ]";
+	mes "Your good.";
+	close2;
+	set $@bbgum_found,$@bbgum_found+1;
+	disablenpc "Annie#02";
+	enablenpc "Annie#01";
+	end;
+
+}
+
+lighthalzen,255,184,3	script	Annie#03	96,{
+	mes "[ ^0000FFAnnie^000000 ]";
+	mes "Your good.";
+	close2;
+	set $@bbgum_found,$@bbgum_found+1;
+	disablenpc "Annie#03";
+	enablenpc "Annie#01";
+	end;
+
+}
+
+lighthalzen,69,79,3	script	Annie#04	96,{
+	mes "[ ^0000FFAnnie^000000 ]";
+	mes "Your good.";
+	close2;
+	set $@bbgum_found,$@bbgum_found+1;
+	disablenpc "Annie#04";
+	enablenpc "Annie#01";
+	end;
+
+}
+
+lighthalzen,36,68,3	script	Annie#05	96,{
+	mes "[ ^0000FFAnnie^000000 ]";
+	mes "Your good.";
+	close2;
+	set $@bbgum_found,$@bbgum_found+1;
+	disablenpc "Annie#05";
+	enablenpc "Annie#01";
+	end;
+
+
+}
+
+lighthalzen,79,152,3	script	Annie#06	96,{
+	mes "[ ^0000FFAnnie^000000 ]";
+	mes "Your good.";
+	close2;
+	set $@bbgum_found,$@bbgum_found+1;
+	disablenpc "Annie#06";
+	enablenpc "Annie#01";
+	end;
+
+}
+
+//-------------------------------Dagobert--------------------------------
+
+lighthalzen,188,294,3	script	Dagobert#02	81,{
+	mes "[ ^0000FFDagobert^000000 ]";
+	mes "arf arf!.";
+	close2;
+	set $@bbgum_found,$@bbgum_found+1;
+	disablenpc "Dagobert#02";
+	enablenpc "Dagobert#01";
+	end;
+
+
+}
+
+lighthalzen,266,68,3	script	Dagobert#03	81,{
+	mes "[ ^0000FFDagobert^000000 ]";
+	mes "arf arf!.";
+	close2;
+	set $@bbgum_found,$@bbgum_found+1;
+	disablenpc "Dagobert#03";
+	enablenpc "Dagobert#01";
+	end;
+
+
+}
+
+lighthalzen,113,105,3	script	Dagobert#04	81,{
+	mes "[ ^0000FFDagobert^000000 ]";
+	mes "arf arf!.";
+	close2;
+	set $@bbgum_found,$@bbgum_found+1;
+	disablenpc "Dagobert#04";
+	enablenpc "Dagobert#01";
+	end;
+
+
+}
+
+lighthalzen,71,264,3	script	Dagobert#05	81,{
+	mes "[ ^0000FFDagobert^000000 ]";
+	mes "arf arf!.";
+	close2;
+	set $@bbgum_found,$@bbgum_found+1;
+	disablenpc "Dagobert#05";
+	enablenpc "Dagobert#01";
+	end;
+
+
+}
+
+lighthalzen,41,297,3	script	Dagobert#06	81,{
+	mes "[ ^0000FFDagobert^000000 ]";
+	mes "arf arf!.";
+	close2;
+	set $@bbgum_found,$@bbgum_found+1;
+	disablenpc "Dagobert#06";
+	enablenpc "Dagobert#01";
+	end;
+
+}
+
+
+//-------------------------------Mick--------------------------------
+
+lighthalzen,247,233,3	script	Mick#02	962,{
+	mes "[ ^0000FFMick^000000 ]";
+	mes "Finally!";
+	close2;
+	set $@bbgum_found,$@bbgum_found+1;
+	disablenpc "Mick#02";
+	enablenpc "Mick#01";
+	end;
+
+}
+
+lighthalzen,240,161,3	script	Mick#03	962,{
+	mes "[ ^0000FFMick^000000 ]";
+	mes "Finally!";
+	close2;
+	set $@bbgum_found,$@bbgum_found+1;
+	disablenpc "Mick#03";
+	enablenpc "Mick#01";
+	end;
+
+
+}
+
+lighthalzen,242,34,3	script	Mick#04	962,{
+	mes "[ ^0000FFMick^000000 ]";
+	mes "Finally!";
+	close2;
+	set $@bbgum_found,$@bbgum_found+1;
+	disablenpc "Mick#04";
+	enablenpc "Mick#01";
+	end;
+
+
+}
+
+lighthalzen,154,148,3	script	Mick#05	962,{
+	mes "[ ^0000FFMick^000000 ]";
+	mes "Finally!";
+	close2;
+	set $@bbgum_found,$@bbgum_found+1;
+	disablenpc "Mick#05";
+	enablenpc "Mick#01";
+	end;
+
+
+}
+
+lighthalzen,82,122,3	script	Mick#06	962,{
+	mes "[ ^0000FFMick^000000 ]";
+	mes "Finally!";
+	close2;
+	set $@bbgum_found,$@bbgum_found+1;
+	disablenpc "Mick#06";
+	enablenpc "Mick#01";
+	end;
+
+}
+
+
+

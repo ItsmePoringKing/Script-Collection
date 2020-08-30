@@ -1,0 +1,71 @@
+gonryun,92,171,5	script	Orlie	842,{
+
+	mes "[ Orlie ]";
+	mes "What would you like to take quest for today ?";
+	next;
+	switch(select("Black Frame Glasses","Blank Eye","Observer","Exit")){
+		case 1:
+			mes "[ Orlie ]";
+			mes "^00B200I need the following item:^000000";
+			mes "100 Red Frame";
+			mes "1 Dark Frame Card";
+			mes "50 Glass Bead";
+			mes "10,000,000 Zeny";
+			next;
+			if(countitem(734) < 100 || countitem(4170) < 1 || countitem(746) < 50 || Zeny < 10000000  ) goto L_NOTENOUGH;
+
+			delitem 734,100;
+			delitem 4170,1;
+			delitem 746,50;
+			set Zeny,Zeny -10000000;
+			mes "[ Orlie]";
+			mes "Take this item for your hardworking for my quest";
+			getitem 5401,1;
+			next;
+			mes "[ Orlie ]";
+			mes "Come back Again !";
+			close;
+		case 2:
+			mes "[ Orlie ]";
+			mes "^00B200I need the following item:^000000";
+			mes "1TCG";
+			next;
+			if(countitem(7227) < 1 ) goto L_NOTENOUGH;
+
+			delitem 7227,1;
+			mes "[ Orlie]";
+			mes "Take this item for your hardworking for my quest";
+			getitem 5102,1;
+			next;
+			mes "[ Orlie ]";
+			mes "Come back Again !";
+			close;
+		case 3:
+			mes "[ Orlie ]";
+			mes "^00B200I need the following item:^000000";
+			mes "100 Steel";
+			mes "1 Blinker";
+			mes "125 Elunium";
+			mes "50 Stone of Sage";
+			next;
+			if(countitem(999) < 100 || countitem(2295) < 1 || countitem(985) < 125 || countitem(12040) < 50 ) goto L_NOTENOUGH;
+
+			delitem 999,100;
+			delitem 2295,1;
+			delitem 985,125;
+			delitem 12040,50;
+			mes "[ Orlie]";
+			mes "Take this item for your hardworking for my quest";
+			getitem 5315,1;
+			next;
+			mes "[ Orlie ]";
+			mes "Come back Again !";
+			close;
+		case 4:
+			close;
+	}
+L_NOTENOUGH:
+	mes "[ Orlie ]";
+	mes "Please Check your Inventory";
+	close;
+}

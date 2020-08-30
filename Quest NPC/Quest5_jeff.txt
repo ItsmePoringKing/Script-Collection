@@ -1,0 +1,114 @@
+prontera,107,259,5	script	Lunar Rox	719,{
+
+	mes "[ Lunar Rox ]";
+	mes "Happy Lunar Month "+strcharinfo(0)+" what would you like to take quest for today ?";
+	next;
+	switch(select("Cat Ear Beret","Hunter's Cap","Ship Captain Hat","Robo Eye","Exit")){
+		case 1:
+			mes "[ Lunar Rox ]";
+			mes "I need this following item:";
+			mes "1 Feather Beret";
+			mes "1 Black Cat Ears";
+			mes "1 Kitty Band";
+			mes "1Cat O' Nine Tails Card";
+			mes "100 Black Cat Doll";
+			mes "100Cat's Eye";
+			mes "300 Holy Egg";
+			mes "100,000,000 Zeny";
+			next;
+			if(countitem(5170) < 1 || countitem(5057) < 1 || countitem(2213) < 1 || countitem(7206) < 100 || countitem(4290) < 1 || countitem(7263) < 100 || countitem(12703) < 300 || Zeny < 100000000 ) goto L_NOTENOUGH;
+			delitem 5170,1;
+			delitem 5057,1;
+			delitem 2213,1;
+			delitem 7206,100;
+			delitem 4290,1;
+			delitem 7263,100;
+			delitem 12703,300;
+			set Zeny,Zeny-100000000;
+			mes "[ Lunar Rox ]";
+			mes "Take this item for your hardworking for my quest";
+			getitem 18600,1;
+			next;
+			mes "[ Lunar Rox ]";
+			mes "Come back Again !";
+			close;	
+
+		case 2:
+			mes "[ Lunar Rox ]";
+			mes "I need this following item:";
+			mes "1 Feather Beret";
+			mes "500 Green Bijou";
+			mes "250 Green Live";
+			mes "500 Green Herb";
+			mes "50 Zircon";
+			mes "100 Darkgreen Dyestuffs";
+			mes "600 Holy Egg";
+			mes "50,000,000 Zeny";
+			next;
+			if(countitem(5170) < 1 || countitem(7445) < 500 || countitem(993) < 250 || countitem(511) < 500 || countitem(729) < 50 || countitem(979) < 100 || countitem(12703) < 600 || Zeny < 50000000 ) goto L_NOTENOUGH;
+			delitem 5170,1;
+			delitem 7445,500;
+			delitem 993,250;
+			delitem 511,500;
+			delitem 729,50;
+			delitem 979,100;
+			delitem 12703,600;
+			set Zeny,Zeny-50000000;
+			mes "[ Lunar Rox ]";
+			mes "Take this item for your hardworking for my quest";
+			getitem 5383,1;
+			next;
+			mes "[ Lunar Rox ]";
+			mes "Come back Again !";
+			close;
+		case 3:
+			mes "[ Lunar Rox ]";
+			mes "I need this following item:";
+			mes "1 Antlers";
+			mes "500 Horn";
+			mes "1 Captain's Hat";
+			mes "500 Holy Egg";
+			mes "5 Poring Coin";
+			next;
+			if(countitem(2284) < 1 || countitem(947) < 500 || countitem(5184) < 1 || countitem(12703) < 500 || countitem(7539) < 5 ) goto L_NOTENOUGH;
+			delitem 2284,1;
+			delitem 947,500;
+			delitem 5184,1;
+			delitem 12703,500;
+			delitem 7539,5;
+			mes "[ Lunar Rox ]";
+			mes "Take this item for your hardworking for my quest";
+			getitem 5359,1;
+			next;
+			mes "[ Lunar Rox ]";
+			mes "Come back Again !";
+			close;
+		case 4:
+			mes "[ Lunar Rox ]";
+			mes "I need this following item:";
+			mes "1 Blinker";
+			mes "1500 Steel";
+			mes "1000 Strange Steel Piece ";
+			mes "300 Holy Egg";
+			next;
+			if(countitem(2295) < 1 || countitem(999) < 1500 || countitem(7167) < 1000 || countitem(12703) < 300 ) goto L_NOTENOUGH;
+			delitem 2295,1;
+			delitem 999,1500;
+			delitem 7167,1000;
+			delitem 12703,300;
+			mes "[ Lunar Rox ]";
+			mes "Take this item for your hardworking for my quest";
+			getitem 5325,1;
+			next;
+			mes "[ Lunar Rox ]";
+			mes "Come back Again !";
+			close;
+		case 5:
+			mes "[ Lunar Rox ]";
+			mes "Come back again !";
+			close;
+		}
+L_NOTENOUGH:
+	mes "Please Check your item!";
+	close;		
+}

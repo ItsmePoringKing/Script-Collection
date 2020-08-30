@@ -1,0 +1,102 @@
+louyang,184,128,5	script	Jerico	775,{
+
+	mes "[Jerico]";
+	mes " Young Child ? from what region.";
+	next;
+
+	mes "[Jerico]";
+	mes "You should from prontera.How do you know about my Quest item ?";
+	next;
+	menu "Yes,by my Friend",-,"Nevermaind",L_OUT;
+
+	mes "[Jerico]";
+	mes "What item would you like to take Quest?";
+	next;
+	menu "Dragon Arhat Mask",-,"Tiger Arhat Mask",L_TAM,"Kabuki Mask",L_KBM,"^FF0000Exit^000000",L_OUT;
+
+	mes "[Jerico]";
+	mes "^00B200I need the following item:^000000";
+	mes "1250 Festival Mask";
+	mes "700 Blue Bijou";
+	mes "10 Fire Dragon Scale";
+	mes "5 Three-Headed Dragon's Head";
+	mes "2 TCG's";
+	next;
+	mes "[Kim]";
+	mes "Do you desire ^FFCC00Dragon Arhat Mask^000000?";
+	next;
+	menu "Yes",-,"No",L_OUT;
+	if(countitem(7187) < 1250 || countitem(7446) < 700 || countitem(7451) < 10 || countitem(7443) < 5 || countitem(7227) < 2 ) goto L_NOTENOUGH;
+
+	delitem 7187,1250;
+	delitem 7446,700;
+	delitem 7451,10;
+	delitem 7443,5;
+	delitem 7227,2;
+
+	getitem 5565,1;
+
+	mes "[Jerico]";
+	mes "Here is your ^FFCC00Blush of Groom^000000, may it serve you well.";
+	close;
+L_TAM:
+	mes "[Jerico]";
+	mes "^00B200I need the following item:^000000";
+	mes "350 Festival Mask";
+	mes "300 Yellow Bijou";
+	mes "10 Fire Dragon Scale";
+	mes "200 Dragon Skin";
+	mes "5 Three-Headed Dragon's Head";
+	next;
+	mes "[Jerico]";
+	mes "Do you desire ^FFCC00Tiger Arhat Mask^000000?";
+	next;
+	menu "Yes",-,"No",L_OUT;
+
+	if(countitem(7187) < 350 || countitem(7448) < 300 || countitem(7451) < 10 || countitem(7123) < 200 || countitem(7443) < 5 ) goto L_NOTENOUGH;
+
+
+	delitem 7187,350;
+	delitem 7448,300;
+	delitem 7451,10;
+	delitem 7123,200;
+	delitem 7443,5;
+
+	getitem 5566,1;
+
+	mes "[Jerico]";
+	mes "Here is your ^FFCC00Tiger Arhat Mask^000000, may it serve you well.";
+	close;
+L_KBM:
+	mes "[Jerico]";
+	mes "^00B200I need the following item:^000000";
+	mes "900 Festival Mask";
+	mes "200 Yellow Bijou";
+	mes "200 Blue Bijou";
+	mes "200 Wing of Dragonfly";
+	next;
+	mes "[Jerico]";
+	mes "Do you desire ^FFCC00Kabuki Mask^000000?";
+	next;
+	menu "Yes",-,"No",L_OUT;
+
+	if(countitem(7323) < 900 || countitem(7448) < 200 || countitem(7446) < 200 || countitem(7064) < 200 )  goto L_NOTENOUGH;
+
+	delitem 7323,900;
+	delitem 7448,200;
+	delitem 7446,200;
+	delitem 7064,200;
+
+	getitem 5143,1;
+
+	mes "[Jerico]";
+	mes "Here is your ^FFCC00Kabuki Mask^000000, may it serve you well.";
+	close;
+L_NOTENOUGH:
+	mes "[Jerico]";
+	mes "^FF0000Check your inventory!!^000000";
+	close;
+L_OUT:
+	close;
+
+}

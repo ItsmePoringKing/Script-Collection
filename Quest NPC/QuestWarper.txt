@@ -1,0 +1,177 @@
+prontera,164,167,3	script	Espada Warper	599,{
+
+	mes "[ Espada Warper ]";
+	mes " Hi there SEARO Player...";
+	mes " i can warp you to the locations of all Espada Warper NPCs across all maps...";
+	next;
+	mes "[ Espada Warper ]";
+	mes " now brave soldier, whom do you prefer to talk with?";
+	next;
+	switch(select("Rank 1 - Coyote Stark:Rank 2 - Baraggan Louisenbairn:Rank 3 - Tier Harribel:Rank 4 - Uliquorra Cifer:Rank 5 - Nnoitra Gilga:Rank 6 - Grimmjow Jaegerjaquez:Rank 7 - Zommari Rureaux:Rank 8 - Szayelaporro Granz:Rank 9 - Aaroniero Arruruerie:Rank 10 - Yammy Llargo:Exit"))	{
+	
+	case 1:	
+		mes "[ Espada Warper ]";
+		mes "Coyote Stark can make the following items:";
+		mes "- Dragon Arhat Mask";
+		mes "- Tiger Arhat Mask";
+		mes "- Kabuki Mask";
+		next;
+		mes "[ Espada Warper ]";
+		mes "Do you want me to warp you to Coyote Stark?";
+		menu "Yes",-,"No",No;
+			
+			warp "louyang",186,127;
+			end;
+		No: 
+			close;
+	case 2:
+		mes "[ Espada Warper ]";
+		mes "Baraggan Louisenbairn can make the following item:";
+		mes "- Chewing Gum";
+		next;
+		mes "[ Espada Warper ]";
+		mes "Do you want me to warp you to Baraggan Louisenbairn?";
+		menu "Yes",-,"No",No1;
+			
+			warp "xmas",150,94;
+			end;
+		No1: 
+			close;
+
+
+	case 3:
+		mes "[ Espada Warper ]";
+		mes "Tier Harribel can make the following item:";
+		mes "- Bubble Gum";
+		next;
+		mes "[ Espada Warper ]";
+		mes "Do you want me to warp you to Tier Harribel?";
+		menu "Yes",-,"No",No2;
+			
+			warp "umbala",134,139;
+			end;
+		No2: 
+			close;
+			
+	case 4:
+		mes "[ Espada Warper ]";
+		mes "Uliquorra Cifer can make the following item:";
+		mes "- Baphomet Horn";
+		next;
+		mes "[ Espada Warper ]";
+		mes "Do you want me to warp you to Uliquorra Cifer?";
+		menu "Yes",-,"No",No3;
+			
+			warp "geffen",116,148;
+			end;
+		No3: 
+			close;
+			
+	case 5:
+	
+		mes "[ Espada Warper ]";
+		mes "Nnoitra Gilga can make the following items:";
+		mes "- Gangster Scarf";
+		mes "- Gentleman's Pipe";
+		next;
+		mes "[ Espada Warper ]";
+		mes "Do you want me to warp you to Nnoitra Gilga?";
+		menu "Yes",-,"No",No4;
+			
+			warp "payon",148,243;
+			end;
+		No4: 
+			close;
+			
+
+	case 6:
+		mes "[ Espada Warper ]";
+		mes "Grimmjow Jaegerjaquez can make the following items:";
+		mes "- Blush of Groom";
+		mes "- Coppola";
+		mes "- Kettle Hat";
+		next;
+		mes "[ Espada Warper ]";
+		mes "Do you want me to warp you to Grimmjow Jaegerjaquez?";
+		menu "Yes",-,"No",No5;
+			
+			warp "jawaii",185,165;
+			end;
+		No5: 
+			close;
+			
+
+	case 7:
+		mes "[ Espada Warper ]";
+		mes "Zommari Rureaux can make the following items:";
+		mes "- Tam";
+		mes "- Magic Eye";
+		mes "- Scuba Mask";
+		next;
+		mes "[ Espada Warper ]";
+		mes "Do you want me to warp you to Zommari Rureaux?";
+		menu "Yes",-,"No",No6;
+			
+			warp "aldebaran",90,214;
+			end;
+		No6: 
+			close;
+				
+	case 8:
+	
+		mes "[ Espada Warper ]";
+		mes "Szayelaporro Granz can make the following items:";
+		mes "- Cat Ear Beret";
+		mes "- Hunter's Cap";
+		mes "- Ship Captain Hat";
+		mes "- Robo Eye";
+		next;
+		mes "[ Espada Warper ]";
+		mes "Do you want me to warp you to Szayelaporro Granz?";
+		menu "Yes",-,"No",No7;
+			
+			warp "prontera",105,257;
+			end;
+		No7: 
+			close;
+			
+
+	case 9:
+	
+		mes "[ Espada Warper ]";
+		mes "Aaroniero Arruruerie can make the following items:";
+		mes "- Black Frame Glasses";
+		mes "- Blank Eye";
+		mes "- Observer";
+		next;
+		mes "[ Espada Warper ]";
+		mes "Do you want me to warp you to Aaroniero Arruruerie?";
+		menu "Yes",-,"No",No8;
+			
+			warp "gonryun",90,169;
+			end;
+		No8: 
+			close;
+			
+
+	case 10:
+	
+		mes "[ Espada Warper ]";
+		mes "Yammy Llargo can make the following items:";
+		mes "- Ice Pick [1]";
+		next;
+		mes "[ Espada Warper ]";
+		mes "Do you want me to warp you to Yammy Llargo?";
+		menu "Yes",-,"No",No9;
+			
+			warp "dewata",247,226;
+			end;
+		No9: 
+			close;
+				
+	case 11:
+			close;
+}
+	
+}
+
