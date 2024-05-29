@@ -1,195 +1,86 @@
 //================================================Name======================================================
-									// Event Whisper (Official Release Name)
+// Event Whisper (Official Release Name)
 //===============================================Version====================================================
-//												  1.0 
+// 1.0 
 //===============================================Author=====================================================
-//					 ____ _____  ______  __ __   __  _______    __   _____ __   __  _______
-//					|  __ \ _  \|  __  \|  |  \ |  |/  ___  \  |  | /  /  |  \ |  |/  ___  \
-//					| |__| | \  \ |__|  |  |   \|  |  |  _\_/  |  |/  /|  |   \|  |  |  _\_/
-//					|   __/   | |      /|  |       |  | |_  \  |     | |  |    |  |  | |_  \
-//					|  |\  \_/  /  |\  \|  |  |\   |   \_/  |  |  |\  \|  |  |\   |   \_/  |
-//					|__| \_____/|__| \__\__|__| \__|\______/   |__| \__\__|__| \__|\______/
+//      ____ _____  ______  __ __   __  _______    __   _____ __   __  _______
+//     |  __ \ _  \|  __  \|  |  \ |  |/  ___  \  |  | /  /  |  \ |  |/  ___  \
+//     | |__| | \  \ |__|  |  |   \|  |  |  _\_/  |  |/  /|  |   \|  |  |  _\_/
+//     |   __/   | |      /|  |       |  | |_  \  |     | |  |    |  |  | |_  \
+//     |  |\  \_/  /  |\  \|  |  |\   |   \_/  |  |  |\  \|  |  |\   |   \_/  |
+//     |__| \_____/|__| \__\__|__| \__|\______/   |__| \__\__|__| \__|\______/
 //----------------------------------------Script Last Update 2020-------------------------------------------
 //==============================================Changelog===================================================
-									// 1.0 *
-									//		- Initial Release
+// 1.0 *
+//      - Initial Release
 //==========================================================================================================
+
 -	script	EventWarper	-1,{
-
-
-
-if( !.Enabled ){
-	cutin "3rd_ab_valkyrie",2;
-	if(getgmlevel() >= .GMLevel) message strcharinfo(0),"PM ME to setup Event Warper";
-	mes "[ ^FF7700Event Warper^000000 ]";
-	mes "There is no Event right now.";
-	next;
-	cutin "3rd_ab_valkyrie",255;
-	close;
-}else{
-	mes "[ ^FF7700Event Warper^000000 ]";
-	mes "Do you wanna join this ^FF0000"+.EventName$+" Event^000000 ?";
-	if( select("YES:NO") == 1 ){
-		warp .Map$,.X,.Y;
-		end;
-	}
-}
-close;
+OnInit:
+	set .GMLevel, 30;
+	set .Enabled, 0;
+end;
 
 OnWhisperGlobal:
-if( getgmlevel() < .GMLevel ) end;
-if( compare( @whispervar0$,"off" ) ){
-
-	set .Enabled,0;
-	hideonnpc "Event Warper#00";
-	hideonnpc "Event Warper#01";
-	hideonnpc "Event Warper#02";
-	hideonnpc "Event Warper#03";
-	hideonnpc "Event Warper#04";
-	hideonnpc "Event Warper#05";
-	hideonnpc "Event Warper#06";
-	hideonnpc "Event Warper#07";
-	hideonnpc "Event Warper#08";
-	hideonnpc "Event Warper#09";
-	hideonnpc "Event Warper#10";
-	hideonnpc "Event Warper#11";
-	hideonnpc "Event Warper#12";
-	hideonnpc "Event Warper#13";
-	hideonnpc "Event Warper#14";
-	hideonnpc "Event Warper#15";
-	hideonnpc "Event Warper#16";
-	hideonnpc "Event Warper#17";
-	hideonnpc "Event Warper#18";
-	hideonnpc "Event Warper#19";
-	hideonnpc "Event Warper#20";
-	hideonnpc "Event Warper#21";
-	hideonnpc "Event Warper#22";
-	hideonnpc "Event Warper#23";
-	hideonnpc "Event Warper#24";
-	hideonnpc "Event Warper#25";
-	hideonnpc "Event Warper#26";	
-	dispbottom "NPC Disabled.";
-	stopnpctimer;
-}else if( @whispervar0$ == "" || @whispervar1$ == "" ){
-	
-	mes "[ ^FF7700Event Warper^000000 ]";
-	mes "To setup the warp type this..";
-	mes "Example:";
-	mes "Type on PM: ^FF3355npc:EventWarper^000000";
-	mes "Type on Chat: ^FF3355EventName#Map#X#Y^000000";
-	mes "--------------------------------------";
-	mes "^FF3355Guide^000000";	
-	mes "--------------------------------------";
-	mes "FFA Coordinates";	
-	mes "^FF3355guild_vs5 49,45^000000";	
-	mes "--------------------------------------";
-	mes "RFYL Coordinates";	
-	mes "^FF3355quiz_01 322,370^000000";
-	mes "--------------------------------------";	
-	mes "Guild Vs Guild Coordinates";	
-	mes "^FF3355guild_vs2 49,49^000000";
-	mes "--------------------------------------";
-	mes "LMS/L2S/L3S/etc. Coordinates";	
-	mes "^FF3355guild_vs3 49,49^000000";	
-	mes "--------------------------------------";
-	mes "Party Event 3vs3,4vs4,1vs1,etc. Coordinates";	
-	mes "^FF3355quiz_02 336,60^000000";	
-	mes "--------------------------------------";
-}else{
-	if( !.Enabled ){
-
-			initnpctimer;
-			set .Enabled,1;
-			set .EventName$,@whispervar0$;
-			set .Map$,@whispervar1$;
-			set .X,atoi( @whispervar2$ );
-			set .Y,atoi( @whispervar3$ );
-			hideoffnpc "Event Warper#00";
-			hideoffnpc "Event Warper#01";
-			hideoffnpc "Event Warper#02";
-			hideoffnpc "Event Warper#03";
-			hideoffnpc "Event Warper#04";
-			hideoffnpc "Event Warper#05";
-			hideoffnpc "Event Warper#06";
-			hideoffnpc "Event Warper#07";
-			hideoffnpc "Event Warper#08";
-			hideoffnpc "Event Warper#09";
-			hideoffnpc "Event Warper#10";
-			hideoffnpc "Event Warper#11";
-			hideoffnpc "Event Warper#12";
-			hideoffnpc "Event Warper#13";
-			hideoffnpc "Event Warper#14";
-			hideoffnpc "Event Warper#15";
-			hideoffnpc "Event Warper#16";
-			hideoffnpc "Event Warper#17";
-			hideoffnpc "Event Warper#18";
-			hideoffnpc "Event Warper#19";
-			hideoffnpc "Event Warper#20";
-			hideoffnpc "Event Warper#21";
-			hideoffnpc "Event Warper#22";
-			hideoffnpc "Event Warper#23";
-			hideoffnpc "Event Warper#24";
-			hideoffnpc "Event Warper#25";
-			hideoffnpc "Event Warper#26";
-			announce "Event Warper for "+.EventName$+" Event are now open.",0;
-			end;
-OnTimer120000:
-			announce ""+.EventName$+" Event will start automatically after 2 minutes",0;
-			end;
-OnTimer180000:
-			announce ""+.EventName$+" Event will start automatically after 1 minute",0;
-			end;
-OnTimer210000:
-			announce ""+.EventName$+" Event is starting in 30s",0;
-			end;
-OnTimer235000:			
-			announce "The "+.EventName$+" event has started",0;
-			hideonnpc "Event Warper#00";
-			hideonnpc "Event Warper#01";
-			hideonnpc "Event Warper#02";
-			hideonnpc "Event Warper#03";
-			hideonnpc "Event Warper#04";
-			hideonnpc "Event Warper#05";
-			hideonnpc "Event Warper#06";
-			hideonnpc "Event Warper#07";
-			hideonnpc "Event Warper#08";
-			hideonnpc "Event Warper#09";
-			hideonnpc "Event Warper#10";
-			hideonnpc "Event Warper#11";
-			hideonnpc "Event Warper#12";
-			hideonnpc "Event Warper#13";
-			hideonnpc "Event Warper#14";
-			hideonnpc "Event Warper#15";
-			hideonnpc "Event Warper#16";
-			hideonnpc "Event Warper#17";
-			hideonnpc "Event Warper#18";
-			hideonnpc "Event Warper#19";
-			hideonnpc "Event Warper#20";
-			hideonnpc "Event Warper#21";
-			hideonnpc "Event Warper#22";
-			hideonnpc "Event Warper#23";
-			hideonnpc "Event Warper#24";
-			hideonnpc "Event Warper#25";
-			hideonnpc "Event Warper#26";
-			stopnpctimer;
-			set .Enabled,0;
-			end;
-		}else{
-			mes "[ ^FF7700Event Warper^000000 ]";
-			mes "Sorry there is still ^FF0000Event^000000 on going inside";
-			close;
-		}	
+	if (getgmlevel() < .GMLevel) end;
+	if (compare(@whispervar0$, "off")) {
+		disableWarper();
+	} else {
+		setupWarper();
 	}
-	end;
-	
+end;
 
+disableWarper:
+	set .Enabled, 0;
+	hideWarperNPCs();
+	stopnpctimer;
+	dispbottom "NPC Disabled.";
+end;
 
-OnInit:
-// Minimum GM Level Required to Active the Warp
-	set .GMLevel,30;
-	set .Enabled,0;
+hideWarperNPCs:
+	for (set .i, 0; .i < 27; set .i, .i + 1) {
+		hideonnpc "Event Warper#" + .i$;
+	}
+end;
 
-}
+setupWarper:
+	if (!.Enabled) {
+		setWarperSettings();
+	} else {
+		mes "[ ^FF7700Event Warper^000000 ]";
+		mes "Sorry, there is still an event ongoing.";
+		close;
+	}
+end;
+
+setWarperSettings:
+	set .Enabled, 1;
+	set .EventName$, @whispervar0$;
+	set .Map$, @whispervar1$;
+	set .X, atoi(@whispervar2$);
+	set .Y, atoi(@whispervar3$);
+	hideoffWarperNPCs();
+	announce "Event Warper for " + .EventName$ + " Event is now open.", 0;
+	setEventTimers();
+end;
+
+hideoffWarperNPCs:
+	hideWarperNPCs();
+	stopnpctimer;
+end;
+
+setEventTimers:
+	initnpctimer;
+	startEventCountdown();
+end;
+
+startEventCountdown:
+	announce "" + .EventName$ + " Event will start automatically in 2 minutes.", 0;
+	setnpctimer 60000, .EventName$ + " Event will start automatically in 1 minute.";
+	setnpctimer 120000, .EventName$ + " Event is starting in 30 seconds.";
+	setnpctimer 150000, "The " + .EventName$ + " event has started.";
+end;
+
 prontera	mapflag	loadevent
 prontera,156,152,4	duplicate(EventWarper)	Event Warper#00	811
 morocc,168,104,4	duplicate(EventWarper)	Event Warper#01	811
