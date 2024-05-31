@@ -1,0 +1,32 @@
+// Lottery NPC Script
+prontera,156,150,3	script	Lottery	75,{
+	mes "[Lottery]";
+	mes "Welcome to the lottery!";
+	mes "Tickets cost 500 zeny each.";
+	next;
+	if (Zeny < 500) {
+		mes "You don't have enough zeny.";
+		close;
+	}
+	set Zeny, Zeny - 500;
+	set .@ticket1, rand(1,100);
+	set .@ticket2, rand(1,100);
+	set .@ticket3, rand(1,100);
+	mes "Your numbers are: " + .@ticket1 + ", " + .@ticket2 + ", " + .@ticket3 + ".";
+	next;
+	mes "Drawing the lottery...";
+	set .@draw1, rand(1,100);
+	set .@draw2, rand(1,100);
+	set .@draw3, rand(1,100);
+	mes "Winning numbers: " + .@draw1 + ", " + .@draw2 + ", " + .@draw3 + ".";
+	if ((.@ticket1 == .@draw1 || .@ticket1 == .@draw2 || .@ticket1 == .@draw3) && 
+	    (.@ticket2 == .@draw1 || .@ticket2 == .@draw2 || .@ticket2 == .@draw3) && 
+	    (.@ticket3 == .@draw1 || .@ticket3 == .@draw2 || .@ticket3 == .@draw3)) {
+		set .@reward, 10000;
+		set Zeny, Zeny + .@reward;
+		mes "Jackpot! You won " + .@reward + " zeny!";
+	} else {
+		mes "Better luck next time!";
+	}
+	close;
+}
