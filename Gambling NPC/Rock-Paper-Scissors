@@ -1,0 +1,32 @@
+// Rock-Paper-Scissors Game NPC Script
+prontera,158,150,3	script	RPSGame	75,{
+	mes "[Rock-Paper-Scissors]";
+	mes "Welcome to the rock-paper-scissors game!";
+	mes "Place your bet:";
+	next;
+	input .@bet;
+	if (.@bet <= 0 || .@bet > Zeny) {
+		mes "Invalid bet!";
+		close;
+	}
+	set Zeny, Zeny - .@bet;
+	mes "Choose: (1 for Rock, 2 for Paper, 3 for Scissors)";
+	next;
+	input .@choice,1,3;
+	.@npcChoice = rand(1,4);
+	mes "You chose " + (.@choice == 1 ? "Rock" : .@choice == 2 ? "Paper" : "Scissors") + ".";
+	mes "NPC chose " + (.@npcChoice == 1 ? "Rock" : .@npcChoice == 2 ? "Paper" : "Scissors") + ".";
+	if (.@choice == .@npcChoice) {
+		mes "It's a tie!";
+		set Zeny, Zeny + .@bet;
+	} else if ((.@choice == 1 && .@npcChoice == 3) || 
+	           (.@choice == 2 && .@npcChoice == 1) || 
+	           (.@choice == 3 && .@npcChoice == 2)) {
+		set .@reward, .@bet * 2;
+		set Zeny, Zeny + .@reward;
+		mes "You won " + .@reward + " zeny!";
+	} else {
+		mes "You lost. Better luck next time!";
+	}
+	close;
+}
