@@ -1,0 +1,25 @@
+// Blackjack Game NPC Script
+prontera,159,150,3	script	Blackjack	75,{
+	mes "[Blackjack]";
+	mes "Welcome to the blackjack game!";
+	mes "Place your bet:";
+	next;
+	input .@bet;
+	if (.@bet <= 0 || .@bet > Zeny) {
+		mes "Invalid bet!";
+		close;
+	}
+	set Zeny, Zeny - .@bet;
+	set .@playerTotal, rand(2,22);
+	set .@npcTotal, rand(2,22);
+	mes "Your total: " + .@playerTotal;
+	mes "NPC's total: " + .@npcTotal;
+	if ((.@playerTotal <= 21 && .@playerTotal > .@npcTotal) || .@npcTotal > 21) {
+		set .@reward, .@bet * 2;
+		set Zeny, Zeny + .@reward;
+		mes "You won " + .@reward + " zeny!";
+	} else {
+		mes "You lost. Better luck next time!";
+	}
+	close;
+}
