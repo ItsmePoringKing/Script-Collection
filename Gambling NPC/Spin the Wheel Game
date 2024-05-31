@@ -1,0 +1,17 @@
+// Spin the Wheel Game NPC Script
+prontera,163,150,3	script	SpinWheel	75,{
+	mes "[Spin the Wheel]";
+	mes "Welcome to the spin the wheel game!";
+	mes "Each spin costs 300 zeny.";
+	next;
+	if (Zeny < 300) {
+		mes "You don't have enough zeny.";
+		close;
+	}
+	set Zeny, Zeny - 300;
+	.@prize = rand(1,10);
+	mes "Spinning the wheel...";
+	mes "You won " + .@prize * 100 + " zeny!";
+	set Zeny, Zeny + (.@prize * 100);
+	close;
+}
