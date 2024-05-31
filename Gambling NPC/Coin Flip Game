@@ -1,0 +1,26 @@
+// Coin Flip Game NPC Script
+prontera,155,150,3	script	CoinFlipper	75,{
+	mes "[Coin Flipper]";
+	mes "Welcome to the coin flip game!";
+	mes "Place your bet:";
+	next;
+	input .@bet;
+	if (.@bet <= 0 || .@bet > Zeny) {
+		mes "Invalid bet!";
+		close;
+	}
+	set Zeny, Zeny - .@bet;
+	mes "Choose heads or tails (1 for heads, 2 for tails):";
+	next;
+	input .@guess,1,2;
+	.@flip = rand(1,3);
+	mes "The coin flip is " + (.@flip == 1 ? "heads." : "tails.");
+	if (.@flip == .@guess) {
+		set .@reward, .@bet * 2;
+		set Zeny, Zeny + .@reward;
+		mes "You won " + .@reward + " zeny!";
+	} else {
+		mes "You lost. Better luck next time!";
+	}
+	close;
+}
