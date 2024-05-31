@@ -1,0 +1,31 @@
+// Bingo Game NPC Script
+prontera,164,150,3	script	Bingo	75,{
+	mes "[Bingo]";
+	mes "Welcome to the bingo game!";
+	mes "Each card costs 500 zeny.";
+	next;
+	if (Zeny < 500) {
+		mes "You don't have enough zeny.";
+		close;
+	}
+	set Zeny, Zeny - 500;
+	.@bingo1 = rand(1,50);
+	.@bingo2 = rand(1,50);
+	.@bingo3 = rand(1,50);
+	mes "Your numbers: " + .@bingo1 + ", " + .@bingo2 + ", " + .@bingo3 + ".";
+	mes "Drawing numbers...";
+	.@draw1 = rand(1,50);
+	.@draw2 = rand(1,50);
+	.@draw3 = rand(1,50);
+	mes "Drawn numbers: " + .@draw1 + ", " + .@draw2 + ", " + .@draw3 + ".";
+	if ((.@bingo1 == .@draw1 || .@bingo1 == .@draw2 || .@bingo1 == .@draw3) && 
+	    (.@bingo2 == .@draw1 || .@bingo2 == .@draw2 || .@bingo2 == .@draw3) && 
+	    (.@bingo3 == .@draw1 || .@bingo3 == .@draw2 || .@bingo3 == .@draw3)) {
+		set .@reward, 5000;
+		set Zeny, Zeny + .@reward;
+		mes "You won " + .@reward + " zeny!";
+	} else {
+		mes "Better luck next time!";
+	}
+	close;
+}
