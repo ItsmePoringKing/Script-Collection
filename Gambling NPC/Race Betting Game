@@ -1,0 +1,26 @@
+// Race Betting Game NPC Script
+prontera,162,150,3	script	RaceBetting	75,{
+	mes "[Race Betting]";
+	mes "Welcome to the race betting game!";
+	mes "Place your bet:";
+	next;
+	input .@bet;
+	if (.@bet <= 0 || .@bet > Zeny) {
+		mes "Invalid bet!";
+		close;
+	}
+	set Zeny, Zeny - .@bet;
+	mes "Choose a racer (1, 2, or 3):";
+	next;
+	input .@choice,1,3;
+	.@winner = rand(1,4);
+	mes "Racer " + .@winner + " won!";
+	if (.@choice == .@winner) {
+		set .@reward, .@bet * 3;
+		set Zeny, Zeny + .@reward;
+		mes "You won " + .@reward + " zeny!";
+	} else {
+		mes "You lost. Better luck next time!";
+	}
+	close;
+}
