@@ -1,0 +1,28 @@
+// High-Low Game NPC Script
+prontera,157,150,3	script	HighLow	75,{
+	mes "[High-Low]";
+	mes "Welcome to the high-low game!";
+	mes "Place your bet:";
+	next;
+	input .@bet;
+	if (.@bet <= 0 || .@bet > Zeny) {
+		mes "Invalid bet!";
+		close;
+	}
+	set Zeny, Zeny - .@bet;
+	.@current = rand(1,101);
+	mes "Current number is: " + .@current;
+	mes "Will the next number be higher or lower? (1 for higher, 2 for lower)";
+	next;
+	input .@guess,1,2;
+	.@next = rand(1,101);
+	mes "Next number is: " + .@next;
+	if ((.@guess == 1 && .@next > .@current) || (.@guess == 2 && .@next < .@current)) {
+		set .@reward, .@bet * 2;
+		set Zeny, Zeny + .@reward;
+		mes "You won " + .@reward + " zeny!";
+	} else {
+		mes "You lost. Better luck next time!";
+	}
+	close;
+}
