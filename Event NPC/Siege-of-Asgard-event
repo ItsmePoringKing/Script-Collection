@@ -1,0 +1,116 @@
+- script SiegeOfAsgardEvent 4_M_RAGFIELD
+
+OnInit:
+    set .isSiegeActive, false
+    set .siegeEndTime, 0
+    set .defenderScore, 0
+    set .attackerScore, 0
+    set .playerTeams, {}
+
+startSiegeEvent:
+    if .isSiegeActive then
+        mes "The siege event is already active."
+        close
+    endif
+
+    set .isSiegeActive, true
+    set .siegeEndTime, gettimetick(1800) // 1800 seconds = 30 minutes
+
+    mes "The Siege of Asgard event has begun! Defend or attack the city as you see fit."
+
+    // Initialize teams, spawn NPCs, set up objectives, etc.
+    callsub .initializeTeams
+
+    close
+
+endSiegeEvent:
+    if not .isSiegeActive then
+        mes "The siege event is not active."
+        close
+    endif
+
+    set .isSiegeActive, false
+
+    // Calculate final scores, rewards, and perform cleanup
+    callsub .calculateFinalScores
+
+    close
+
+initializeTeams:
+    // Clear player teams table
+    set .playerTeams, {}
+
+    // Iterate through online players and assign them to teams
+    setarray .onlinePlayers, getarrayinfo(GA_CHARID)
+    set .numPlayersAssigned, 0
+
+    for set .i, 0, getarraysize(.onlinePlayers)-1 do
+        if .numPlayersAssigned < 20 then // Assuming 20 players per team
+            set .teamID, 1
+        else
+            set .teamID, 2
+        endif
+
+        callsub .joinTeam, .onlinePlayers[.i], .teamID
+        set .numPlayersAssigned, .numPlayersAssigned + 1
+    next
+
+    end
+
+joinTeam:
+    // Check if the player can join the specified team
+    // (e.g., ensure the team is not already full)
+
+    // Assign the player to the specified team
+    // (Implementation details will depend on your player/team management system)
+    set .playerTeams[.1], .2
+
+    close
+
+leaveTeam:
+    // Remove the player from their current team
+    // (Implementation details will depend on your player/team management system)
+    set .playerTeams[.1], ""
+
+    close
+
+calculateFinalScores:
+    // Iterate through player teams and calculate scores
+    set .defenderScore, 0
+    set .attackerScore, 0
+
+    setarray .players, .playerTeams
+    set .numPlayers, getarraysize(.players)
+
+    for set .i, 0, .numPlayers-1 do
+        set .player, .players[.i]
+
+        if .playerTeams[.player] == 1 then
+            set .defenderScore, .defenderScore + 1
+        elseif .playerTeams[.player] == 2 then
+            set .attackerScore, .attackerScore + 1
+        endif
+    next
+
+    // Determine the winning team and grant rewards
+    if .defenderScore > .attackerScore then
+        set .winningTeamID, 1
+    else
+        set .winningTeamID, 2
+    endif
+
+    callsub .grantRewards, .winningTeamID
+
+    close
+
+grantRewards:
+    // Grant rewards to players based on their participation and the winning team
+    // (Implementation details will depend on your reward system)
+    mes "The siege event has ended. Rewards will be distributed to participants."
+
+    close
+
+OnTalk:
+    menu "Welcome to the Siege of Asgard event!", startSiegeEvent, endSiegeEvent, "Exit"
+
+    close
