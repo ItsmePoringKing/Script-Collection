@@ -1,0 +1,26 @@
+// Dice Roll Game NPC Script
+prontera,150,150,3	script	DiceRoller	75,{
+	mes "[Dice Roller]";
+	mes "Welcome to the dice game!";
+	mes "Place your bet:";
+	next;
+	input .@bet;
+	if (.@bet <= 0 || .@bet > Zeny) {
+		mes "Invalid bet!";
+		close;
+	}
+	set Zeny, Zeny - .@bet;
+	mes "Choose a number between 1 and 6:";
+	next;
+	input .@guess,1,6;
+	.@roll = rand(1,7);
+	mes "The dice rolled a " + .@roll + ".";
+	if (.@roll == .@guess) {
+		set .@reward, .@bet * 6;
+		set Zeny, Zeny + .@reward;
+		mes "You won " + .@reward + " zeny!";
+	} else {
+		mes "You lost. Better luck next time!";
+	}
+	close;
+}
