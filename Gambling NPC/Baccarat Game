@@ -1,0 +1,28 @@
+// Baccarat Game NPC Script
+prontera,160,150,3	script	Baccarat	75,{
+	mes "[Baccarat]";
+	mes "Welcome to the baccarat game!";
+	mes "Place your bet:";
+	next;
+	input .@bet;
+	if (.@bet <= 0 || .@bet > Zeny) {
+		mes "Invalid bet!";
+		close;
+	}
+	set Zeny, Zeny - .@bet;
+	set .@playerTotal, rand(1,10);
+	set .@bankerTotal, rand(1,10);
+	mes "Player's total: " + .@playerTotal;
+	mes "Banker's total: " + .@bankerTotal;
+	if (.@playerTotal > .@bankerTotal) {
+		set .@reward, .@bet * 2;
+		set Zeny, Zeny + .@reward;
+		mes "You won " + .@reward + " zeny!";
+	} else if (.@playerTotal < .@bankerTotal) {
+		mes "You lost. Better luck next time!";
+	} else {
+		mes "It's a tie!";
+		set Zeny, Zeny + .@bet;
+	}
+	close;
+}
