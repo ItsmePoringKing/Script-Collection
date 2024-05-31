@@ -1,0 +1,26 @@
+// Number Guessing Game NPC Script
+prontera,154,150,3	script	NumberGuesser	75,{
+	mes "[Number Guesser]";
+	mes "Welcome to the number guessing game!";
+	mes "Place your bet:";
+	next;
+	input .@bet;
+	if (.@bet <= 0 || .@bet > Zeny) {
+		mes "Invalid bet!";
+		close;
+	}
+	set Zeny, Zeny - .@bet;
+	mes "Guess the number (1-100):";
+	next;
+	input .@guess,1,100;
+	.@number = rand(1,101);
+	mes "The number is " + .@number + ".";
+	if (.@number == .@guess) {
+		set .@reward, .@bet * 100;
+		set Zeny, Zeny + .@reward;
+		mes "You won " + .@reward + " zeny!";
+	} else {
+		mes "You lost. Better luck next time!";
+	}
+	close;
+}
