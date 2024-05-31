@@ -1,0 +1,24 @@
+// Scratch Cards Game NPC Script
+prontera,161,150,3	script	ScratchCards	75,{
+	mes "[Scratch Cards]";
+	mes "Welcome to the scratch cards game!";
+	mes "Each card costs 200 zeny.";
+	next;
+	if (Zeny < 200) {
+		mes "You don't have enough zeny.";
+		close;
+	}
+	set Zeny, Zeny - 200;
+	.@symbol1 = rand(1,5);
+	.@symbol2 = rand(1,5);
+	.@symbol3 = rand(1,5);
+	mes "Your card: [" + .@symbol1 + "] [" + .@symbol2 + "] [" + .@symbol3 + "]";
+	if (.@symbol1 == .@symbol2 && .@symbol2 == .@symbol3) {
+		set .@reward, 2000;
+		set Zeny, Zeny + .@reward;
+		mes "You won " + .@reward + " zeny!";
+	} else {
+		mes "Better luck next time!";
+	}
+	close;
+}
