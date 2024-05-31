@@ -1,0 +1,25 @@
+// Slot Machine NPC Script
+prontera,151,150,3	script	SlotMachine	75,{
+	mes "[Slot Machine]";
+	mes "Welcome to the slot machine!";
+	mes "Each spin costs 100 zeny.";
+	next;
+	if (Zeny < 100) {
+		mes "You don't have enough zeny.";
+		close;
+	}
+	set Zeny, Zeny - 100;
+	.@slot1 = rand(1,5);
+	.@slot2 = rand(1,5);
+	.@slot3 = rand(1,5);
+	mes "Spinning...";
+	mes "Result: [" + .@slot1 + "] [" + .@slot2 + "] [" + .@slot3 + "]";
+	if (.@slot1 == .@slot2 && .@slot2 == .@slot3) {
+		set .@reward, 1000;
+		set Zeny, Zeny + .@reward;
+		mes "Jackpot! You won " + .@reward + " zeny!";
+	} else {
+		mes "Better luck next time!";
+	}
+	close;
+}
