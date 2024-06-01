@@ -1,0 +1,51 @@
+prontera,155,185,5	script	Random Card NPC	100,{
+	.@zeny_cost = 1000000; // Zeny cost per roll
+	.@normal_chance = 100; // Normal monster card chance (100%)
+	.@mini_chance = 10; // Mini monster card chance (10%)
+
+	menu "Welcome to the Random Card NPC! What would you like to do?",
+		"Roll for a random card (" + .@zeny_cost + " Zeny)", Roll,
+		"Nevermind", Quit;
+
+OnInit:
+	setarray .@normal_cards, 4001, 4002, 4003; // Example normal monster card IDs (You can add or remove as needed)
+	setarray .@mini_cards, 4004, 4005, 4006; // Example mini monster card IDs (You can add or remove as needed)
+	end;
+
+Roll:
+	if (countitem(zeny) < .@zeny_cost) {
+		mes "[Random Card NPC]";
+		mes "You don't have enough Zeny.";
+		close;
+	}
+	
+	delitem zeny, .@zeny_cost;
+	
+	.@roll = rand(100); // Roll a random number between 0 and 99
+	
+	if (.@roll < .@normal_chance) {
+		// Player gets a normal monster card
+		.@card_id = .@normal_cards[rand(getarraysize(.@normal_cards))];
+		getitem .@card_id, 1;
+		mes "[Random Card NPC]";
+		mes "Congratulations! You got a normal monster card.";
+		close;
+	} else if (.@roll < .@normal_chance + .@mini_chance) {
+		// Player gets a mini monster card
+		.@card_id = .@mini_cards[rand(getarraysize(.@mini_cards))];
+		getitem .@card_id, 1;
+		mes "[Random Card NPC]";
+		mes "Congratulations! You got a mini monster card.";
+		close;
+	} else {
+		// Player gets nothing
+		mes "[Random Card NPC]";
+		mes "Sorry, you didn't get any card this time.";
+		close;
+	}
+	
+Quit:
+	mes "[Random Card NPC]";
+	mes "Come back anytime if you want to try your luck again!";
+	close;
+}
