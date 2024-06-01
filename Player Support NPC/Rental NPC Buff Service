@@ -1,0 +1,98 @@
+prontera,150,150,4	script	Rental NPC	1_M_MERCHANT,{
+	.@rental_cost = 10000000; // Rental cost: 10 million Zeny
+	.@buff_interval = 300000; // Buff interval: 5 minutes (300000 milliseconds)
+	.@rent_duration = 3600000; // Rent duration: 1 hour (3600000 milliseconds)
+
+	menu "Hello there! I am the Rental NPC. Would you like to rent my services?",
+		"Rent the NPC for " + .@rental_cost + " Zeny", Rent,
+		"Nevermind", Quit;
+
+OnInit:
+	.@follow_id = 1027; // Poring monster ID
+	end;
+
+Rent:
+	if (countitem(zeny) < .@rental_cost) {
+		mes "[Rental NPC]";
+		mes "You don't have enough Zeny.";
+		close;
+	}
+	
+	mes "[Rental NPC]";
+	mes "Thank you for renting my services! I'll disguise myself as a Poring and follow you.";
+
+	.@rented = 1;
+	.@renter_id = getcharid(0);
+	.@follow_instance = summonnpc("prontera", 150, 150, "Poring", .@follow_id, 1, getcharxy(.@renter_id, 0), getcharxy(.@renter_id, 1));
+	attachrid .@follow_instance, .@renter_id;
+	walkto .@renter_id, 1, 1;
+	doevent "buff_player", .@renter_id, .@buff_interval;
+	sleep .@rent_duration;
+	.@rented = 0;
+	delunit .@follow_instance;
+	end;
+
+Quit:
+	mes "[Rental NPC]";
+	mes "Come back anytime if you change your mind!";
+	close;
+}
+
+prontera,150,150,3	script	Poring	1_F_NOVICE,{	
+	if (.@rented) {
+		mes "[Poring]";
+		mes "Hello! I am your loyal assistant!";
+		sleep2 1000;
+		useitem "Aspersio", getcharid(0);
+		sleep2 1000;
+		useitem "Blessing", getcharid(0);
+		sleep2 1000;
+		useitem "Increase AGI", getcharid(0);
+		sleep2 1000;
+		useitem "Impositio Manus", getcharid(0);
+		sleep2 1000;
+		useitem "Magnificat", getcharid(0);
+		sleep2 1000;
+		useitem "Kyrie Eleison", getcharid(0);
+		sleep2 1000;
+		useitem "Gloria", getcharid(0);
+		sleep2 1000;
+		useitem "Lex Divina", getcharid(0);
+		sleep2 1000;
+		useitem "Safety Wall", getcharid(0);
+		end;
+	}
+}
+
+prontera,123,123,5	script	buff_player	999,{
+	sleep .@param[1];
+	do {
+		.@renter_id = .@param[0];
+		if (isloggedin(.@renter_id)) {
+			unitwalkto .@renter_id, 1, 1;
+			unitwalkto .@renter_id, 1, 1;
+			unitwalkto .@renter_id, 1, 1;
+			unitwalkto .@renter_id, 1, 1;
+			unitwalkto .@renter_id, 1, 1;
+			unitwalkto .@renter_id, 1, 1;
+			unitwalkto .@renter_id, 1, 1;
+			unitwalkto .@renter_id, 1, 1;
+			unitwalkto .@renter_id, 1, 1;
+			unitwalkto .@renter_id, 1, 1;
+			castself "Blessing";
+			castself "Increase AGI";
+			castself "Impositio Manus";
+			castself "Magnificat";
+			castself "Kyrie Eleison";
+			castself "Gloria";
+			castself "Lex Divina";
+			castself "Safety Wall";
+			unitwalkto .@renter_id, 1, 1;
+			unitwalkto .@renter_id, 1, 1;
+			unitwalkto .@renter_id, 1, 1;
+			unitwalkto .@renter_id, 1, 1;
+			unitwalkto .@renter_id, 1, 1;
+		}
+		sleep .@param[1];
+	} while (isloggedin(.@renter_id));
+}
