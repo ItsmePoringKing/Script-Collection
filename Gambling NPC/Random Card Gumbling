@@ -1,7 +1,8 @@
 prontera,155,185,5	script	Random Card NPC	100,{
 	.@zeny_cost = 1000000; // Zeny cost per roll
-	.@normal_chance = 100; // Normal monster card chance (100%)
+	.@normal_chance = 89; // Normal monster card chance (89%)
 	.@mini_chance = 10; // Mini monster card chance (10%)
+	.@boss_chance = 1; // Boss card chance (1%)
 
 	menu "Welcome to the Random Card NPC! What would you like to do?",
 		"Roll for a random card (" + .@zeny_cost + " Zeny)", Roll,
@@ -10,6 +11,7 @@ prontera,155,185,5	script	Random Card NPC	100,{
 OnInit:
 	setarray .@normal_cards, 4001, 4002, 4003; // Example normal monster card IDs (You can add or remove as needed)
 	setarray .@mini_cards, 4004, 4005, 4006; // Example mini monster card IDs (You can add or remove as needed)
+	setarray .@boss_cards, 4007, 4008, 4009; // Example boss monster card IDs (You can add or remove as needed)
 	end;
 
 Roll:
@@ -36,6 +38,13 @@ Roll:
 		getitem .@card_id, 1;
 		mes "[Random Card NPC]";
 		mes "Congratulations! You got a mini monster card.";
+		close;
+	} else if (.@roll < .@normal_chance + .@mini_chance + .@boss_chance) {
+		// Player gets a boss monster card
+		.@card_id = .@boss_cards[rand(getarraysize(.@boss_cards))];
+		getitem .@card_id, 1;
+		mes "[Random Card NPC]";
+		mes "Congratulations! You got a boss monster card.";
 		close;
 	} else {
 		// Player gets nothing
