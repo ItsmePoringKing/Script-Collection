@@ -1,0 +1,14 @@
+// Panagbenga Festival NPC script
+aldebaran,250,150,4	script	Panagbenga_NPC	1_M_ALDEBA,{
+	message "Welcome to the Panagbenga Festival!";
+	message "The Panagbenga Festival is a month-long celebration of flowers.";
+	message "Currently, we're offering the Panagbenga Floral Parade event.";
+	message "Would you like to join our floral parade?";
+	if(select("Yes:No") == 1) {
+		message "Amazing! Let's find you some flowers and get ready for the parade!";
+		// Add code here to initiate the Panagbenga floral parade event
+	} else {
+		message "No problem. Enjoy the stunning floral floats and performances!";
+	}
+	close;
+}
