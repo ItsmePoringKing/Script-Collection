@@ -1,0 +1,13 @@
+// Sarangani Bay Festival NPC script
+comodo,150,200,4	script	SaranganiBay_NPC	1_M_ALDEBA,{
+	message "Welcome to the Sarangani Bay Festival!";
+	message "The Sarangani Bay Festival celebrates the rich marine resources of Sarangani Bay.";
+	message "Currently, we're offering the Sarangani Bay Water Sports Competitions event.";
+	message "Interested in joining our water sports competitions?";
+	if(select("Yes:No") == 1) {
+		message "Exciting! Let's gear up and hit the waves!";
+	} else {
+		message "No problem. Enjoy the coastal festivities and seafood delights!";
+	}
+	close;
+}
