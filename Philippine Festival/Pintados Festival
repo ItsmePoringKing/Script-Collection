@@ -1,0 +1,14 @@
+// Pintados Festival NPC script
+izlude,150,100,4	script	Pintados_NPC	1_F_MARIA,{
+	message "Welcome to the Pintados Festival!";
+	message "The Pintados Festival celebrates the ancient practice of body painting.";
+	message "Currently, we're offering the Pintados Body Painting Contest event.";
+	message "Would you like to join our body painting contest?";
+	if(select("Yes:No") == 1) {
+		message "Fantastic! Let's find you some vibrant paints and get creative!";
+		// Add code here to initiate the Pintados body painting contest event
+	} else {
+		message "That's alright. Enjoy the colorful displays of body art!";
+	}
+	close;
+}
