@@ -1,0 +1,14 @@
+// Pahiyas Festival NPC script
+prontera,50,50,4	script	Pahiyas_NPC	1_M_ALDEBA,{
+	message "Welcome to the Pahiyas Festival!";
+	message "The Pahiyas Festival is a colorful celebration of the harvest season.";
+	message "Currently, we're offering the Pahiyas House Decorating event.";
+	message "Would you like to participate in decorating houses?";
+	if(select("Yes:No") == 1) {
+		message "Wonderful! Let's gather some colorful decorations and start decorating!";
+		// Add code here to initiate the Pahiyas house decorating event
+	} else {
+		message "No worries. Enjoy admiring the beautifully decorated houses!";
+	}
+	close;
+}
