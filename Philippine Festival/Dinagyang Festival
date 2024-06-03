@@ -1,0 +1,14 @@
+// Dinagyang Festival NPC script
+prontera,200,100,4	script	Dinagyang_NPC	1_F_MARIA,{
+	message "Welcome to the Dinagyang Festival!";
+	message "The Dinagyang Festival is a vibrant celebration in honor of the Santo Niño.";
+	message "Currently, we're offering the Dinagyang Street Dancing event.";
+	message "Would you like to join our lively street parade?";
+	if(select("Yes:No") == 1) {
+		message "Excellent choice! Let's get you dressed in vibrant costumes!";
+		// Add code here to initiate the Dinagyang street dancing event
+	} else {
+		message "That's okay. Sit back and enjoy the energetic performances!";
+	}
+	close;
+}
