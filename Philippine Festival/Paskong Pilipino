@@ -1,0 +1,36 @@
+prontera,150,150,4	script	Paskong_Filipino_NPC	1_M_KID2,{
+	
+	switch(select("Learn More:Participate in Quest:Nevermind")) {
+		case 1:
+			mes "[Paskong Filipino NPC]";
+			mes "Welcome to Paskong Filipino!";
+			mes "Filipino Christmas, or Paskong Filipino, is a joyful and festive celebration.";
+			mes "Families gather to share special meals, exchange gifts, and attend midnight Mass.";
+			mes "Homes are decorated with colorful lights, parol lanterns, and nativity scenes.";
+			mes "It's a time of love, joy, and togetherness.";
+			close;
+		case 2:
+			mes "[Paskong Filipino NPC]";
+			mes "Welcome to the Paskong Filipino Quest!";
+			mes "To truly experience Filipino Christmas, you must complete three tasks:";
+			mes "1. Help decorate the town with parol lanterns.";
+			mes "2. Assist in preparing a special Noche Buena feast.";
+			mes "3. Share gifts and spread joy to the children in the community.";
+			mes "Are you ready to spread the spirit of Christmas?";
+			if(select("Yes:No") == 1) {
+				mes "[Paskong Filipino NPC]";
+				mes "Great! Let's begin your Christmas quest!";
+				close2;
+				queststart("Paskong_Filipino_Quest");
+			} else {
+				mes "[Paskong Filipino NPC]";
+				mes "That's alright. Come back anytime if you change your mind!";
+				close;
+			}
+			break;
+		case 3:
+			mes "[Paskong Filipino NPC]";
+			mes "That's alright. Feel free to enjoy the festive atmosphere!";
+			close;
+	}
+}
