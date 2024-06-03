@@ -1,0 +1,14 @@
+// Sinulog Festival NPC script
+prontera,150,150,4	script	Sinulog_NPC	1_F_MARIA,{
+	message "Welcome to the Sinulog Festival!";
+	message "The Sinulog Festival is a colorful celebration in honor of the Santo Niño.";
+	message "Currently, we're offering the Sinulog Street Dancing event.";
+	message "Would you like to join in the street dancing?";
+	if(select("Yes:No") == 1) {
+		message "Great! Prepare yourself for an exciting dance!";
+		// Add code here to initiate the Sinulog street dancing event
+	} else {
+		message "That's alright. Feel free to enjoy the festivities!";
+	}
+	close;
+}
