@@ -1,0 +1,14 @@
+// Ati-Atihan Festival NPC script
+aldebaran,100,200,4	script	AtiAtihan_NPC	1_M_ALDEBA,{
+	message "Welcome to the Ati-Atihan Festival!";
+	message "The Ati-Atihan Festival is known for its tribal dance parade in honor of the Santo Niño.";
+	message "Currently, we're offering the Ati-Atihan Street Dancing event.";
+	message "Are you ready to dance with us?";
+	if(select("Yes:No") == 1) {
+		message "Fantastic! Let's paint you in traditional colors and hit the streets!";
+		// Add code here to initiate the Ati-Atihan street dancing event
+	} else {
+		message "No problem. Enjoy watching our colorful parade!";
+	}
+	close;
+}
