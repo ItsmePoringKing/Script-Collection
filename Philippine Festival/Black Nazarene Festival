@@ -1,0 +1,52 @@
+prontera,150,150,4	script	BlackNazarene_NPC	1_M_PRIEST,{
+	
+	switch(select("Join Traslacion:Learn More:Nevermind")) {
+		case 1:
+			message "Welcome to the Traslacion Quest!";
+			message "Are you ready to demonstrate your devotion and sacrifice?";
+			if(select("Yes:No") == 1) {
+				message "Great! Your first task is to carry a replica of the Black Nazarene statue.";
+				message "Take it to the designated location while facing various challenges along the way.";
+				message "May your faith guide you through the trials ahead.";
+				// Reduce move speed by 80 percent
+				specialeffect2 EF_HIDING;
+				setcharstatus(1, SC_SPEEDUP, 10); // Reduce move speed by 80 percent
+				warp "quioapo", 150, 150; // Teleport player to the starting point of the quest
+			} else {
+				message "That's alright. Come back when you're ready to demonstrate your devotion.";
+			}
+			break;
+		case 2:
+			message "Sure! The Black Nazarene is a revered image of Jesus Christ known for its miracles.";
+			message "During the Traslacion, devotees join the procession to touch or kiss the statue.";
+			message "It's a powerful expression of faith and devotion.";
+			break;
+		case 3:
+			message "That's alright. Feel free to explore Quiapo and witness the festivities!";
+			break;
+	}
+	close;
+}
+
+quioapo,150,150,4	script	Traslacion_NPC	1_M_PRIEST,{
+	
+	// Spawn the Black Nazarene statue for the player to carry
+	spawnnpc "BlackNazarene_Replica", 1, 150, 150, 4, "nokill";
+
+	// Player interacts with the Black Nazarene statue
+	message "Welcome to the Traslacion Quest!";
+	message "You have reached the starting point of your journey.";
+	message "Carry the replica of the Black Nazarene statue and proceed to the next checkpoint.";
+	message "Be wary of obstacles and enemies that may test your faith along the way.";
+	close;
+}
+
+quioapo,250,250,4	script	Traslacion_Location_NPC	1_M_PRIEST,{
+	
+	// Player interacts with the NPC at the designated location
+	message "Welcome, faithful devotee. You have arrived at the designated location.";
+	message "To complete your devotion, you must sacrifice yourself to the Black Nazarene.";
+	message "Stand still and offer your life willingly.";
+	message "May your sacrifice be a testament to your unwavering faith.";
+	close;
+}
