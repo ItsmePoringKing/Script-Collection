@@ -1,0 +1,14 @@
+// Kadayawan Festival NPC script
+payon,200,200,4	script	Kadayawan_NPC	1_F_MARIA,{
+	message "Welcome to the Kadayawan Festival!";
+	message "The Kadayawan Festival is a thanksgiving celebration for the bountiful harvest.";
+	message "Currently, we're offering the Kadayawan Thanksgiving Dance event.";
+	message "Want to join our thanksgiving dance?";
+	if(select("Yes:No") == 1) {
+		message "Terrific! Let's celebrate the harvest together with joyful dancing!";
+		// Add code here to initiate the Kadayawan thanksgiving dance event
+	} else {
+		message "That's okay. Enjoy the cultural exhibits and festivities!";
+	}
+	close;
+}
