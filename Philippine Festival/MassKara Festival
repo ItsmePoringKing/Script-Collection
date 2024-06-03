@@ -1,0 +1,14 @@
+// MassKara Festival NPC script
+prontera,120,80,4	script	MassKara_NPC	1_F_MARIA,{
+	message "Welcome to the MassKara Festival!";
+	message "The MassKara Festival is a lively celebration symbolizing the resilience of the Negrenses.";
+	message "Currently, we're offering the MassKara Street Dancing event.";
+	message "Are you ready to wear a mask and dance?";
+	if(select("Yes:No") == 1) {
+		message "Fantastic! Let's find you a mask and hit the streets!";
+		// Add code here to initiate the MassKara street dancing event
+	} else {
+		message "That's alright. Enjoy the colorful parade and performances!";
+	}
+	close;
+}
