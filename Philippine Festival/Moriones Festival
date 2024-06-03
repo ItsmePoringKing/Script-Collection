@@ -1,0 +1,14 @@
+// Moriones Festival NPC script
+morocc,100,100,4	script	Moriones_NPC	1_M_ALDEBA,{
+	message "Welcome to the Moriones Festival!";
+	message "The Moriones Festival is a unique celebration featuring reenactments of the Crucifixion story.";
+	message "Currently, we're offering the Moriones Reenactment event.";
+	message "Interested in participating in our reenactment?";
+	if(select("Yes:No") == 1) {
+		message "Great! Let's get you dressed as a Morion and join the parade!";
+		// Add code here to initiate the Moriones reenactment event
+	} else {
+		message "No worries. Enjoy watching the dramatic reenactments!";
+	}
+	close;
+}
