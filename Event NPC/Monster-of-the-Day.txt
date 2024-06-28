@@ -1,0 +1,137 @@
+prontera,155,178,4	script Weekly_Event_NPC 900,{
+	// Configurable variables
+	.@event_day = rand(1, 6); // Randomly choose a day (1=Monday, 2=Tuesday, ..., 6=Sunday)
+	.@event_hour = 18; // Event time (24-hour format, 18 = 6 PM)
+	.@event_duration = 86400; // Event duration (1 day in seconds)
+	.@next_event_time = next_weekly_event(); // Initialize next event time
+
+	// Reward chances (out of 1000)
+	.@reward_chance = 5; // Chance rate (e.g., 5 = 0.5% chance)
+
+	// Main NPC interaction dialog
+	npc "Weekly Event Manager" 900, {
+		mes "Hello! I am the Weekly Event Manager.";
+		next;
+		mes "I host a weekly event that starts on " + get_day_name(.@event_day) + " at " + .@event_hour + ":00.";
+		next;
+		mes "The selected monster for this week's event is randomly chosen from our database.";
+		next;
+		mes "Defeat the monster during the event for a chance to earn rewards!";
+		next;
+		mes "Next event: " + get_time_str(.@next_event_time);
+		next;
+		display_event_remaining_time();
+		close;
+	}
+
+	// OnInit Section
+	OnInit:
+		// Check if today is the scheduled event day and it hasn't triggered yet
+		if (getweekday() == .@event_day && gethour() >= .@event_hour && gettimetick(2) >= .@next_event_time) {
+			start_event();
+		} else {
+			// Schedule the next event if it hasn't started yet for this week
+			if (.@next_event_time > gettimetick(2)) {
+				addtimer(.@next_event_time - gettimetick(2), "Weekly_Event::start_event", true);
+			}
+		}
+		end;
+
+	// Function to calculate the next occurrence of the event based on the chosen day and time
+	function next_weekly_event() {
+		.@current_day = getweekday();
+		.@days_until_event = (.@event_day - .@current_day + 7) % 7;
+		if (.@days_until_event == 0 && gethour() >= .@event_hour)
+			.@days_until_event += 7;
+
+		.@next_event_time = gettimetick(2) + .@days_until_event * 86400 + .@event_hour * 3600;
+		return .@next_event_time;
+	}
+
+	// Function to start the event
+	function start_event() {
+		// Spawn the first 10 monsters
+		for (.@i = 1; .@i <= 10; .@i++) {
+			.@monster_id = select_random_monster();
+			monster .@monster_id, rand(-5, 5), rand(-5, 5), strcharinfo(3);
+		}
+
+		announce("Weekly Event Starting Now! Defeat the monsters to earn rewards!", bc_all);
+
+		// Set event end time
+		.@event_end_time = gettimetick(2) + .@event_duration;
+
+		addtimer(.@event_duration, "Weekly_Event::end_event", true);
+	}
+
+	// Function to end the event
+	function end_event() {
+		announce("Weekly Event has ended. See you next week!", bc_all);
+		.@next_event_time = next_weekly_event();
+		addtimer(.@next_event_time - gettimetick(2), "Weekly_Event::start_event", true);
+	}
+
+	// Function to select a random monster from the database using SQL query
+	function select_random_monster() {
+		.@query = "SELECT `id` FROM `mob_db` WHERE `spawn_group` = 0 ORDER BY RAND() LIMIT 1";
+		.@result = query_sql(@query);
+
+		if (isnull(@result)) {
+			end;
+		}
+
+		.@row = get_sql_row(@result);
+		.@monster_id = .@row[0];
+
+		free_sql(@result);
+
+		return .@monster_id;
+	}
+
+	// Event script to handle when the event monster is killed
+	OnMobDeadEvent:
+		if (gettimetick(2) <= .@event_end_time) {
+			.@monster_id = select_random_monster();
+			.@event_map = select_random_event_map();
+			monster .@monster_id, rand(3, 8), rand(3, 8), .@event_map;
+
+			// Reward the player
+			reward_player();
+		}
+
+	// Function to select a random event map for spawning monsters
+	function select_random_event_map() {
+		.@maps = [prontera, pay_fild05, iz_dun05]; // Add more event maps as needed
+		.@map_index = rand(0, getarraysize(.@maps) - 1);
+		return .@maps[.@map_index];
+	}
+
+	// Function to reward a player with a random item or cash points
+	function reward_player() {
+		if (rand(1, 1000) <= .@reward_chance) { // Check against reward chance
+			.@reward_type = rand(1, 2); // Randomly choose between item (1) or cash points (2)
+			
+			if (.@reward_type == 1) {
+				// Give a random item
+				.@item_id = rand(501, 510); // Replace with actual item IDs from your server
+				getitem .@item_id, 1;
+				mes "Congratulations! You've received " + getitemname(.@item_id) + " as a reward!";
+			} else {
+				// Give cash points
+				.@cash_points = rand(100, 500); // Adjust as needed
+				getcash .@cash_points;
+				mes "Congratulations! You've received " + .@cash_points + " Cash Points as a reward!";
+			}
+		}
+	}
+
+	// Function to display remaining time of the event
+	function display_event_remaining_time() {
+		.@time_left = .@event_end_time - gettimetick(2);
+		.@hours = .@time_left / 3600;
+		.@minutes = (.@time_left % 3600) / 60;
+		.@seconds = .@time_left % 60;
+
+		mes "Current event ends in: " + .@hours + " hours, " + .@minutes + " minutes, " + .@seconds + " seconds.";
+	}
+}
