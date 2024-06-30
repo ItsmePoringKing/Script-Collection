@@ -16,100 +16,94 @@
 									// 1.1
 									//		- Added Host Event by GMAccess
 									// 1.2
-									//		- Remove all error from Latest rAthena
+									//		- Remove all error from Latest rAthena (6/30/2024)
 									//		- Maximize script
 									//		- Fix some dialog of NPC
 									//		- Added Mapflag for the Event Map 
 //==========================================================================================================
 sec_in01,164,180,3	script	Goblin Invasion NPC	459,{
+	
+	// Configuration variables
+	set .gm, 50; // GM Level to access the GM Menu
+	set .ItemID, 7608; // Default item ID for Goblin Leader drop
 
-set .gm,50;//GM Level to access the GM Menu. Default: 50
-set .ItemID,7608;
-
-	// GM menu 
-	//It allows GMs Level 50 or more to Start and Stop invasions.
-	if (getgmlevel()>.gm) {
+	// GM menu to start and stop invasions
+	if (getgmlevel() > .gm) {
 		if (.mobs_left) {
 			mes "[Invasion]";
 			mes "An invasion is in progress..";
 			mes "Location: " + .Map$;
-			mes "^FF0000"+.mobs_left+"^000000 Goblins left";
+			mes "^FF0000" + .mobs_left + "^000000 Goblins left";
 			mes " ";
 			mes "Stop invasion?";
-			if(select("No:Yes")==1) close;
+			if (select("No:Yes") == 1) close;
 			donpcevent "Invasion NPC::OnTimer1805000";
 			mes "Invasion stopped";
-			announce "The Invasion has been stopped by "+strcharinfo(0),bc_all;
+			announce "The Invasion has been stopped by " + strcharinfo(0), bc_all;
 			close;
 		}
 		mes "[Invasion]";
 		mes "Please customize the Invasion event before starting it.";
 		mes "Note - The Goblin Leader drops x5 of the prize.";
-		Main:
-		next;
-		mes "[Invasion]";
-			switch(select("Item [" + getitemname(.ItemID) + "]:Start Event")) {
-		case 1:
-			mes "Which item would you like the Goblin Leader to drop?";
-			mes "Please input the item ID:";
-			input .ItemID;
-			goto Main;
-		case 2:
-			mes "Starting the event now...";
-			close2;
-			goto OnStart;
+		
+		switch (select("Item [" + getitemname(.ItemID) + "]:Start Event")) {
+			case 1:
+				mes "Which item would you like the Goblin Leader to drop?";
+				mes "Please input the item ID:";
+				input .ItemID;
+				goto Main;
+			case 2:
+				mes "Starting the event now...";
+				close2;
+				goto OnStart;
+		}
 	}
-	
-	// If a player clicks the NPC, it displays:
-	
+
+	// When a player clicks the NPC, it displays:
 	mes "[Invasion]";
-	mes .mobs_left+" have invaded "+.Map$[.rand_map]+"!";
+	mes .mobs_left + " have invaded " + .Map$[.rand_map] + "!";
 	close;
-	
-			/////////////////////////
-			//The actual NPC Script//
-			/////////////////////////
-OnMinute50: // Change this to your liking
+
+	// Main invasion script
+OnMinute50:
 OnStart:
-		set .mobs_left, 1;
-		sleep 1000;
-		set $@ran, rand(1,6);
-		if ($@ran == 6) set .Map$,"^FF7700";
-		if ($@ran == 5) set .Map$,"^33FFF0";
-		if ($@ran == 4) set .Map$,"^CAFF33";
-		if ($@ran == 3) set .Map$,"geffen";
-		if ($@ran == 2) set .Map$,"morocc";
-		if ($@ran == 1) set .Map$,"prontera";
-		sleep 1000;
-		announce "[ Rune-Midgard Guard ]: We have trouble here in the town " + .Map$ + "!", bc_all;
-		sleep 5000;
-		announce "[ Rune-Midgard Guard ]: Everyone, we need your help to get rid of these Goblins!", bc_all;
-		monster .Map$,0,0,"Goblin",1245,200,"Invasion NPC::OnMyMobDead";
-		set .mobs_left, 200;
-		end;
-	
-	
-OnTimer1805000:	// 30 minutes later, kills all the mobs.
-				killmonster .Map$,"Invasion NPC::OnMyMobDead";
-				set .mobs_left, 0;
+	set .mobs_left, 1;
+	sleep 1000;
+	set $@ran, rand(1, 6);
+	switch ($@ran) {
+		case 6: set .Map$, "^FF7700";
+		case 5: set .Map$, "^33FFF0";
+		case 4: set .Map$, "^CAFF33";
+		case 3: set .Map$, "geffen";
+		case 2: set .Map$, "morocc";
+		case 1: set .Map$, "prontera";
+	}
+	sleep 1000;
+	announce "[ Rune-Midgard Guard ]: We have trouble here in the town " + .Map$ + "!", bc_all;
+	sleep 5000;
+	announce "[ Rune-Midgard Guard ]: Everyone, we need your help to get rid of these Goblins!", bc_all;
+	monster .Map$, 0, 0, "Goblin", 1245, 200, "Invasion NPC::OnMyMobDead";
+	set .mobs_left, 200;
+	end;
 
-OnStop://When the event is stopped by a GM, or all monsters dead.
-			killmonster .Map$,"Invasion NPC::OnMyMobDead";
-			killmonster .Map$,"Invasion NPC::OnSpecialMobDead";
-			announce "It seems that "+strcharinfo(0)+" has ended the Invasion!",bc_all;
-			end;
+OnTimer1805000:
+	killmonster .Map$, "Invasion NPC::OnMyMobDead";
+	set .mobs_left, 0;
 
-OnMyMobDead: //When a Goblin is killed
-			set .mobs_left, .mobs_left-1;
-			if (.mobs_left==0) {
-				announce "[ Rune-Midgard Guard ]: Everyone, thankyou for helping to get rid of these Goblins!", bc_all;
-				getitem .ItemID,20; //Change the [5] to the amount you wish to hand out.
-				donpcevent "Invasion NPC::OnStop";
+OnStop:
+	killmonster .Map$, "Invasion NPC::OnMyMobDead";
+	killmonster .Map$, "Invasion NPC::OnSpecialMobDead";
+	announce "It seems that " + strcharinfo(0) + " has ended the Invasion!", bc_all;
+	end;
 
-			} else {
-				announce "["+.mobs_left+"/200] Goblins left.",bc_map;
-			}
-			end;
-			}
-			end;
+OnMyMobDead:
+	set .mobs_left, .mobs_left - 1;
+	if (.mobs_left == 0) {
+		announce "[ Rune-Midgard Guard ]: Everyone, thankyou for helping to get rid of these Goblins!", bc_all;
+		getitem .ItemID, 20; // Change the [5] to the amount you wish to hand out.
+		donpcevent "Invasion NPC::OnStop";
+	} else {
+		announce "[" + .mobs_left + "/200] Goblins left.", bc_map;
+	}
+	end;
 }
