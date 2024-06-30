@@ -11,15 +11,15 @@
 //|__| \_____/|__| \__\__|__| \__|\______/   |__| \__\__|__| \__|\______/
 //----------------------------------------Script Last Update 2024-------------------------------------------
 //==============================================Changelog===================================================
-									// 1.0 *
-									//		- Initial Release
-									// 1.1
-									//		- Added Host Event by GMAccess
-									// 1.2
-									//		- Remove all error from Latest rAthena (6/30/2024)
-									//		- Maximize script
-									//		- Fix some dialog of NPC
-									//		- Added Mapflag for the Event Map 
+// 1.0 *
+//- Initial Release
+// 1.1
+//- Added Host Event by GMAccess
+// 1.2
+//- Remove all error from Latest rAthena (6/30/2024)
+//- Maximize script
+//- Fix some dialog of NPC
+//- Added Mapflag for the Event Map 
 //==========================================================================================================
 sec_in01,164,180,3	script	Goblin Invasion NPC	459,{
 	
