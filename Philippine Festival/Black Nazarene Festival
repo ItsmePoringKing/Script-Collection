@@ -8,10 +8,20 @@ prontera,150,150,4	script	BlackNazarene_NPC	1_M_PRIEST,{
 				message "Great! Your first task is to carry a replica of the Black Nazarene statue.";
 				message "Take it to the designated location while facing various challenges along the way.";
 				message "May your faith guide you through the trials ahead.";
-				// Reduce move speed by 80 percent
+				
+				// Reduce move speed by 80 percent (configurable)
+				setcharstatus(1, SC_SPEEDDOWN, 80); // Reduce move speed by 80 percent
+				
 				specialeffect2 EF_HIDING;
-				setcharstatus(1, SC_SPEEDUP, 10); // Reduce move speed by 80 percent
-				warp "quioapo", 150, 150; // Teleport player to the starting point of the quest
+				
+				warp "prontera", 156, 192; // Teleport player to the starting point of the quest in Prontera
+				
+				// Apply event participation flag or variable
+				set .participating, 1;
+				
+				// Disable teleport and warp commands for the player
+				set @warp_allowed, 0;
+				set @go_allowed, 0;
 			} else {
 				message "That's alright. Come back when you're ready to demonstrate your devotion.";
 			}
@@ -27,26 +37,78 @@ prontera,150,150,4	script	BlackNazarene_NPC	1_M_PRIEST,{
 	}
 	close;
 }
-
-quioapo,150,150,4	script	Traslacion_NPC	1_M_PRIEST,{
+prontera,156,192,4	script	Traslacion_NPC	1_M_PRIEST,{
 	
+	// Check if player is participating in the event
+	if (!.@participating) {
+		message "You haven't joined the Traslacion event yet.";
+		close;
+	}
+
 	// Spawn the Black Nazarene statue for the player to carry
-	spawnnpc "BlackNazarene_Replica", 1, 150, 150, 4, "nokill";
+	spawnnpc "BlackNazarene_Replica", 1, 156, 192, 4, "nokill";
 
 	// Player interacts with the Black Nazarene statue
 	message "Welcome to the Traslacion Quest!";
 	message "You have reached the starting point of your journey.";
 	message "Carry the replica of the Black Nazarene statue and proceed to the next checkpoint.";
 	message "Be wary of obstacles and enemies that may test your faith along the way.";
+
+	// Apply continuous random effects during the walk
+	attachrid "Traslacion_Effect", 1;
+
+	// Start random speech during the walk
+	attachrid "Traslacion_Speech", 1;
+
 	close;
 }
-
-quioapo,250,250,4	script	Traslacion_Location_NPC	1_M_PRIEST,{
+prontera,156,192,4	script	Traslacion_Location_NPC	1_M_PRIEST,{
+	
+	// Check if player is participating in the event
+	if (!.@participating) {
+		message "You haven't joined the Traslacion event yet.";
+		close;
+	}
 	
 	// Player interacts with the NPC at the designated location
 	message "Welcome, faithful devotee. You have arrived at the designated location.";
 	message "To complete your devotion, you must sacrifice yourself to the Black Nazarene.";
 	message "Stand still and offer your life willingly.";
 	message "May your sacrifice be a testament to your unwavering faith.";
+
+	// Configuration for rewards (replace with your reward system)
+	set .reward_item_id, 501; // ID of the reward item
+	set .reward_item_amount, 1; // Amount of reward item
+
+	// After completing the event, warp player to Prontera Church (configurable)
+	warp "prontera", 156, 192; // Warp player to Prontera Church
+
+	// Give reward to player (configurable based on above settings)
+	giveitem .reward_item_id, .reward_item_amount;
+	mes "Congratulations! You have completed the Traslacion quest.";
+	mes "Here is your reward.";
+
+	// Reset event participation flag or variable
+	set .participating, 0;
+
 	close;
+}
+function script Traslacion_Speech 1_F_MARIA {
+	while(1) {
+		// Randomly choose between two speech lines
+		.@random_speech = rand(1, 2);
+		
+		switch (.@random_speech) {
+			case 1:
+				mes "Viva Senior!";
+				break;
+			case 2:
+				mes "Mapagpalang itim na panginoon";
+				break;
+		}
+		
+		// Wait for a random amount of time before the next speech
+		sleep2 rand(5000, 10000); // Sleep between 5 to 10 seconds
+	}
+	end;
 }
