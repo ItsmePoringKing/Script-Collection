@@ -1,20 +1,38 @@
 prontera,150,150,5	script	YouTubeReward	123,{
+
+	// Configuration
+	OnInit:
+		// YouTube video link
+		set .video_link$, "https://www.youtube.com/your_video_link";
+		// Code to be entered by the player
+		set .correct_code$, "your_code_here";
+		// Cash points reward
+		set .cash_points_reward, 100;
+		end;
+
+	// Main script
 	mes "[YouTube Reward NPC]";
+
+	if (youtube_reward == 1) {
+		mes "You have already received your reward for watching the video.";
+		close;
+	}
+
 	mes "Hello, adventurer!";
 	mes "Watch the following YouTube video and find the hidden code to receive a reward.";
-	mes "Video link: https://www.youtube.com/your_video_link";
+	mes "Video link: " + .video_link$;
 	next;
 	mes "[YouTube Reward NPC]";
 	mes "Enter the code you found in the video:";
 	input @code$;
-	
-	// Check the entered code
-	if (@code$ == "your_code_here") {
+
+	if (@code$ == .correct_code$) {
 		mes "[YouTube Reward NPC]";
 		mes "Congratulations! You have entered the correct code.";
 		mes "Here is your reward.";
-		// Give the player a reward
-		getitem 501, 1; // Example: Red Potion
+		// Give the player cash points
+		set #CASHPOINTS, #CASHPOINTS + .cash_points_reward;
+		set youtube_reward, 1; // Mark the player as having received the reward
 		close;
 	} else {
 		mes "[YouTube Reward NPC]";
