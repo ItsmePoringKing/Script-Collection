@@ -1,0 +1,319 @@
+prontera,150,150,5	script	Donation_NPC	123,{
+	// Constants and Configuration (in OnInit)
+	set .mainItemID, 7227;  // Example main item ID
+	set .itemValueUSD, 20;  // Example value of main item in USD
+	set .pesoToUSDConversionRate, 0.02;  // Example conversion rate: 1 PHP = 0.02 USD
+	set .adminPassword$, "youradminpassword";  // Replace with your admin password
+	set .paypalEmail$, "paypal@yourserver.com";  // Replace with your PayPal email
+	set .gcashPhoneNumber$, "09171234567";  // Replace with your GCash phone number
+	set .gcashName$, "Your Server Name";  // Replace with your GCash account name
+	set .zellePhoneNumber$, "1234567890";  // Replace with your Zelle phone number
+	set .zelleName$, "Your Zelle Account Name";  // Replace with your Zelle account name
+	set .venmoPhoneNumber$, "0987654321";  // Replace with your Venmo phone number
+	set .venmoName$, "Your Venmo Account Name";  // Replace with your Venmo account name
+	set .enableLocalPaymentMethods, true;  // Default: Enabled for GCash, Paymaya
+	set .enableInternationalPaymentMethods, true;  // Default: Enabled for MasterCard/Visa, Credit/Debit Card, Zelle, Venmo, PayPal, Apple Pay
+	set .enableMasterCardVisa, true;  // Default: Enabled for MasterCard/Visa
+	set .enableZelle, true;  // Default: Enabled for Zelle
+	set .enableVenmo, true;  // Default: Enabled for Venmo
+	set .lastPackageID, 0;  // Variable to store last created package ID
+
+	// Function to handle donation for various payment methods
+	function HandleDonation {
+		next;
+		input .donationAmount;
+		if (.donationAmount <= 0) {
+			mes "[Donation NPC]";
+			mes "Invalid amount. Please enter a valid donation amount.";
+			close;
+		}
+
+		// Insert donation as pending in the database
+		query_sql("INSERT INTO cp_donations (`account_id`, `donation_amount`, `donation_date`) VALUES (" + getcharid(0) + ", " + .donationAmount + ", NOW())");
+		mes "[Donation NPC]";
+		mes "Your donation of $" + .donationAmount + " USD has been recorded as pending.";
+		close;
+	}
+
+	// Function to handle Credit/Debit Card donation
+	function CreditDebitCardDonation {
+		next;
+		input .donationAmount;
+		if (.donationAmount <= 0) {
+			mes "[Donation NPC]";
+			mes "Invalid amount. Please enter a valid donation amount.";
+			close;
+		}
+
+		mes "[Donation NPC]";
+		mes "You have chosen to donate $" + .donationAmount + " USD.";
+		mes "Please click the following link to proceed with the payment:";
+		mes "https://yourpaymentgateway.com/?amount=" + .donationAmount;  // Replace with your payment gateway URL
+		close;
+	}
+
+	// Function to handle GCash payment donation
+	function GCashPaymentDonation {
+		next;
+		input .donationAmountPHP;
+		if (.donationAmountPHP <= 0) {
+			mes "[Donation NPC]";
+			mes "Invalid amount. Please enter a valid donation amount in PHP.";
+			close;
+		}
+
+		// Convert PHP to USD based on conversion rate
+		set .donationAmountUSD, .donationAmountPHP * .pesoToUSDConversionRate;
+
+		// Insert donation as pending in the database
+		query_sql("INSERT INTO cp_donations (`account_id`, `donation_amount`, `donation_date`) VALUES (" + getcharid(0) + ", " + .donationAmountUSD + ", NOW())");
+		mes "[Donation NPC]";
+		mes "Your donation of " + .donationAmountPHP + " PHP has been recorded as $" + .donationAmountUSD + " USD (pending verification).";
+		close;
+	}
+
+	// Function to handle viewing pending payments for admin
+	function ViewPendingPayments {
+		mes "[Donation NPC - Admin Control Panel]";
+		mes "Viewing Pending Payments:";
+		query_sql("SELECT * FROM cp_donations WHERE `status` = 'Pending'");
+		while(!eof_sql()) {
+			next;
+			mes "Donation ID: " + get_sql_string("donation_id");
+			mes "Account ID: " + get_sql_string("account_id");
+			mes "Amount: $" + get_sql_string("donation_amount");
+			mes "Date: " + get_sql_string("donation_date");
+			mes "Character Name: " + getcharname(get_sql_int("account_id"));
+		}
+		close;
+	}
+
+	// Function to handle verifying a pending payment
+	function VerifyPayment {
+		input .adminPassword$;
+		if (.adminPassword$ != .adminPassword$) {  // Check if admin password matches
+			mes "[Donation NPC - Admin Control Panel]";
+			mes "Incorrect admin password. Access denied.";
+			close;
+		}
+
+		input .donationID;
+		next;
+		mes "[Donation NPC - Admin Control Panel]";
+		mes "Selected Donation ID: " + .donationID;
+		mes "Please select an action:";
+		switch(select("Verify Payment:Reject Payment:Exit")) {
+			case 1:
+				// Verify Payment
+				query_sql("UPDATE cp_donations SET `status` = 'Confirmed' WHERE `donation_id` = " + .donationID);
+				mes "[Donation NPC - Admin Control Panel]";
+				mes "Payment verified for Donation ID " + .donationID;
+				next;
+				mes "What would you like to do next?";
+				switch(select("Create Package:Give Package:Exit")) {
+					case 1:
+						// Create Package
+						next;
+						input .packageName$;
+						set .packageID, rand(100000000, 999999999);
+						query_sql("INSERT INTO cp_packages (`package_id`, `package_name`, `admin_name`, `creation_date`) VALUES (" + .packageID + ", '" + .packageName$ + "', '" + strcharinfo(0) + "', NOW())");
+						set .lastPackageID, .packageID;  // Update last package ID
+						mes "[Donation NPC - Admin Control Panel]";
+						mes "Package created successfully.";
+						close;
+						mes "Adding items to package...";
+						set .addItem, true;
+						while (.addItem) {
+							next;
+							input .itemID;
+							query_sql("INSERT INTO cp_package_items (`package_id`, `item_id`) VALUES (" + .packageID + ", " + .itemID + ")");
+							mes "Item added: " + .itemID;
+							mes "Do you want to add another item?";
+							switch (select("Yes:No")) {
+								case 1:
+									// Continue adding items
+									continue;
+								case 2:
+									// Finish adding items
+									set .addItem, false;
+									break;
+							}
+						}
+						mes "[Donation NPC - Admin Control Panel]";
+						mes "All items added to package " + .packageID + ".";
+						next;
+					case 2:
+						// Give Package
+						mes "[Donation NPC - Admin Control Panel]";
+						mes "Giving package with ID " + .lastPackageID + " to a player.";
+						// Fetch package details
+						query_sql("SELECT * FROM cp_packages WHERE `package_id` = " + .lastPackageID);
+						next;
+						mes "[Donation NPC - Admin Control Panel]";
+						mes "Package Details:";
+						mes "Package ID: " + .lastPackageID;
+						mes "Package Name: " + get_sql_string("package_name");
+						mes "Admin: " + get_sql_string("admin_name");
+						mes "Creation Date: " + get_sql_string("creation_date");
+						mes "Items:";
+						// Fetch package items
+						query_sql("SELECT * FROM cp_package_items WHERE `package_id` = " + .lastPackageID);
+						while (!eof_sql()) {
+							next;
+							mes "- Item ID: " + get_sql_string("item_id");
+							// Grant item to player (replace with your item granting function)
+							// grantitem .itemID, 1;  // Uncomment and replace with your item granting function
+						}
+						mes "Confirm giving this package to a player (yes/no)?";
+						input .confirmGivePackage$;
+						if (.confirmGivePackage$ == "yes") {
+							mes "Enter admin password to confirm:";
+							input .adminPassword$;
+							if (.adminPassword$ != .adminPassword$) {
+								mes "Incorrect admin password. Package delivery canceled.";
+							} else {
+								// Update package status to delivered
+								query_sql("UPDATE cp_packages SET `status` = 'Delivered', `delivery_date` = NOW() WHERE `package_id` = " + .lastPackageID);
+								mes "Package successfully delivered to a player.";
+								// Check if player is online
+								if (ishomun(.playerName$)) {
+									mes "Player " + .playerName$ + " is online. Items will be granted immediately.";
+									// Grant items to player
+									query_sql("SELECT * FROM cp_package_items WHERE `package_id` = " + .lastPackageID);
+									while (!eof_sql()) {
+										next;
+										// Grant item to player (replace with your item granting function)
+										// grantitem .itemID, 1;  // Uncomment and replace with your item granting function
+									}
+								} else {
+									mes "Player " + .playerName$ + " is offline. Notify them to claim items from NPC when online.";
+									// Implement offline notification (e.g., save notification in database)
+									query_sql("INSERT INTO cp_notifications (`account_id`, `notification_type`, `message`, `creation_date`) VALUES (" + getcharid(.playerName$) + ", 'PackageClaim', 'You have a pending package to claim from Donation NPC.', NOW())");
+								}
+							}
+						} else {
+							mes "Package delivery canceled.";
+						}
+						close;
+					case 3:
+						// Exit
+						mes "[Donation NPC - Admin Control Panel]";
+						mes "Exiting admin control panel.";
+						close;
+				}
+				close;
+			case 2:
+				// Reject Payment
+				query_sql("UPDATE cp_donations SET `status` = 'Rejected' WHERE `donation_id` = " + .donationID);
+				mes "[Donation NPC - Admin Control Panel]";
+				mes "Payment rejected for Donation ID " + .donationID;
+				close;
+			case 3:
+				// Exit
+				mes "[Donation NPC - Admin Control Panel]";
+				mes "Exiting admin control panel.";
+				close;
+		}
+		close;
+	}
+
+	// Main Menu
+	mes "[Donation NPC]";
+	mes "Welcome to the Donation NPC!";
+	next;
+	mes "Please select an option:";
+	switch(select("Make a Donation:Admin Control Panel:Leave")) {
+		case 1:
+			// Make a Donation
+			next;
+			mes "[Donation NPC]";
+			mes "Please select a donation method:";
+			next;
+			switch(select("Credit/Debit Card:GCash:PayPal:MasterCard/Visa:Zelle:Venmo:Back")) {
+				case 1:
+					// Credit/Debit Card
+					if (!.enableInternationalPaymentMethods) {
+						mes "[Donation NPC]";
+						mes "International payment methods are currently disabled.";
+						close;
+					}
+					CreditDebitCardDonation();  // Implement Credit/Debit Card donation function
+				case 2:
+					// GCash
+					if (!.enableLocalPaymentMethods) {
+						mes "[Donation NPC]";
+						mes "Local payment methods (GCash, Paymaya) are currently disabled.";
+						close;
+					}
+					GCashPaymentDonation();  // Implement GCash payment donation function
+				case 3:
+					// PayPal
+					if (!.enableInternationalPaymentMethods) {
+						mes "[Donation NPC]";
+						mes "International payment methods are currently disabled.";
+						close;
+					}
+					HandleDonation();  // Implement PayPal donation function
+				case 4:
+					// MasterCard/Visa
+					if (!.enableInternationalPaymentMethods || !.enableMasterCardVisa) {
+						mes "[Donation NPC]";
+						mes "MasterCard/Visa payment method is currently disabled.";
+						close;
+					}
+					HandleDonation();  // Implement MasterCard/Visa donation function
+				case 5:
+					// Zelle
+					if (!.enableInternationalPaymentMethods || !.enableZelle) {
+						mes "[Donation NPC]";
+						mes "Zelle payment method is currently disabled.";
+						close;
+					}
+					HandleDonation();  // Implement Zelle donation function
+				case 6:
+					// Venmo
+					if (!.enableInternationalPaymentMethods || !.enableVenmo) {
+						mes "[Donation NPC]";
+						mes "Venmo payment method is currently disabled.";
+						close;
+					}
+					HandleDonation();  // Implement Venmo donation function
+				case 7:
+					// Back to main menu
+					mes "[Donation NPC]";
+					mes "Returning to main menu.";
+					close;
+			}
+		case 2:
+			// Admin Control Panel
+			if (getgroupid() < 50) { // Adjust this level according to your admin group ID
+				mes "[Donation NPC]";
+				mes "You do not have sufficient admin privileges to access this menu.";
+				close;
+			}
+			mes "[Donation NPC - Admin Control Panel]";
+			mes "Welcome, Admin " + strcharinfo(0) + "!";
+			mes "Please select an option:";
+			next;
+			switch(select("View Pending Payments:Exit")) {
+				case 1:
+					// View Pending Payments
+					ViewPendingPayments();
+					next;
+					mes "Enter the Donation ID to verify/reject:";
+					input .donationID;
+					VerifyPayment();
+					close;
+				case 2:
+					// Exit
+					mes "[Donation NPC - Admin Control Panel]";
+					mes "Exiting admin control panel.";
+					close;
+			}
+		case 3:
+			// Leaving
+			mes "[Donation NPC]";
+			mes "Thank you for visiting! Have a great day!";
+			close;
+	}
+}
