@@ -1,0 +1,149 @@
+prontera,155,180,4	script DynamicShop_NPC 1_F_MARIA,{
+    OnInit:
+        mes "Welcome to the Dynamic Shop!";
+        next;
+        mes "Please select a purchase method:";
+        
+        menu "Zeny", Menu_Zeny,
+            "Item", Menu_Item,
+            "Cash Points", Menu_CashPoints,
+            "Cancel", Option_Cancel;
+        
+    Menu_Zeny:
+        next;
+        mes "Buy with Zeny:";
+        
+        // Arrays for Zeny purchases
+        setarray .zeny_items$, 501, 502, 7001, 5012; // Item IDs
+        setarray .zeny_costs[], 100, 150, 50, 5;     // Costs in zeny
+        
+        for ( set .i, 0; .i < getarraysize(.zeny_items$); set .i, .i + 1 ) {
+            menu getitemname(.zeny_items$[.i]) + " - " + .zeny_costs[.i] + " Zeny", Option_BuyZeny;
+        }
+        close;
+        
+    Menu_Item:
+        next;
+        mes "Buy with Item:";
+        
+        // Arrays for Item purchases
+        setarray .item_items$, 503, 504, 505, 506; // Item IDs
+        setarray .item_costs[], 501, 502, 503, 504; // Items required
+        
+        for ( set .i, 0; .i < getarraysize(.item_items$); set .i, .i + 1 ) {
+            menu getitemname(.item_items$[.i]) + " - " + getitemname(.item_costs[.i]), Option_BuyItem;
+        }
+        close;
+        
+    Menu_CashPoints:
+        next;
+        mes "Buy with Cash Points:";
+        
+        // Arrays for Cash Points purchases
+        setarray .cash_items$, 7001, 7002, 7003, 7004; // Item IDs
+        setarray .cash_costs[], 10, 15, 5, 1;          // Costs in cash points
+        
+        for ( set .i, 0; .i < getarraysize(.cash_items$); set .i, .i + 1 ) {
+            menu getitemname(.cash_items$[.i]) + " - " + .cash_costs[.i] + " Cash Points", Option_BuyCashPoints;
+        }
+        close;
+        
+    Option_BuyZeny:
+        // Process the selected item purchase with Zeny
+        set .selected_item, getarg(2); // Get the selected menu option index
+        
+        // Display the details of the selected item
+        mes "You are about to purchase:";
+        mes "[" + .zeny_items$[.selected_item] + "] " + getitemname(.zeny_items$[.selected_item]);
+        mes "Cost: " + .zeny_costs[.selected_item] + " Zeny";
+        
+        // Provide options for preview or confirm/cancel purchase
+        next;
+        menu "Preview", Option_Preview,
+            "Confirm", Option_ConfirmZeny,
+            "Cancel", Option_Cancel;
+        
+    Option_BuyItem:
+        // Process the selected item purchase with Item
+        set .selected_item, getarg(2); // Get the selected menu option index
+        
+        // Display the details of the selected item
+        mes "You are about to purchase:";
+        mes "[" + .item_items$[.selected_item] + "] " + getitemname(.item_items$[.selected_item]);
+        mes "Cost: " + getitemname(.item_costs[.selected_item]);
+        
+        // Provide options for preview or confirm/cancel purchase
+        next;
+        menu "Preview", Option_Preview,
+            "Confirm", Option_ConfirmItem,
+            "Cancel", Option_Cancel;
+        
+    Option_BuyCashPoints:
+        // Process the selected item purchase with Cash Points
+        set .selected_item, getarg(2); // Get the selected menu option index
+        
+        // Display the details of the selected item
+        mes "You are about to purchase:";
+        mes "[" + .cash_items$[.selected_item] + "] " + getitemname(.cash_items$[.selected_item]);
+        mes "Cost: " + .cash_costs[.selected_item] + " Cash Points";
+        
+        // Provide options for preview or confirm/cancel purchase
+        next;
+        menu "Preview", Option_Preview,
+            "Confirm", Option_ConfirmCashPoints,
+            "Cancel", Option_Cancel;
+        
+    Option_Preview:
+        // Perform preview action (implement as needed)
+        mes "Previewing " + getitemname(.item_ids$[.selected_item]) + ".";
+        close;
+        
+    Option_ConfirmZeny:
+        // Process confirmation for purchase with Zeny
+        set .required_cost, .zeny_costs[.selected_item];
+        if ( getd("zeny") >= .required_cost ) {
+            setd "zeny", getd("zeny") - .required_cost;
+            callsub Option_DeliverItem;
+        } else {
+            mes "You don't have enough Zeny to purchase this item.";
+            close;
+        }
+        
+    Option_ConfirmItem:
+        // Process confirmation for purchase with Item
+        if ( countitem(.item_costs[.selected_item]) > 0 ) {
+            delitem .item_costs[.selected_item], 1;
+            callsub Option_DeliverItem;
+        } else {
+            mes "You don't have the required item to purchase this item.";
+            close;
+        }
+        
+    Option_ConfirmCashPoints:
+        // Process confirmation for purchase with Cash Points
+        set .required_cost, .cash_costs[.selected_item];
+        if ( getd("cash_points") >= .required_cost ) {
+            setd "cash_points", getd("cash_points") - .required_cost;
+            callsub Option_DeliverItem;
+        } else {
+            mes "You don't have enough Cash Points to purchase this item.";
+            close;
+        }
+        
+    Option_DeliverItem:
+        // Deliver the purchased item to the player
+        getitem .item_ids$[.selected_item], 1;
+        
+        // Announcement configuration
+        if ( getd("DynamicShop_Announce") ) {
+            announce "[Dynamic Shop] " + strcharinfo(0) + " has purchased " + getitemname(.item_ids$[.selected_item]) + " from the Dynamic Shop.";
+        }
+        
+        mes "You have purchased " + getitemname(.item_ids$[.selected_item]) + ".";
+        close;
+        
+    Option_Cancel:
+        // Cleanup preview (if applicable)
+        mes "Purchase canceled.";
+        close;
+}
