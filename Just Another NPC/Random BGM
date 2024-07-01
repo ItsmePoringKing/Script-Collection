@@ -1,0 +1,55 @@
+//================================================Name=====================================================
+// Random BGM Played on Random Map (Official Release Name)
+//===============================================Version===================================================
+//												                        1.0 
+//===============================================Author====================================================
+// ____ _____  ______  __ __   __  _______    __   _____ __   __  _______
+//|  __ \ _  \|  __  \|  |  \ |  |/  ___  \  |  | /  /  |  \ |  |/  ___  \
+//| |__| | \  \ |__|  |  |   \|  |  |  _\_/  |  |/  /|  |   \|  |  |  _\_/
+//|   __/   | |      /|  |       |  | |_  \  |     | |  |    |  |  | |_  \
+//|  |\  \_/  /  |\  \|  |  |\   |   \_/  |  |  |\  \|  |  |\   |   \_/  |
+//|__| \_____/|__| \__\__|__| \__|\______/   |__| \__\__|__| \__|\______/
+//----------------------------------------Script Last Update 2024-------------------------------------------
+//==============================================Changelog===================================================
+
+- script RandomBGM -1,{
+
+OnInit:
+    // Define the map where the BGM should be randomized
+    set .map$, "prontera";
+    // Define the list of BGMs
+    setarray .bgms$[0], "BGM/01.mp3", "BGM/02.mp3", "BGM/03.mp3", "BGM/04.mp3";
+    // Initialize an array to track played BGMs
+    set .played[0], 0, 0, 0, 0;
+    set .totalPlayed, 0;
+
+    // Define a global label to set BGM on map load
+    OnPCLoadMapEvent:
+        // Check if the player has loaded the specific map
+        if (strcharinfo(3) == .map$) {
+            // Check if all BGMs have been played
+            if (.totalPlayed >= getarraysize(.bgms$)) {
+                // Reset the played array
+                set .totalPlayed, 0;
+                for (set .i, 0; .i < getarraysize(.bgms$); set .i, .i + 1) {
+                    set .played[.i], 0;
+                }
+            }
+
+            // Find a BGM that hasn't been played yet
+            do {
+                set .randomIndex, rand(getarraysize(.bgms$));
+            } while (.played[.randomIndex]);
+
+            // Mark the BGM as played
+            set .played[.randomIndex], 1;
+            set .totalPlayed, .totalPlayed + 1;
+
+            // Play the random BGM
+            playbgm .bgms$[.randomIndex];
+        }
+    end;
+}
+
+// Define the map to trigger the OnPCLoadMapEvent label
+prontera mapflag loadevent;
