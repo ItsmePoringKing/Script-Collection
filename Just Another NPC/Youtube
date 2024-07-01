@@ -1,0 +1,24 @@
+prontera,150,150,5	script	YouTubeReward	123,{
+	mes "[YouTube Reward NPC]";
+	mes "Hello, adventurer!";
+	mes "Watch the following YouTube video and find the hidden code to receive a reward.";
+	mes "Video link: https://www.youtube.com/your_video_link";
+	next;
+	mes "[YouTube Reward NPC]";
+	mes "Enter the code you found in the video:";
+	input @code$;
+	
+	// Check the entered code
+	if (@code$ == "your_code_here") {
+		mes "[YouTube Reward NPC]";
+		mes "Congratulations! You have entered the correct code.";
+		mes "Here is your reward.";
+		// Give the player a reward
+		getitem 501, 1; // Example: Red Potion
+		close;
+	} else {
+		mes "[YouTube Reward NPC]";
+		mes "Sorry, that code is incorrect. Please watch the video and try again.";
+		close;
+	}
+}
