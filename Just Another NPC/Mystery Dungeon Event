@@ -1,0 +1,79 @@
+// Mystery Dungeon Event Script
+- script MysteryDungeon -1,{
+
+OnInit:
+	// Configuration settings
+	setarray .dungeon_keys[0], 501, 502, 503; // Example item IDs for dungeon keys
+	.dungeon_duration = 60 * 60; // Duration the dungeon is open in seconds (1 hour)
+	.dungeon_reset_time = 7 * 24 * 60 * 60; // Reset time for the dungeon in seconds (1 week)
+	.reward_items = 0; // Array to hold reward item IDs
+
+	// Initialization
+	set .dungeon_open, 0;
+	initnpctimer;
+
+OnTimer60000: // Check every minute
+	if (.dungeon_open && gettimetick(2) > .dungeon_open_end) {
+		.dungeon_open = 0;
+		announce "The Mystery Dungeon has closed!", bc_all;
+	}
+	end;
+
+function getRandomReward {
+	// Add logic to determine and give random rewards
+	// Example: set .reward_items, 501; // Potion
+	return .reward_items;
+}
+
+OnMyMobDead:
+	// Check if all monsters are defeated
+	// Add logic to handle boss defeat and progression
+	if (mobcount("mystery_dungeon") == 0) {
+		announce "The boss has been defeated! Proceed to the next level!", bc_map;
+		// Add logic to open next level or end dungeon
+	}
+	end;
+
+OnEnterDungeon:
+	if (!.dungeon_open) {
+		mes "The Mystery Dungeon is currently closed.";
+		close;
+	}
+	if (countitem(.dungeon_keys) == 0) {
+		mes "You need a key to enter the dungeon.";
+		close;
+	}
+	delitem .dungeon_keys[0], 1;
+	warp "mystery_dungeon", 50, 50; // Warp to the dungeon entrance
+	end;
+
+OnToggleDungeon:
+	if (.dungeon_open) {
+		.dungeon_open = 0;
+		announce "The Mystery Dungeon has been closed!", bc_all;
+	} else {
+		.dungeon_open = 1;
+		.dungeon_open_end = gettimetick(2) + .dungeon_duration;
+		announce "The Mystery Dungeon is now open! Use your keys to enter!", bc_all;
+	}
+	end;
+
+npc/mystery_dungeon,50,50,0 script MysteryDungeonGuard 4_F_CLIFF,{
+	if (getgmlevel() >= 60) { // Change the GM level as needed
+		mes "[Dungeon Guard]";
+		mes "Would you like to enter the Mystery Dungeon?";
+		if (select("Enter the Dungeon:Toggle Dungeon Status:Cancel") == 1) {
+			callsub OnEnterDungeon;
+		} else if (@menu == 2) {
+			callsub OnToggleDungeon;
+		}
+	} else {
+		mes "[Dungeon Guard]";
+		mes "Would you like to enter the Mystery Dungeon?";
+		if (select("Enter the Dungeon:Cancel") == 1) {
+			callsub OnEnterDungeon;
+		}
+	}
+	close;
+}
+}
