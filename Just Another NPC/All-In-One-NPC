@@ -1,0 +1,330 @@
+prontera,150,150,5	script	MultiServiceNPC	757,{
+	// Configuration
+	.OnInit:
+		// Services Configuration
+		set .repair_enabled, true; // true to enable, false to disable
+		set .job_change_enabled, true;
+		set .hairstyle_change_enabled, true;
+		set .buff_enabled, true;
+		set .magnify_item_enabled, true;
+		set .card_remover_enabled, true;
+		set .universal_mount_enabled, true;
+		set .stats_reset_enabled, true;
+		set .refiner_enabled, true;
+		set .healer_enabled, true;
+		set .platinum_skills_enabled, true;
+		set .sex_change_enabled, true;
+	end;
+
+	// Main Menu
+	mes "[Multi-Service NPC]";
+	mes "Hello! I can offer you various services.";
+	mes "What do you need?";
+	next;
+	
+	// Dynamic Service Menu
+	set .@menu$, "Cancel";
+	if (.repair_enabled) set .@menu$, .@menu$ + ":Repair";
+	if (.job_change_enabled) set .@menu$, .@menu$ + ":Job Change";
+	if (.hairstyle_change_enabled) set .@menu$, .@menu$ + ":Change Hairstyle";
+	if (.buff_enabled) set .@menu$, .@menu$ + ":Buff";
+	if (.magnify_item_enabled) set .@menu$, .@menu$ + ":Magnify Item";
+	if (.card_remover_enabled) set .@menu$, .@menu$ + ":Card Remover";
+	if (.universal_mount_enabled) set .@menu$, .@menu$ + ":Universal Mount";
+	if (.stats_reset_enabled) set .@menu$, .@menu$ + ":Stats Reset";
+	if (.refiner_enabled) set .@menu$, .@menu$ + ":Refiner";
+	if (.healer_enabled) set .@menu$, .@menu$ + ":Healer";
+	if (.platinum_skills_enabled) set .@menu$, .@menu$ + ":Platinum Skills";
+	if (.sex_change_enabled) set .@menu$, .@menu$ + ":Sex Change";
+	set .@choice, select(.@menu$);
+
+	// Service Handlers
+	switch (.@choice) {
+		case 1: // Cancel
+			close;
+
+		case 2: // Repair
+			if (.repair_enabled) {
+				callsub RepairService;
+			}
+			break;
+
+		case 3: // Job Change
+			if (.job_change_enabled) {
+				callsub JobChangeService;
+			}
+			break;
+
+		case 4: // Change Hairstyle
+			if (.hairstyle_change_enabled) {
+				callsub ChangeHairstyleService;
+			}
+			break;
+
+		case 5: // Buff
+			if (.buff_enabled) {
+				callsub BuffService;
+			}
+			break;
+
+		case 6: // Magnify Item
+			if (.magnify_item_enabled) {
+				callsub MagnifyItemService;
+			}
+			break;
+
+		case 7: // Card Remover
+			if (.card_remover_enabled) {
+				callsub CardRemoverService;
+			}
+			break;
+
+		case 8: // Universal Mount
+			if (.universal_mount_enabled) {
+				callsub UniversalMountService;
+			}
+			break;
+
+		case 9: // Stats Reset
+			if (.stats_reset_enabled) {
+				callsub StatsResetService;
+			}
+			break;
+
+		case 10: // Refiner
+			if (.refiner_enabled) {
+				callsub RefinerService;
+			}
+			break;
+
+		case 11: // Healer
+			if (.healer_enabled) {
+				callsub HealerService;
+			}
+			break;
+
+		case 12: // Platinum Skills
+			if (.platinum_skills_enabled) {
+				callsub PlatinumSkillsService;
+			}
+			break;
+
+		case 13: // Sex Change
+			if (.sex_change_enabled) {
+				callsub SexChangeService;
+			}
+			break;
+	}
+	close;
+
+	// Service Subroutines
+	RepairService:
+		mes "[Repair Service]";
+		mes "I will repair all your equipment.";
+		next;
+		callfunc "F_REPAIR";
+		close;
+
+	JobChangeService:
+		mes "[Job Change Service]";
+		mes "I will change your job.";
+		next;
+		callfunc "F_JOBCHANGE";
+		close;
+
+	ChangeHairstyleService:
+		mes "[Hairstyle Change Service]";
+		mes "I will change your hairstyle.";
+		next;
+		callfunc "F_HAIRSTYLE";
+		close;
+
+	BuffService:
+		mes "[Buff Service]";
+		mes "I will grant you some buffs.";
+		next;
+		callfunc "F_BUFF";
+		close;
+
+	MagnifyItemService:
+		mes "[Magnify Item Service]";
+		mes "I will magnify all unidentified items in your inventory.";
+		next;
+		callfunc "F_MAGNIFY";
+		close;
+
+	CardRemoverService:
+		mes "[Card Remover Service]";
+		mes "I will remove cards from your equipment.";
+		next;
+		callfunc "F_CARDREMOVE";
+		close;
+
+	UniversalMountService:
+		mes "[Universal Mount Service]";
+		mes "I will provide you with a universal mount.";
+		next;
+		callfunc "F_MOUNT";
+		close;
+
+	StatsResetService:
+		mes "[Stats Reset Service]";
+		mes "I will reset your stats.";
+		next;
+		callfunc "F_RESET";
+		close;
+
+	RefinerService:
+		mes "[Refiner Service]";
+		mes "I will refine your equipment.";
+		next;
+		callfunc "F_REFINE";
+		close;
+
+	HealerService:
+		mes "[Healer Service]";
+		mes "I will heal you completely.";
+		next;
+		callfunc "F_HEAL";
+		close;
+
+	PlatinumSkillsService:
+		mes "[Platinum Skills Service]";
+		mes "I will grant you platinum skills.";
+		next;
+		callfunc "F_PLATINUM";
+		close;
+
+	SexChangeService:
+		mes "[Sex Change Service]";
+		mes "I will change your gender.";
+		next;
+		callfunc "F_SEXCHANGE";
+		close;
+}
+
+// Functions for Services
+
+function	script	F_REPAIR	{
+	callfunc "F_RepairItem";
+	end;
+}
+
+function	script	F_JOBCHANGE	{
+	// Example Job Change functionality (simplified)
+	set @JobMenu$,"Cancel:Novice:Swordsman:Magician:Archer:Acolyte:Merchant:Thief";
+	mes "Select your new job:";
+	set @new_job, select(@JobMenu$)-2;
+	if (@new_job == -1) close;
+	jobchange @new_job;
+	mes "Job change complete!";
+	close;
+}
+
+function	script	F_HAIRSTYLE	{
+	// Example Hairstyle Change functionality (simplified)
+	setarray .@styles[0],1,2,3,4,5;
+	mes "Select your new hairstyle:";
+	for (set .@i, 0; .@i < getarraysize(.@styles); set .@i, .@i + 1)
+		mes "^FF0000"+.@styles[.@i]+"^000000: Style #"+.@styles[.@i];
+	next;
+	input .@choice;
+	if (.@choice < 1 || .@choice > getarraysize(.@styles)) {
+		mes "Invalid choice!";
+		close;
+	}
+	changelook LOOK_HAIR, .@styles[.@choice-1];
+	mes "Hairstyle change complete!";
+	close;
+}
+
+function	script	F_BUFF	{
+	// Example Buff functionality
+	sc_start SC_INCREASEAGI,1800000,10;
+	sc_start SC_BLESSING,1800000,10;
+	mes "Buffs granted!";
+	close;
+}
+
+function	script	F_MAGNIFY	{
+	// Example Magnify Item functionality (simplified)
+	set @magnified, 0;
+	for(set .@i,0; .@i<100; set .@i, .@i+1) {
+		if (getinventorylist_id(.@i) == -1) continue;
+		if (!getiteminfo(getinventorylist_id(.@i),11)) {
+			delitem getinventorylist_id(.@i),1;
+			getitem2 getinventorylist_id(.@i),1,1,0,0,0,0,0,0,0;
+			set @magnified, @magnified + 1;
+		}
+	}
+	mes "I have magnified "+@magnified+" items.";
+	close;
+}
+
+function	script	F_CARDREMOVE	{
+	// Example Card Remover functionality (simplified)
+	set @card_removed, 0;
+	for(set .@i,0; .@i<100; set .@i, .@i+1) {
+		if (getequipid(.@i) == -1) continue;
+		if (getequipcardcnt(.@i) > 0) {
+			for(set .@j,0; .@j<4; set .@j, .@j+1)
+				if (getequipcardid(.@i,.@j)) {
+					delitem2 getequipid(.@i),1,getequiprefinerycnt(.@i),getequipoption(.@i,0),getequipoption(.@i,1),getequipoption(.@i,2),getequipoption(.@i,3),getequipoption(.@i,4);
+					getitem getequipcardid(.@i,.@j),1;
+					set @card_removed, @card_removed + 1;
+				}
+		}
+	}
+	mes "I have removed "+@card_removed+" cards.";
+	close;
+}
+
+function	script	F_MOUNT	{
+	// Example Universal Mount functionality (simplified)
+	setmounting 1;
+	mes "You have been given a mount.";
+	close;
+}
+
+function	script	F_RESET	{
+	// Example Stats Reset functionality
+	resetstatus;
+	mes "Your stats have been reset.";
+	close;
+}
+
+function	script	F_REFINE	{
+	// Example Refine functionality (simplified)
+	set @refined, 0;
+	for(set .@i,0; .@i<100; set .@i, .@i+1) {
+		if (getequipid(.@i) == -1) continue;
+		if (getequiprefinerycnt(.@i) < 10) {
+			successrefitem .@i;
+			set @refined, @refined + 1;
+		}
+	}
+	mes "I have refined "+@refined+" items.";
+	close;
+}
+
+function	script	F_HEAL	{
+	// Example Healer functionality
+	percentheal 100,100;
+	mes "You have been fully healed.";
+	close;
+}
+
+function	script	F_PLATINUM	{
+	// Example Platinum Skills functionality
+	// Add all platinum skills
+	getitem 12803, 1; // Level 10 Platinum Skills Manual (Example)
+	mes "You have been granted platinum skills.";
+	close;
+}
+
+function	script	F_SEXCHANGE	{
+	// Example Sex Change functionality
+	set sex, (sex == 1) ? 0 : 1;
+	mes "Your gender has been changed.";
+	close;
+}
