@@ -1,0 +1,46 @@
+prontera,150,150,5	script	Floating Rates NPC	100,{
+	OnInit:
+		// Configurable rate settings
+		set .NormalRates_Base, 100; // 1x Base EXP
+		set .NormalRates_Job, 100; // 1x Job EXP
+		set .NormalRates_Drop, 100; // 1x Drop Rate
+
+		set .FloatingRates_Base, 200; // 2x Base EXP
+		set .FloatingRates_Job, 200; // 2x Job EXP
+		set .FloatingRates_Drop, 200; // 2x Drop Rate
+
+		// Configurable schedule
+		set .FloatingStartHour, 18; // Start at 6 PM
+		set .FloatingEndHour, 20; // End at 8 PM
+
+		// Timer setup
+		initnpctimer;
+		end;
+
+	OnTimer60000: // Check every 60 seconds
+		callsub CheckRates;
+		stopnpctimer;
+		initnpctimer;
+		end;
+
+	CheckRates:
+		gettime .@hour;
+		if (.@hour >= .FloatingStartHour && .@hour < .FloatingEndHour) {
+			if (!.FloatingActive) {
+				set .FloatingActive, 1;
+				setbattleflag("base_exp_rate", .FloatingRates_Base);
+				setbattleflag("job_exp_rate", .FloatingRates_Job);
+				setbattleflag("item_rate_common", .FloatingRates_Drop);
+				announce "Floating rates are now active! Enjoy increased rates!", 0;
+			}
+		} else {
+			if (.FloatingActive) {
+				set .FloatingActive, 0;
+				setbattleflag("base_exp_rate", .NormalRates_Base);
+				setbattleflag("job_exp_rate", .NormalRates_Job);
+				setbattleflag("item_rate_common", .NormalRates_Drop);
+				announce "Floating rates have ended. Rates are back to normal.", 0;
+			}
+		}
+		return;
+}
