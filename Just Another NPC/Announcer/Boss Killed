@@ -1,0 +1,7 @@
+-	script MVPDeathAnnounce -1,{
+	OnNPCKillEvent:
+		if (getmonsterinfo(killedrid, MOB_MVPEXP)) {
+			announce "MVP " + getmonsterinfo(killedrid, MOB_NAME) + " has been killed by " + strcharinfo(0) + ".", bc_self;
+		}
+	end;
+}
