@@ -1,0 +1,50 @@
+prontera,150,150,5	script Weather_NPC 1_M_MYST	721,{
+	
+OnInit:
+	// Configuration Settings
+	.@weather_types$ = ["Sunny", "Rainy", "Cloudy"];
+	.@weather_prob = [50, 30, 20]; // Probability of each weather type (out of 100)
+	.@weather_duration = 1800; // Weather duration in seconds (30 minutes)
+	.@announce_weather_changes = true; // Enable weather change announcements
+	
+	// Initial Weather
+	callfunc("change_weather");
+
+end;
+
+OnHourChange:
+	callfunc("change_weather");
+end;
+
+function change_weather {
+	// Calculate total probability
+	.@total_prob = 0;
+	for (set .@i, 0; .@i < getarraysize(.@weather_types$); set .@i, .@i + 1) {
+		.@total_prob += .@weather_prob[.@i];
+	}
+	
+	// Determine current weather
+	.@rand = rand(.@total_prob);
+	.@total_prob = 0;
+	for (set .@i, 0; .@i < getarraysize(.@weather_types$); set .@i, .@i + 1) {
+		.@total_prob += .@weather_prob[.@i];
+		if (.@rand < .@total_prob) {
+			.@current_weather$ = .@weather_types$[.@i];
+			break;
+		}
+	}
+	
+	// Set Weather
+	setweather .@current_weather$;
+
+	// Announce Weather Change
+	if (.@announce_weather_changes)
+		broadcast "Weather has changed to " + .@current_weather$ + "!";
+
+	end;
+}
+	
+mes "[Weather_NPC]";
+mes "I control the weather around here.";
+mes "Feel free to ask me about the current weather!";
+close;
