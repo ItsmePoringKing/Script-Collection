@@ -1,0 +1,35 @@
+function script LuckyDraw {
+    set .@cost, 5000; // Cost in Zeny
+    setarray .@rewards[0], 501, 502, 503; // List of reward item IDs
+    setarray .@chances[0], 50, 30, 20; // Corresponding chances (percentages)
+
+    if (Zeny < .@cost) {
+        mes "You do not have enough Zeny to participate.";
+        close;
+    }
+
+    // Deduct cost
+    set Zeny, Zeny - .@cost;
+
+    // Determine reward
+    set .@random, rand(100);
+    set .@accumulated_chance, 0;
+    for (set .@i, 0; .@i < getarraysize(.@rewards); set .@i, .@i + 1) {
+        set .@accumulated_chance, .@accumulated_chance + .@chances[.@i];
+        if (.@random < .@accumulated_chance) {
+            set .@reward_id, .@rewards[.@i];
+            break;
+        }
+    }
+
+    // Give reward
+    getitem .@reward_id, 1;
+    mes "Congratulations! You have received " + getitemname(.@reward_id) + "!";
+    close;
+}
+
+// NPC Example
+prontera,320,320,4	script	Lucky Draw	140,{
+    callfunc "LuckyDraw";
+    close;
+}
