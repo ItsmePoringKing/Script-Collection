@@ -1,0 +1,13 @@
+function script GuildWarNotification {
+    set .@time_until_war, 3600; // Time in seconds until Guild War starts
+    set .@announcement, "Guild War will start in 1 hour! Prepare your guilds!";
+    
+    announce .@announcement, 0;
+    end;
+}
+
+// NPC Example
+prontera,280,280,4	script	Guild War Notifier	136,{
+    callfunc "GuildWarNotification";
+    close;
+}
