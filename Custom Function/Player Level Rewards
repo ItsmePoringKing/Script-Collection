@@ -1,0 +1,22 @@
+function script LevelRewards {
+    setarray .@levels[0], 10, 20, 30; // Levels to reward
+    setarray .@rewards[0], 501, 502, 503; // Corresponding reward item IDs
+
+    for (set .@i, 0; .@i < getarraysize(.@levels); set .@i, .@i + 1) {
+        if (BaseLevel >= .@levels[.@i] && !getd("level_reward_" + .@levels[.@i] + "_" + getcharid(3))) {
+            // Mark reward as given
+            setd "level_reward_" + .@levels[.@i] + "_" + getcharid(3), 1;
+
+            // Give reward
+            getitem .@rewards[.@i], 1;
+            mes "Congratulations on reaching level " + .@levels[.@i] + "! You have received " + getitemname(.@rewards[.@i]) + ".";
+        }
+    }
+    close;
+}
+
+// NPC Example
+prontera,350,350,4	script	Level Rewards	143,{
+    callfunc "LevelRewards";
+    close;
+}
