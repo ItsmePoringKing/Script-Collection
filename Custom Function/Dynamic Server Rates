@@ -1,0 +1,42 @@
+function script DynamicServerRates {
+    set .@vote_cost, 10000; // Zeny cost per vote
+    set .@increase_duration, 3600; // Duration of increased rates in seconds
+    set .@rate_increase, 50; // Rate increase percentage
+
+    if (Zeny < .@vote_cost) {
+        mes "You do not have enough Zeny to vote.";
+        close;
+    }
+
+    // Deduct cost
+    set Zeny, Zeny - .@vote_cost;
+
+    // Increase rates
+    set .@base_rate, 100 + .@rate_increase;
+    set .@job_rate, 100 + .@rate_increase;
+    set .@drop_rate, 100 + .@rate_increase;
+
+    // Apply rates for the duration
+    setbattleflag "base_exp_rate", .@base_rate;
+    setbattleflag "job_exp_rate", .@job_rate;
+    setbattleflag "item_rate_common", .@drop_rate;
+    setbattleflag "item_rate_equip", .@drop_rate;
+    setbattleflag "item_rate_card", .@drop_rate;
+
+    // Schedule revert
+    sleep2 .@increase_duration * 1000;
+    setbattleflag "base_exp_rate", 100;
+    setbattleflag "job_exp_rate", 100;
+    setbattleflag "item_rate_common", 100;
+    setbattleflag "item_rate_equip", 100;
+    setbattleflag "item_rate_card", 100;
+
+    mes "Thank you for your vote! The server rates have been increased for " + (.@increase_duration / 60) + " minutes.";
+    close;
+}
+
+// NPC Example
+prontera,310,310,4	script	Server Rates	139,{
+    callfunc "DynamicServerRates";
+    close;
+}
