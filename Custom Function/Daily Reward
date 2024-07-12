@@ -1,0 +1,25 @@
+function script DailyReward {
+    if (getd("@daily_reward_" + getcharid(3))) {
+        mes "You have already claimed your daily reward!";
+        close;
+    }
+
+    // Set the reward
+    set .@reward_id, 501; // Item ID
+    set .@reward_amount, 1; // Item amount
+
+    // Give the reward
+    getitem .@reward_id, .@reward_amount;
+    mes "You have received your daily reward!";
+    close;
+
+    // Set the claim flag
+    setd "@daily_reward_" + getcharid(3), 1;
+    end;
+}
+
+// NPC Example
+prontera,160,160,4	script	Daily Reward	124,{
+    callfunc "DailyReward";
+    close;
+}
