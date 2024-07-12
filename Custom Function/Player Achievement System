@@ -1,0 +1,28 @@
+function script PlayerAchievements {
+    set .@achievement_id, getarg(0);
+    set .@achievement_desc$, getarg(1);
+
+    if (checkquest(.@achievement_id, PLAYTIME) == 2) {
+        mes "You have already achieved: " + .@achievement_desc$;
+        close;
+    }
+
+    // Example condition: Reach level 99
+    if (BaseLevel >= 99) {
+        completequest .@achievement_id;
+        mes "Congratulations! You have achieved: " + .@achievement_desc$;
+        // Reward player
+        set .@reward_id, 501; // Reward item ID
+        set .@reward_amount, 1; // Reward item amount
+        getitem .@reward_id, .@reward_amount;
+    } else {
+        mes "You need to reach level 99 to achieve: " + .@achievement_desc$;
+    }
+    close;
+}
+
+// NPC Example
+prontera,270,270,4	script	Achievements	135,{
+    callfunc "PlayerAchievements", 2001, "Reach Level 99";
+    close;
+}
