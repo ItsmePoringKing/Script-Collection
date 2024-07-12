@@ -1,0 +1,16 @@
+function script DisplayPlayerStats {
+    mes "Player Stats:";
+    mes "Name: " + strcharinfo(0);
+    mes "Level: " + BaseLevel;
+    mes "Job Level: " + JobLevel;
+    mes "Zeny: " + Zeny;
+    mes "Kills: " + readparam(PC_KILL_COUNT);
+    mes "Deaths: " + readparam(PC_DEATH_COUNT);
+    close;
+}
+
+// NPC Example
+prontera,190,190,4	script	Player Stats	127,{
+    callfunc "DisplayPlayerStats";
+    close;
+}
