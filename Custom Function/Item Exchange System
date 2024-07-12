@@ -1,0 +1,27 @@
+function script ItemExchange {
+    setarray .@required_items[0], 501, 502; // Required item IDs
+    setarray .@required_amounts[0], 10, 5; // Required item amounts
+    set .@reward_item, 503; // Reward item ID
+    set .@reward_amount, 1; // Reward item amount
+
+    for (set .@i, 0; .@i < getarraysize(.@required_items); set .@i, .@i + 1) {
+        if (countitem(.@required_items[.@i]) < .@required_amounts[.@i]) {
+            mes "You do not have enough " + getitemname(.@required_items[.@i]) + ".";
+            close;
+        }
+    }
+
+    for (set .@i, 0; .@i < getarraysize(.@required_items); set .@i, .@i + 1) {
+        delitem .@required_items[.@i], .@required_amounts[.@i];
+    }
+
+    getitem .@reward_item, .@reward_amount;
+    mes "You have exchanged your items for a " + getitemname(.@reward_item) + "!";
+    close;
+}
+
+// NPC Example
+prontera,250,250,4	script	Item Exchanger	133,{
+    callfunc "ItemExchange";
+    close;
+}
