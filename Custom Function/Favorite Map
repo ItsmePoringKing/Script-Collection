@@ -1,0 +1,39 @@
+function script SaveLocation {
+    set .@index, getarg(0);
+
+    set @saved_map$, strcharinfo(3);
+    set @saved_x, getpcx();
+    set @saved_y, getpcy();
+    set @saved_loc[.@index], @saved_map$ + "," + @saved_x + "," + @saved_y;
+    mes "Location saved!";
+    close;
+}
+
+function script TeleportToSaved {
+    set .@index, getarg(0);
+
+    if (@saved_loc[.@index] == "") {
+        mes "No location saved in this slot.";
+        close;
+    }
+
+    setarray .@loc[0], split(",", @saved_loc[.@index]);
+    warp .@loc[0], atoi(.@loc[1]), atoi(.@loc[2]);
+    end;
+}
+
+// NPC Example
+prontera,170,170,4	script	Favorite Locations	125,{
+    mes "Choose an option:";
+    next;
+
+    menu "Save Location",L_Save,"Teleport to Saved Location",L_Teleport;
+
+    L_Save:
+    callfunc "SaveLocation", 0; // Save to slot 0
+    close;
+
+    L_Teleport:
+    callfunc "TeleportToSaved", 0; // Teleport from slot 0
+    close;
+}
