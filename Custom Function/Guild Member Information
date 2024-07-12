@@ -1,0 +1,21 @@
+function script GuildMemberInfo {
+    if (strcharinfo(2) == "") {
+        mes "You are not in a guild.";
+        close;
+    }
+
+    set .@guild_id, getcharid(2);
+    query_sql("SELECT `name`, `class` FROM `char` WHERE `guild_id` = " + .@guild_id, .@name$, .@class);
+
+    mes "Guild Members:";
+    for (set .@i, 0; .@i < getarraysize(.@name$); set .@i, .@i + 1) {
+        mes .@name$[.@i] + " - " + jobname(.@class[.@i]);
+    }
+    close;
+}
+
+// NPC Example
+prontera,240,240,4	script	Guild Info	132,{
+    callfunc "GuildMemberInfo";
+    close;
+}
