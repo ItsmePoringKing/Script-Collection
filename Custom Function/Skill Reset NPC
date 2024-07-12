@@ -1,0 +1,22 @@
+function script SkillReset {
+    set .@cost, 10000; // Cost in Zeny
+
+    if (Zeny < .@cost) {
+        mes "You do not have enough Zeny to reset your skills.";
+        close;
+    }
+
+    // Deduct cost
+    set Zeny, Zeny - .@cost;
+
+    // Reset skills
+    resetstatus;
+    mes "Your skills have been reset.";
+    close;
+}
+
+// NPC Example
+prontera,330,330,4	script	Skill Reset	141,{
+    callfunc "SkillReset";
+    close;
+}
