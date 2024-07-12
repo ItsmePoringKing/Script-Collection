@@ -1,0 +1,14 @@
+function script RandomItemGiver {
+    setarray .@items[0], 501, 502, 503, 504, 505; // List of item IDs
+    set .@item_index, rand(getarraysize(.@items));
+    set .@item_id, .@items[.@item_index];
+    getitem .@item_id, 1;
+    mes "You received a random item!";
+    close;
+}
+
+// NPC Example
+prontera,210,210,4	script	Random Item Giver	129,{
+    callfunc "RandomItemGiver";
+    close;
+}
