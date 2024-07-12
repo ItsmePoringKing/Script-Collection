@@ -1,0 +1,23 @@
+function script AnniversaryRewards {
+    set .@reward_id, getarg(0);
+    set .@reward_amount, getarg(1);
+
+    if (getd("anniversary_reward_" + getcharid(3)) == gettime(DT_YEAR, DT_MONTH, DT_DAY)) {
+        mes "You have already claimed your anniversary reward today.";
+        close;
+    }
+
+    // Mark reward as claimed
+    setd "anniversary_reward_" + getcharid(3), gettime(DT_YEAR, DT_MONTH, DT_DAY);
+
+    // Reward player
+    getitem .@reward_id, .@reward_amount;
+    mes "Happy Anniversary! Here is your reward.";
+    close;
+}
+
+// NPC Example
+prontera,400,400,4	script	Anniversary NPC	148,{
+    callfunc "AnniversaryRewards", 501, 1; // Reward item 501, amount 1
+    close;
+}
