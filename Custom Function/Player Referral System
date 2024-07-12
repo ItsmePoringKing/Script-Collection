@@ -1,0 +1,29 @@
+function script PlayerReferral {
+    set .@referrer_id, getarg(0);
+    set .@reward_id, getarg(1);
+    set .@reward_amount, getarg(2);
+
+    if (getd("referral_claimed_" + getcharid(3))) {
+        mes "You have already claimed your referral reward.";
+        close;
+    }
+
+    // Mark referral as claimed
+    setd "referral_claimed_" + getcharid(3), 1;
+
+    // Reward referrer
+    attachrid(.@referrer_id);
+    getitem .@reward_id, .@reward_amount;
+    detachrid();
+
+    mes "Thank you for referring a new player! Your reward has been given.";
+    close;
+}
+
+// NPC Example
+prontera,360,360,4	script	Referral NPC	144,{
+    mes "Enter the ID of the player who referred you:";
+    input .@referrer_id;
+    callfunc "PlayerReferral", .@referrer_id, 501, 1; // Reward item 501, amount 1
+    close;
+}
