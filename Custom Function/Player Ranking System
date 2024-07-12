@@ -1,0 +1,15 @@
+function script PlayerRanking {
+    query_sql("SELECT `name`, `base_level` FROM `char` ORDER BY `base_level` DESC LIMIT 10", .@name$, .@level);
+    
+    mes "Top 10 Players by Level:";
+    for (set .@i, 0; .@i < getarraysize(.@name$); set .@i, .@i + 1) {
+        mes (.@i + 1) + ". " + .@name$[.@i] + " - Level " + .@level[.@i];
+    }
+    close;
+}
+
+// NPC Example
+prontera,220,220,4	script	Player Ranking	130,{
+    callfunc "PlayerRanking";
+    close;
+}
