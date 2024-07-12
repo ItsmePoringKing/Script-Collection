@@ -1,0 +1,34 @@
+function script PlayerAuction {
+    set .@auction_item_id, getarg(0);
+    set .@starting_bid, getarg(1);
+    set .@auction_duration, getarg(2);
+    set .@current_bid, .@starting_bid;
+    set .@current_bidder, -1;
+
+    if (countitem(.@auction_item_id) == 0) {
+        mes "You don't have this item.";
+        close;
+    }
+
+    delitem .@auction_item_id, 1;
+    mes "Your item has been put up for auction with a starting bid of " + .@starting_bid + " Zeny.";
+
+    setd "auction_" + .@auction_item_id + "_start", gettimetick(2);
+    setd "auction_" + .@auction_item_id + "_end", gettimetick(2) + .@auction_duration;
+    setd "auction_" + .@auction_item_id + "_current_bid", .@current_bid;
+    setd "auction_" + .@auction_item_id + "_current_bidder", .@current_bidder;
+
+    close;
+}
+
+// NPC Example
+prontera,590,590,4	script	Auction NPC	167,{
+    mes "Please enter the item ID you want to auction:";
+    input .@auction_item_id;
+    mes "Please enter the starting bid:";
+    input .@starting_bid;
+    mes "Please enter the auction duration (in seconds):";
+    input .@auction_duration;
+    callfunc "PlayerAuction", .@auction_item_id, .@starting_bid, .@auction_duration;
+    close;
+}
