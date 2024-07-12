@@ -1,0 +1,26 @@
+function script MonsterHunterQuest {
+    set .@monster_id, getarg(0);
+    set .@required_kills, getarg(1);
+
+    if (checkquest(.@monster_id, PLAYTIME) == 2) {
+        mes "You have already completed this quest!";
+        close;
+    }
+
+    if (getmonsterinfo(.@monster_id, MOB_KILL_COUNT) >= .@required_kills) {
+        set .@reward_id, 501; // Reward item ID
+        set .@reward_amount, 1; // Reward item amount
+        getitem .@reward_id, .@reward_amount;
+        completequest .@monster_id;
+        mes "Congratulations! You have completed the quest and received your reward!";
+    } else {
+        mes "You need to kill more " + getmonsterinfo(.@monster_id, MOB_NAME) + "s!";
+    }
+    close;
+}
+
+// NPC Example
+prontera,230,230,4	script	Monster Hunter	131,{
+    callfunc "MonsterHunterQuest", 1002, 10; // Poring ID and 10 kills required
+    close;
+}
