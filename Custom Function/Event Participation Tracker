@@ -1,0 +1,24 @@
+function script EventParticipationTracker {
+    set .@event_id, getarg(0);
+    set .@reward_id, getarg(1);
+    set .@reward_amount, getarg(2);
+
+    if (getd("event_participation_" + .@event_id + "_" + getcharid(3))) {
+        mes "You have already participated in this event.";
+        close;
+    }
+
+    // Mark participation
+    setd "event_participation_" + .@event_id + "_" + getcharid(3), 1;
+
+    // Reward player
+    getitem .@reward_id, .@reward_amount;
+    mes "Thank you for participating! Here is your reward.";
+    close;
+}
+
+// NPC Example
+prontera,300,300,4	script	Event Participation	138,{
+    callfunc "EventParticipationTracker", 1, 501, 1; // Event ID 1, reward item 501, reward amount 1
+    close;
+}
