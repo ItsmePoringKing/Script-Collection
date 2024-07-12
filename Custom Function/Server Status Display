@@ -1,0 +1,12 @@
+function script ServerStatusDisplay {
+    mes "Server Status:";
+    mes "Online Players: " + getusers(1);
+    mes "Server Time: " + gettimestr("%Y-%m-%d %H:%M:%S", 4);
+    close;
+}
+
+// NPC Example
+prontera,430,430,4	script	Server Status	151,{
+    callfunc "ServerStatusDisplay";
+    close;
+}
