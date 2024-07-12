@@ -1,0 +1,34 @@
+function script PlayerTitleSystem {
+    setarray .@titles$[0], "Novice", "Warrior", "Hero"; // List of titles
+    setarray .@requirements[0], 1, 10, 100; // Corresponding requirements (e.g., kill counts)
+
+    mes "Choose a title:";
+    for (set .@i, 0; .@i < getarraysize(.@titles$); set .@i, .@i + 1) {
+        if (readparam(PC_KILL_COUNT) >= .@requirements[.@i]) {
+            menu .@titles$[.@i], "L_Title_" + .@i;
+        } else {
+            mes .@titles$[.@i] + " (Requires " + .@requirements[.@i] + " kills)";
+        }
+    }
+
+    L_Title_0:
+    set title, 1;
+    mes "Your title has been set to " + .@titles$[0] + "!";
+    close;
+
+    L_Title_1:
+    set title, 2;
+    mes "Your title has been set to " + .@titles$[1] + "!";
+    close;
+
+    L_Title_2:
+    set title, 3;
+    mes "Your title has been set to " + .@titles$[2] + "!";
+    close;
+}
+
+// NPC Example
+prontera,290,290,4	script	Title Selector	137,{
+    callfunc "PlayerTitleSystem";
+    close;
+}
