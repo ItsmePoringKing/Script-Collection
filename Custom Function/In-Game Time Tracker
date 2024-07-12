@@ -1,0 +1,17 @@
+function script InGameTimeTracker {
+    set .@total_time, gettimetick(2);
+    set .@days, .@total_time / 86400;
+    set .@hours, (.@total_time % 86400) / 3600;
+    set .@minutes, (.@total_time % 3600) / 60;
+    set .@seconds, .@total_time % 60;
+
+    mes "You have spent:";
+    mes .@days + " days, " + .@hours + " hours, " + .@minutes + " minutes, and " + .@seconds + " seconds in the game.";
+    close;
+}
+
+// NPC Example
+prontera,200,200,4	script	In-Game Time	128,{
+    callfunc "InGameTimeTracker";
+    close;
+}
