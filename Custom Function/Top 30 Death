@@ -1,0 +1,26 @@
+//=============================
+// NPC Script: Top 30 Deaths
+//=============================
+prontera,150,150,4	script	Top Deaths	837,{
+
+    // Configuration Section
+    OnInit:
+        // Configurable variables
+        .npc_name$ = "[Top Deaths]";
+        .limit = 30; // Limit of players to display
+
+        // End of Configuration
+        end;
+
+    OnTalk:
+        // Fetch the top 30 players with the most deaths
+        query_sql("SELECT `name`, `death` FROM `char` ORDER BY `death` DESC LIMIT " + .limit, .@name$, .@deaths);
+
+        // Display the top 30 players
+        mes .npc_name$;
+        mes "Top " + .limit + " Players Who Died the Most:";
+        for (.@i = 0; .@i < getarraysize(.@name$); .@i++) {
+            mes (.@i + 1) + ". " + .@name$[.@i] + " - " + .@deaths[.@i] + " deaths";
+        }
+        close;
+}
