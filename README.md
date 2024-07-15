@@ -1,3 +1,16 @@
+Banner:(refresh preview)
+                                                                                               
+@@@@@@@    @@@@@@   @@@@@@@   @@@  @@@  @@@   @@@@@@@@     @@@  @@@  @@@  @@@  @@@   @@@@@@@@  
+@@@@@@@@  @@@@@@@@  @@@@@@@@  @@@  @@@@ @@@  @@@@@@@@@     @@@  @@@  @@@  @@@@ @@@  @@@@@@@@@  
+@@!  @@@  @@!  @@@  @@!  @@@  @@!  @@!@!@@@  !@@           @@!  !@@  @@!  @@!@!@@@  !@@        
+!@!  @!@  !@!  @!@  !@!  @!@  !@!  !@!!@!@!  !@!           !@!  @!!  !@!  !@!!@!@!  !@!        
+@!@@!@!   @!@  !@!  @!@!!@!   !!@  @!@ !!@!  !@! @!@!@     @!@@!@!   !!@  @!@ !!@!  !@! @!@!@  
+!!@!!!    !@!  !!!  !!@!@!    !!!  !@!  !!!  !!! !!@!!     !!@!!!    !!!  !@!  !!!  !!! !!@!!  
+!!:       !!:  !!!  !!: :!!   !!:  !!:  !!!  :!!   !!:     !!: :!!   !!:  !!:  !!!  :!!   !!:  
+:!:       :!:  !:!  :!:  !:!  :!:  :!:  !:!  :!:   !::     :!:  !:!  :!:  :!:  !:!  :!:   !::  
+ ::       ::::: ::  ::   :::   ::   ::   ::   ::: ::::      ::  :::   ::   ::   ::   ::: ::::  
+ :         : :  :    :   : :  :    ::    :    :: :: :       :   :::  :    ::    :    :: :: :
+
 # rAthena NPC Script Project
 #Introduction
 Welcome to the rAthena NPC Script Project! This repository contains custom NPC scripts for the popular Ragnarok Online private server emulator, rAthena. These scripts are designed to enhance gameplay, provide utility, and improve the overall player experience within the game world.
