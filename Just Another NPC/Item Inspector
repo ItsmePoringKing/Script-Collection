@@ -1,0 +1,54 @@
+prontera,150,150,4	script	Item Inspector	123,{
+
+    // NPC Initialization
+    OnInit:
+        // No special initialization needed for this script
+        end;
+
+    // Main menu
+    Menu:
+        mes "Welcome to the Item Inspector!";
+        mes "Enter the name of the player you want to inspect:";
+        input .@playerName$;  // Get the player name input from the user
+        
+        // Check if the input is empty
+        if (.@playerName$ == "") {
+            dispbottom "You must enter a player name.";
+            close;
+        }
+
+        // Get the target player's ID
+        set .@target_charid, getcharid(0); // Get target player's ID
+        
+        // Check if player exists
+        if (getcharid(0) != getcharid(0)) {
+            dispbottom "Player not found or is offline.";
+            close;
+        }
+
+        // Display player's inventory
+        dispbottom "Inventory of " + .@playerName$ + ":";
+        query_sql "SELECT `id`, `item_id`, `amount` FROM `inventory` WHERE `char_id` = " + .@target_charid, .@inv_id, .@inv_item_id, .@inv_amount;
+
+        if (getarraysize(.@inv_id) > 0) {
+            for (set .@i, 0; .@i < getarraysize(.@inv_id); set .@i, .@i + 1) {
+                dispbottom "Item ID: " + .@inv_item_id[.@i] + ", Amount: " + .@inv_amount[.@i];
+            }
+        } else {
+            dispbottom "No items found in inventory.";
+        }
+
+        // Display equipped items
+        dispbottom "Equipped Items of " + .@playerName$ + ":";
+        query_sql "SELECT `id`, `item_id`, `card1`, `card2`, `card3`, `card4` FROM `equipment` WHERE `char_id` = " + .@target_charid, .@equip_id, .@equip_item_id, .@equip_card1, .@equip_card2, .@equip_card3, .@equip_card4;
+
+        if (getarraysize(.@equip_id) > 0) {
+            for (set .@i, 0; .@i < getarraysize(.@equip_id); set .@i, .@i + 1) {
+                dispbottom "Item ID: " + .@equip_item_id[.@i] + ", Card 1: " + .@equip_card1[.@i] + ", Card 2: " + .@equip_card2[.@i] + ", Card 3: " + .@equip_card3[.@i] + ", Card 4: " + .@equip_card4[.@i];
+            }
+        } else {
+            dispbottom "No equipped items found.";
+        }
+
+        close;
+}
