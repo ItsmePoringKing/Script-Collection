@@ -18,33 +18,71 @@ prontera,150,150,4	script	Item Inspector	123,{
         }
 
         // Get the target player's ID
-        set .@target_charid, getcharid(0); // Get target player's ID
-        
-        // Check if player exists
-        if (getcharid(0) != getcharid(0)) {
+        query_sql "SELECT `char_id` FROM `char` WHERE `name` = '"+.@playerName$+"'", .@target_charid;
+
+        if (getarraysize(.@target_charid) == 0) {
             dispbottom "Player not found or is offline.";
             close;
         }
 
-        // Display player's inventory
-        dispbottom "Inventory of " + .@playerName$ + ":";
-        query_sql "SELECT `id`, `item_id`, `amount` FROM `inventory` WHERE `char_id` = " + .@target_charid, .@inv_id, .@inv_item_id, .@inv_amount;
-
-        if (getarraysize(.@inv_id) > 0) {
-            for (set .@i, 0; .@i < getarraysize(.@inv_id); set .@i, .@i + 1) {
-                dispbottom "Item ID: " + .@inv_item_id[.@i] + ", Amount: " + .@inv_amount[.@i];
-            }
-        } else {
-            dispbottom "No items found in inventory.";
-        }
-
         // Display equipped items
         dispbottom "Equipped Items of " + .@playerName$ + ":";
-        query_sql "SELECT `id`, `item_id`, `card1`, `card2`, `card3`, `card4` FROM `equipment` WHERE `char_id` = " + .@target_charid, .@equip_id, .@equip_item_id, .@equip_card1, .@equip_card2, .@equip_card3, .@equip_card4;
 
-        if (getarraysize(.@equip_id) > 0) {
-            for (set .@i, 0; .@i < getarraysize(.@equip_id); set .@i, .@i + 1) {
-                dispbottom "Item ID: " + .@equip_item_id[.@i] + ", Card 1: " + .@equip_card1[.@i] + ", Card 2: " + .@equip_card2[.@i] + ", Card 3: " + .@equip_card3[.@i] + ", Card 4: " + .@equip_card4[.@i];
+        // Query to fetch equipped items by slot
+        query_sql "SELECT `item_id`, `card1`, `card2`, `card3`, `card4`, `slot` FROM `equipment` WHERE `char_id` = " + .@target_charid[0], .@equip_item_id, .@equip_card1, .@equip_card2, .@equip_card3, .@equip_card4, .@equip_slot$;
+
+        if (getarraysize(.@equip_item_id) > 0) {
+            for (set .@i, 0; .@i < getarraysize(.@equip_item_id); set .@i, .@i + 1) {
+                // Fetch item name from item_db
+                query_sql "SELECT `name` FROM `item_db` WHERE `id` = " + .@equip_item_id[.@i], .@item_name$;
+                set .@item_name$, .@item_name$[0];
+                
+                // Fetch card names for the equipped item
+                setarray .@card_ids[0], .@equip_card1[.@i], .@equip_card2[.@i], .@equip_card3[.@i], .@equip_card4[.@i];
+                set .@card_names$, "";
+
+                for (set .@j, 0; .@j < getarraysize(.@card_ids); set .@j, .@j + 1) {
+                    if (.@card_ids[.@j] > 0) {
+                        query_sql "SELECT `name` FROM `card_db` WHERE `id` = " + .@card_ids[.@j], .@card_name$;
+                        .@card_names$ += (getarraysize(.@card_name$) > 0 ? .@card_name$[0] : "Unknown") + " ";
+                    } else {
+                        .@card_names$ += "None ";
+                    }
+                }
+
+                // Display item information based on slot type
+                switch (.@equip_slot$[.@i]) {
+                    case "head_top":
+                        dispbottom "Top Headgear: " + .@item_name$ + ", Cards: " + .@card_names$;
+                        break;
+                    case "head_mid":
+                        dispbottom "Middle Headgear: " + .@item_name$ + ", Cards: " + .@card_names$;
+                        break;
+                    case "head_low":
+                        dispbottom "Lower Headgear: " + .@item_name$ + ", Cards: " + .@card_names$;
+                        break;
+                    case "armor":
+                        dispbottom "Armor: " + .@item_name$ + ", Cards: " + .@card_names$;
+                        break;
+                    case "shield":
+                        dispbottom "Shield: " + .@item_name$ + ", Cards: " + .@card_names$;
+                        break;
+                    case "weapon":
+                        dispbottom "Weapon: " + .@item_name$ + ", Cards: " + .@card_names$;
+                        break;
+                    case "garment":
+                        dispbottom "Garment: " + .@item_name$ + ", Cards: " + .@card_names$;
+                        break;
+                    case "shoes":
+                        dispbottom "Shoes: " + .@item_name$ + ", Cards: " + .@card_names$;
+                        break;
+                    case "acc1":
+                        dispbottom "Accessory 1: " + .@item_name$ + ", Cards: " + .@card_names$;
+                        break;
+                    case "acc2":
+                        dispbottom "Accessory 2: " + .@item_name$ + ", Cards: " + .@card_names$;
+                        break;
+                }
             }
         } else {
             dispbottom "No equipped items found.";
