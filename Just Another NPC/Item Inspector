@@ -49,40 +49,17 @@ prontera,150,150,4	script	Item Inspector	123,{
                         .@card_names$ += "None ";
                     }
                 }
-
                 // Display item information based on slot type
-                switch (.@equip_slot$[.@i]) {
-                    case "head_top":
                         dispbottom "Top Headgear: " + .@item_name$ + ", Cards: " + .@card_names$;
-                        break;
-                    case "head_mid":
                         dispbottom "Middle Headgear: " + .@item_name$ + ", Cards: " + .@card_names$;
-                        break;
-                    case "head_low":
                         dispbottom "Lower Headgear: " + .@item_name$ + ", Cards: " + .@card_names$;
-                        break;
-                    case "armor":
                         dispbottom "Armor: " + .@item_name$ + ", Cards: " + .@card_names$;
-                        break;
-                    case "shield":
                         dispbottom "Shield: " + .@item_name$ + ", Cards: " + .@card_names$;
-                        break;
-                    case "weapon":
                         dispbottom "Weapon: " + .@item_name$ + ", Cards: " + .@card_names$;
-                        break;
-                    case "garment":
                         dispbottom "Garment: " + .@item_name$ + ", Cards: " + .@card_names$;
-                        break;
-                    case "shoes":
                         dispbottom "Shoes: " + .@item_name$ + ", Cards: " + .@card_names$;
-                        break;
-                    case "acc1":
                         dispbottom "Accessory 1: " + .@item_name$ + ", Cards: " + .@card_names$;
-                        break;
-                    case "acc2":
                         dispbottom "Accessory 2: " + .@item_name$ + ", Cards: " + .@card_names$;
-                        break;
-                }
             }
         } else {
             dispbottom "No equipped items found.";
