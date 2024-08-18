@@ -1,0 +1,38 @@
+//===== rAthena Script ========================================
+//= Bonus Attack Power for Knight/Lord Knight
+//===== By: Poring King v1 ====================================
+//= Date: 2024-08-17
+//=============================================================
+prontera,150,150,4	script	AttackPowerBonus	100,{
+	// Check if the player has a Knight or Lord Knight character with Base Level 99 and Job Level 50
+	set .@account_id, getcharid(3);
+	set .@has_knight_lord_knight, 0;
+	set .@bonus_given, 0;
+
+	query_sql("SELECT `class` FROM `char` WHERE `account_id` = "+.@account_id+" AND `base_level` = 99 AND `job_level` = 50", .@classes);
+
+	for (set .@i, 0; .@i < getarraysize(.@classes); set .@i, .@i + 1) {
+		if (.@classes[.@i] == 4008 || .@classes[.@i] == 4019) { // Knight or Lord Knight class ID
+			set .@has_knight_lord_knight, 1;
+			break;
+		}
+	}
+
+	if (.@has_knight_lord_knight) {
+		// Check if the bonus has already been given
+			// Grant 10% attack power bonus
+			specialeffect2 EF_BLESSING;
+			bonus bAtkRate, 10;
+			set .@bonus_given, 1;
+	}
+
+	if (.@bonus_given) {
+		mes "Congratulations! You've received a 10% attack power bonus for having a max-level Knight or Lord Knight.";
+	} else if (.@has_knight_lord_knight) {
+		mes "It looks like you've already received the bonus.";
+	} else {
+		mes "Sorry, you don't have a max-level Knight or Lord Knight on your account.";
+	}
+
+	close;
+}
