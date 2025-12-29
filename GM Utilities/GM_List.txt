@@ -5,14 +5,15 @@ prontera,134,172,5	script	GM List	4_F_KAFRA9,{
 	.@size = query_sql("SELECT `char`.`account_id`,`char`.`char_id`,`char`.`name`,`login`.`lastlogin`,TIMEDIFF(NOW(),`login`.`lastlogin`),`login`.`group_id` FROM `char` INNER JOIN `login` ON `char`.`account_id` = `login`.`account_id` WHERE `group_id` > "+.min_group_id+" ORDER BY `char`.`online` DESC, `login`.`group_id` DESC, `char`.`name` DESC LIMIT "+.max_limit,.@aid,.@cid,.@name$,.@lastlogin$,.@lastlogin_duration$,.@group_id);
 
 	cutin "kafra_09",2;
-	mes "There are total ^FF0000"+.@size+"^000000 GM(s)";
+	
 	while (.@i < .@size) {
 		mes fun_GMTitle(.@name$[.@i],.@group_id[.@i])+" - "+func_GMState(.@aid[.@i],.@cid[.@i],.@name$[.@i]);
-		//mes "Last Seen: ^777777"+.@lastlogin_duration$[.@i]+" hours ago^000000";
-		//mes "Last Login: ^777777"+.@lastlogin$[.@i]+"^000000";
-		//mes " ";
+		mes "Last Seen: ^777777"+.@lastlogin_duration$[.@i]+" hours ago^000000";
+		mes "Last Login: ^777777"+.@lastlogin$[.@i]+"^000000";
+		mes " ";
 		.@i++;
 	}
+	mes "There are total ^FF0000"+.@size+"^000000 GM(s)";
 	close2;
 	cutin "",255;
 	end;
@@ -59,5 +60,6 @@ prontera,134,172,5	script	GM List	4_F_KAFRA9,{
 		
 		return .@state$;
 	}
+
 
 }
